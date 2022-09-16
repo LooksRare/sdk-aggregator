@@ -1,0 +1,19 @@
+[
+  "error InsufficientAmount()",
+  "error NoPotentialOwner()",
+  "error NotOwner()",
+  "error TransferAlreadyInProgress()",
+  "error TransferERC20Fail()",
+  "error TransferFail()",
+  "error WrongPotentialOwner()",
+  "event CancelOwnershipTransfer(address)",
+  "event InitiateOwnershipTransfer(address,address)",
+  "event NewOwner(address)",
+  "function cancelOwnershipTransfer()",
+  "function confirmOwnershipTransfer()",
+  "function initiateOwnershipTransfer(address)",
+  "function owner() view returns (address)",
+  "function potentialOwner() view returns (address)",
+  "function rescueERC20(address,address)",
+  "function rescueETH(address)"
+]

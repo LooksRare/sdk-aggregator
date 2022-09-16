@@ -1,0 +1,6 @@
+[
+  "error InvalidCaller()",
+  "error InvalidOrderLength()",
+  "error ZeroAddress()",
+  "function execute(tuple(address,address,uint8,uint256[],uint256[],uint256,address,uint256,uint256,bytes)[],bytes[],bytes,address,bool,tuple(uint16,address)) payable returns (bool)"
+]

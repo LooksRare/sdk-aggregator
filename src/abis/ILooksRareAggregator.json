@@ -1,0 +1,11 @@
+[
+  "error FeeTooHigh()",
+  "error InvalidFunction()",
+  "error InvalidOrderLength()",
+  "error TradeExecutionFailed()",
+  "error ZeroAddress()",
+  "event FeeUpdated(address,uint16,address)",
+  "event FunctionAdded(address indexed,bytes4)",
+  "event FunctionRemoved(address indexed,bytes4)",
+  "event Sweep(address indexed,uint256,uint256)"
+]
