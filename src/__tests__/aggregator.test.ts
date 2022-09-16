@@ -6,14 +6,18 @@ import { Addresses } from "../constants/addresses";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
+
   beforeEach(async () => {
     contracts = await setUpContracts();
   });
+
   it("instanciate LooksRareAggregator object", () => {
     expect(new LooksRareAggregator(1).chainId).to.equal(1);
     expect(new LooksRareAggregator(SupportedChainId.HARDHAT).chainId).to.equal(SupportedChainId.HARDHAT);
     const addresses: Addresses = {
       AGGREGATOR: contracts.looksRareAggregator.address,
+      LOOKSRARE_V1_PROXY: "",
+      SEAPORT_PROXY: "",
     };
     expect(new LooksRareAggregator(SupportedChainId.HARDHAT, addresses).addresses).to.be.eql(addresses);
   });
