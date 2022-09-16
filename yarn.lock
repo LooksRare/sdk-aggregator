@@ -688,6 +688,11 @@
   resolved "https://registry.yarnpkg.com/@looksrare/contracts-libs/-/contracts-libs-1.1.0.tgz#4407752163a092c6ca355a140c02e7b3eff641e8"
   integrity sha512-RmZYzs0bcI0Tr8gPJfh2BEfbetySfhvZWyb4xqoIVWiOZaM2E2pU/LblOME2P8OTBR6t9uIQmPX9XA8FuUz4sg==
 
+"@looksrare/sdk@^0.8.3":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@looksrare/sdk/-/sdk-0.8.3.tgz#fc04eec1a0aa3a97dcb3e3b8ae425b9b6df76366"
+  integrity sha512-eSdEzPVbk6MjmAzcxBo4WbKk2Nh17QE8uxNGILWZV/URssEKXvgxvL4wD1T2Ounbt375NulaokenGjr/OXcuyQ==
+
 "@metamask/eth-sig-util@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@metamask/eth-sig-util/-/eth-sig-util-4.0.1.tgz#3ad61f6ea9ad73ba5b19db780d40d9aae5157088"
