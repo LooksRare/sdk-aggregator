@@ -9,8 +9,8 @@ describe("LooksRareAggregator class", () => {
     it("transforms LooksRare V1 listings into TradeData for the aggregator (single collection)", () => {
       const aggregator = new LooksRareAggregator(1);
       const tradeData = aggregator.transformLooksRareV1Listings([
-        getFixture("looksrare-v1", "bayc3683Order.json"),
-        getFixture("looksrare-v1", "bayc5623Order.json"),
+        getFixture("LooksRareV1", "bayc3683Order.json"),
+        getFixture("LooksRareV1", "bayc5623Order.json"),
       ]);
 
       expect(tradeData.address).to.equal(""); // TODO: add real address

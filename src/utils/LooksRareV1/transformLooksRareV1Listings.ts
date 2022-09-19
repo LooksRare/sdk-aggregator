@@ -1,7 +1,7 @@
 import { BasicOrder, CollectionType, TradeData } from "../../types";
 import { BigNumber, constants, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
-import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/looksrare-v1";
+import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV1";
 
 const calculateEthValue = (orders: BasicOrder[]) => {
   return orders.reduce((sum: BigNumber, order: BasicOrder) => {
