@@ -3,7 +3,7 @@ import { MakerOrderFromAPI } from "./interfaces/looksrare-v1";
 import * as Seaport from "./interfaces/seaport";
 import { SupportedChainId, TradeData } from "./types";
 import transformSeaportListings from "./utils/seaport/transformSeaportListings";
-import transformLooksRareV1Listings from "./utils/looksrare-v1/transform-looksrare-v1-listings";
+import transformLooksRareV1Listings from "./utils/looksrare-v1/transformLooksrareV1Listings";
 
 export class LooksRareAggregator {
   public chainId: SupportedChainId;
