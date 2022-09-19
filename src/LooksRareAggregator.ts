@@ -1,8 +1,8 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
-import * as Seaport from "./interfaces/seaport";
+import * as Seaport from "./interfaces/Seaport";
 import { SupportedChainId, TradeData } from "./types";
-import transformSeaportListings from "./utils/seaport/transformSeaportListings";
+import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 
 export class LooksRareAggregator {
