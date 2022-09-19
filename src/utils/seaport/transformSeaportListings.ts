@@ -1,7 +1,7 @@
 import { BigNumber, constants, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { BasicOrder, CollectionType, TradeData } from "../../types";
-import calculatePriceFromConsideration from "./calculate-price-from-consideration";
+import calculatePriceFromConsideration from "./calculatePriceFromConsideration";
 import * as Seaport from "../../interfaces/seaport";
 
 const getCollectionType = (offer: Seaport.Offer): CollectionType => {

@@ -1,7 +1,7 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import * as Seaport from "./interfaces/seaport";
 import { SupportedChainId, TradeData } from "./types";
-import transformSeaportListings from "./utils/seaport/transform-seaport-listings";
+import transformSeaportListings from "./utils/seaport/transformSeaportListings";
 
 export class LooksRareAggregator {
   public chainId: SupportedChainId;

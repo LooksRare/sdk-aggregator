@@ -10,8 +10,8 @@ describe("LooksRareAggregator class", () => {
     it("transforms Seaport listings into TradeData for the aggregator (single collection)", () => {
       const aggregator = new LooksRareAggregator(1);
       const tradeData = aggregator.transformSeaportListings([
-        getFixture("seaport", "bayc-4560-order.json").protocol_data,
-        getFixture("seaport", "bayc-6206-order.json").protocol_data,
+        getFixture("seaport", "bayc4560Order.json").protocol_data,
+        getFixture("seaport", "bayc6206Order.json").protocol_data,
       ]);
 
       expect(tradeData.address).to.equal(""); // TODO: add real address
@@ -64,8 +64,8 @@ describe("LooksRareAggregator class", () => {
     it("transforms Seaport listings into TradeData for the aggregator (multiple collections)", () => {
       const aggregator = new LooksRareAggregator(1);
       const tradeData = aggregator.transformSeaportListings([
-        getFixture("seaport", "bayc-4560-order.json").protocol_data,
-        getFixture("seaport", "parallel-10328-order.json").protocol_data,
+        getFixture("seaport", "bayc4560Order.json").protocol_data,
+        getFixture("seaport", "parallel10328Order.json").protocol_data,
       ]);
 
       expect(tradeData.address).to.equal(""); // TODO: add real address
@@ -117,7 +117,7 @@ describe("LooksRareAggregator class", () => {
 
     it("forbids orders with multiple consideration tokens", () => {
       const aggregator = new LooksRareAggregator(1);
-      const order = getFixture("seaport", "bayc-4560-order.json").protocol_data;
+      const order = getFixture("seaport", "bayc4560Order.json").protocol_data;
       order.parameters.consideration[1].token = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
       expect(() => {
         aggregator.transformSeaportListings([order]);
@@ -126,7 +126,7 @@ describe("LooksRareAggregator class", () => {
 
     it("forbids orders with multiple offers", () => {
       const aggregator = new LooksRareAggregator(1);
-      const order = getFixture("seaport", "bayc-4560-order.json").protocol_data;
+      const order = getFixture("seaport", "bayc4560Order.json").protocol_data;
       order.parameters.offer.push(order.parameters.offer[0]);
       expect(() => {
         aggregator.transformSeaportListings([order]);
@@ -135,7 +135,7 @@ describe("LooksRareAggregator class", () => {
 
     it("forbids offer items that is not ERC-721 nor ERC-1155", () => {
       const aggregator = new LooksRareAggregator(1);
-      const order = getFixture("seaport", "bayc-4560-order.json").protocol_data;
+      const order = getFixture("seaport", "bayc4560Order.json").protocol_data;
       order.parameters.offer[0].itemType = Seaport.ItemType.ERC20;
       expect(() => {
         aggregator.transformSeaportListings([order]);
