@@ -1,8 +1,7 @@
 import { BasicOrder, CollectionType, TradeData } from "../../types";
-import * as LooksRareV1 from "../../interfaces/looksrare-v1";
 import { BigNumber, constants, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
-import { MakerOrderFromAPI } from "../../interfaces/looksrare-v1";
+import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/looksrare-v1";
 
 const calculateEthValue = (orders: BasicOrder[]) => {
   return orders.reduce((sum: BigNumber, order: BasicOrder) => {
@@ -15,7 +14,7 @@ export default function transformLooksRareV1Listings(
   proxyAddress: string
 ): TradeData {
   const orders: BasicOrder[] = [];
-  const ordersExtraData: LooksRareV1.OrderExtraData[] = [];
+  const ordersExtraData: OrderExtraData[] = [];
 
   listings.forEach((listing: MakerOrderFromAPI) => {
     const order: BasicOrder = {
@@ -31,7 +30,7 @@ export default function transformLooksRareV1Listings(
       signature: listing.signature,
     };
 
-    const orderExtraData: LooksRareV1.OrderExtraData = {
+    const orderExtraData: OrderExtraData = {
       makerAskPrice: listing.price,
       minPercentageToAsk: listing.minPercentageToAsk,
       nonce: listing.nonce,
@@ -44,8 +43,8 @@ export default function transformLooksRareV1Listings(
 
   const abiCoder = utils.defaultAbiCoder;
 
-  const ordersExtraDataBytes: string[] = ordersExtraData.map((orderExtraData: LooksRareV1.OrderExtraData) =>
-    abiCoder.encode(LooksRareV1.ORDER_EXTRA_DATA_SCHEMA, [
+  const ordersExtraDataBytes: string[] = ordersExtraData.map((orderExtraData: OrderExtraData) =>
+    abiCoder.encode(ORDER_EXTRA_DATA_SCHEMA, [
       orderExtraData.makerAskPrice,
       orderExtraData.minPercentageToAsk,
       orderExtraData.nonce,
