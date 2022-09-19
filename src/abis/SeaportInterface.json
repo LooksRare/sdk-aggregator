@@ -1,0 +1,17 @@
+[
+  "function cancel(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256)[]) returns (bool)",
+  "function fulfillAdvancedOrder(tuple(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),uint120,uint120,bytes,bytes),tuple(uint256,uint8,uint256,uint256,bytes32[])[],bytes32,address) payable returns (bool)",
+  "function fulfillAvailableAdvancedOrders(tuple(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),uint120,uint120,bytes,bytes)[],tuple(uint256,uint8,uint256,uint256,bytes32[])[],tuple(uint256,uint256)[][],tuple(uint256,uint256)[][],bytes32,address,uint256) payable returns (bool[], tuple(tuple(uint8,address,uint256,uint256,address),address,bytes32)[])",
+  "function fulfillAvailableOrders(tuple(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),bytes)[],tuple(uint256,uint256)[][],tuple(uint256,uint256)[][],bytes32,uint256) payable returns (bool[], tuple(tuple(uint8,address,uint256,uint256,address),address,bytes32)[])",
+  "function fulfillBasicOrder(tuple(address,uint256,uint256,address,address,address,uint256,uint256,uint8,uint256,uint256,bytes32,uint256,bytes32,bytes32,uint256,tuple(uint256,address)[],bytes)) payable returns (bool)",
+  "function fulfillOrder(tuple(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),bytes),bytes32) payable returns (bool)",
+  "function getCounter(address) view returns (uint256)",
+  "function getOrderHash(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256)) view returns (bytes32)",
+  "function getOrderStatus(bytes32) view returns (bool, bool, uint256, uint256)",
+  "function incrementCounter() returns (uint256)",
+  "function information() view returns (string, bytes32, address)",
+  "function matchAdvancedOrders(tuple(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),uint120,uint120,bytes,bytes)[],tuple(uint256,uint8,uint256,uint256,bytes32[])[],tuple(tuple(uint256,uint256)[],tuple(uint256,uint256)[])[]) payable returns (tuple(tuple(uint8,address,uint256,uint256,address),address,bytes32)[])",
+  "function matchOrders(tuple(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),bytes)[],tuple(tuple(uint256,uint256)[],tuple(uint256,uint256)[])[]) payable returns (tuple(tuple(uint8,address,uint256,uint256,address),address,bytes32)[])",
+  "function name() view returns (string)",
+  "function validate(tuple(tuple(address,address,tuple(uint8,address,uint256,uint256,uint256)[],tuple(uint8,address,uint256,uint256,uint256,address)[],uint8,uint256,uint256,bytes32,uint256,bytes32,uint256),bytes)[]) returns (bool)"
+]

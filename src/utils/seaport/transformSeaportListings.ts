@@ -54,7 +54,7 @@ const validateConsiderationSameCurrency = (consideration: Consideration[]): void
   }
 };
 
-export default function transformSeaportListings(listings: Order[], proxyAddress: string): TradeData {
+export default function transformSeaportListings(listings: Order[], proxy: string): TradeData {
   const orders: BasicOrder[] = [];
   const ordersExtraData: OrderExtraData[] = [];
 
@@ -126,7 +126,7 @@ export default function transformSeaportListings(listings: Order[], proxyAddress
   const extraData: string = abiCoder.encode([EXTRA_DATA_SCHEMA], [fulfillments]);
 
   return {
-    address: proxyAddress,
+    proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     value: calculateEthValue(orders),
     orders,

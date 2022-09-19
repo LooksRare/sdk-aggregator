@@ -1,19 +1,21 @@
+import { utils, constants } from "ethers";
+import { ethers } from "hardhat";
 import { expect } from "chai";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import getFixture from "./helpers/getFixture";
-import { utils, constants } from "ethers";
 import { BAYC, WETH } from "./fixtures/constants";
 
 describe("LooksRareAggregator class", () => {
   describe("transformLooksRareV1Listings", () => {
-    it("transforms LooksRare V1 listings into TradeData for the aggregator (single collection)", () => {
-      const aggregator = new LooksRareAggregator(1);
+    it("transforms LooksRare V1 listings into TradeData for the aggregator (single collection)", async () => {
+      const signers = await ethers.getSigners();
+      const aggregator = new LooksRareAggregator(signers[0], 1);
       const tradeData = aggregator.transformLooksRareV1Listings([
         getFixture("LooksRareV1", "bayc3683Order.json"),
         getFixture("LooksRareV1", "bayc5623Order.json"),
       ]);
 
-      expect(tradeData.address).to.equal(""); // TODO: add real address
+      expect(tradeData.proxy).to.equal(""); // TODO: add real address
       expect(tradeData.selector).to.equal("0x86012f2e");
       expect(tradeData.value).to.equal(utils.parseEther("149.34"));
       expect(tradeData.orders.length).to.equal(2);

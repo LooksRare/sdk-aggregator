@@ -1,20 +1,22 @@
+import { ethers } from "hardhat";
+import { utils, constants } from "ethers";
 import { expect } from "chai";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import getFixture from "./helpers/getFixture";
-import { utils, constants } from "ethers";
 import { BAYC, PARALLEL } from "./fixtures/constants";
 import * as Seaport from "../interfaces/Seaport";
 
 describe("LooksRareAggregator class", () => {
   describe("transformSeaportListings", () => {
-    it("transforms Seaport listings into TradeData for the aggregator (single collection)", () => {
-      const aggregator = new LooksRareAggregator(1);
+    it("transforms Seaport listings into TradeData for the aggregator (single collection)", async () => {
+      const signers = await ethers.getSigners();
+      const aggregator = new LooksRareAggregator(signers[0], 1);
       const tradeData = aggregator.transformSeaportListings([
         getFixture("Seaport", "bayc4560Order.json").protocol_data,
         getFixture("Seaport", "bayc6206Order.json").protocol_data,
       ]);
 
-      expect(tradeData.address).to.equal(""); // TODO: add real address
+      expect(tradeData.proxy).to.equal(""); // TODO: add real address
       expect(tradeData.selector).to.equal("0x86012f2e");
       expect(tradeData.value).to.equal(utils.parseEther("151.7"));
       expect(tradeData.orders.length).to.equal(2);
@@ -61,14 +63,15 @@ describe("LooksRareAggregator class", () => {
       );
     });
 
-    it("transforms Seaport listings into TradeData for the aggregator (multiple collections)", () => {
-      const aggregator = new LooksRareAggregator(1);
+    it("transforms Seaport listings into TradeData for the aggregator (multiple collections)", async () => {
+      const signers = await ethers.getSigners();
+      const aggregator = new LooksRareAggregator(signers[0], 1);
       const tradeData = aggregator.transformSeaportListings([
         getFixture("Seaport", "bayc4560Order.json").protocol_data,
         getFixture("Seaport", "parallel10328Order.json").protocol_data,
       ]);
 
-      expect(tradeData.address).to.equal(""); // TODO: add real address
+      expect(tradeData.proxy).to.equal(""); // TODO: add real address
       expect(tradeData.selector).to.equal("0x86012f2e");
       expect(tradeData.value).to.equal(utils.parseEther("78.0025"));
       expect(tradeData.orders.length).to.equal(2);
@@ -115,8 +118,9 @@ describe("LooksRareAggregator class", () => {
       );
     });
 
-    it("forbids orders with multiple consideration tokens", () => {
-      const aggregator = new LooksRareAggregator(1);
+    it("forbids orders with multiple consideration tokens", async () => {
+      const signers = await ethers.getSigners();
+      const aggregator = new LooksRareAggregator(signers[0], 1);
       const order = getFixture("Seaport", "bayc4560Order.json").protocol_data;
       order.parameters.consideration[1].token = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
       expect(() => {
@@ -124,8 +128,9 @@ describe("LooksRareAggregator class", () => {
       }).to.throw("All consideration items must have the same currency!");
     });
 
-    it("forbids orders with multiple offers", () => {
-      const aggregator = new LooksRareAggregator(1);
+    it("forbids orders with multiple offers", async () => {
+      const signers = await ethers.getSigners();
+      const aggregator = new LooksRareAggregator(signers[0], 1);
       const order = getFixture("Seaport", "bayc4560Order.json").protocol_data;
       order.parameters.offer.push(order.parameters.offer[0]);
       expect(() => {
@@ -133,8 +138,9 @@ describe("LooksRareAggregator class", () => {
       }).to.throw("Only single offer item is supported!");
     });
 
-    it("forbids offer items that is not ERC-721 nor ERC-1155", () => {
-      const aggregator = new LooksRareAggregator(1);
+    it("forbids offer items that is not ERC-721 nor ERC-1155", async () => {
+      const signers = await ethers.getSigners();
+      const aggregator = new LooksRareAggregator(signers[0], 1);
       const order = getFixture("Seaport", "bayc4560Order.json").protocol_data;
       order.parameters.offer[0].itemType = Seaport.ItemType.ERC20;
       expect(() => {

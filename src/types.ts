@@ -1,4 +1,7 @@
-import { BigNumberish, BytesLike } from "ethers";
+import { BigNumber, BigNumberish, BytesLike, Signer } from "ethers";
+import { TypedDataSigner } from "@ethersproject/abstract-signer";
+
+export type Signer = Signer & TypedDataSigner;
 
 export enum SupportedChainId {
   MAINNET = 1,
@@ -25,10 +28,15 @@ export interface BasicOrder {
 }
 
 export interface TradeData {
-  address: string;
+  proxy: string;
   selector: string;
-  value: BigNumberish;
+  value: BigNumber;
   orders: BasicOrder[];
   ordersExtraData: BytesLike[];
   extraData: BytesLike;
+}
+
+export interface TokenTransfer {
+  amount: BigNumber;
+  currency: string;
 }
