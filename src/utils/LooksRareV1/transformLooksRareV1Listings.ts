@@ -3,7 +3,7 @@ import { BigNumber, constants, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV1";
 
-const calculateEthValue = (orders: BasicOrder[]) => {
+const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
   return orders.reduce((sum: BigNumber, order: BasicOrder) => {
     return BigNumber.from(order.price).add(sum);
   }, constants.Zero);

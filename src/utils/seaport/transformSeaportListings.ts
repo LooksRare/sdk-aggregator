@@ -34,7 +34,7 @@ const getConsiderationRecipients = (consideration: Consideration[]): Array<Recip
   }));
 };
 
-const calculateEthValue = (orders: BasicOrder[]) => {
+const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
   return orders.reduce((sum: BigNumber, order: BasicOrder) => {
     if (order.currency === constants.AddressZero) {
       return BigNumber.from(order.price).add(sum);
