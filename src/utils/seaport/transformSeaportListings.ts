@@ -15,15 +15,16 @@ import {
 import { BasicOrder, CollectionType, TradeData } from "../../types";
 import calculatePriceFromConsideration from "./calculatePriceFromConsideration";
 
-
 const getCollectionType = (offer: Offer): CollectionType => {
   if (offer.itemType === ItemType.ERC721) {
     return CollectionType.ERC721;
-  } else if (offer.itemType === ItemType.ERC1155) {
-    return CollectionType.ERC1155;
-  } else {
-    throw new Error(`Seaport item type ${ItemType[offer.itemType]} is not supported!`);
   }
+
+  if (offer.itemType === ItemType.ERC1155) {
+    return CollectionType.ERC1155;
+  }
+
+  throw new Error(`Seaport item type ${ItemType[offer.itemType]} is not supported!`);
 };
 
 const getConsiderationRecipients = (consideration: Consideration[]): Array<Recipient> => {
