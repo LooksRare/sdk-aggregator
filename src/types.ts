@@ -1,7 +1,4 @@
-import { BigNumber, BigNumberish, BytesLike, Signer } from "ethers";
-import { TypedDataSigner } from "@ethersproject/abstract-signer";
-
-export type Signer = Signer & TypedDataSigner;
+import { BigNumber, BigNumberish, BytesLike } from "ethers";
 
 export enum SupportedChainId {
   MAINNET = 1,

@@ -2,7 +2,6 @@ import { Contract, PayableOverrides, Signer } from "ethers";
 import { TokenTransfer, TradeData } from "../../types";
 import abiLooksRareAggregator from "../../abis/LooksRareAggregator.json";
 import { LooksRareAggregator } from "../../../typechain";
-import { ethers } from "hardhat";
 
 export const execute = async (
   signer: Signer,

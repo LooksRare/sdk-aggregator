@@ -1,10 +1,10 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
 import * as Seaport from "./interfaces/Seaport";
-import { Signer, SupportedChainId, TokenTransfer, TradeData } from "./types";
+import { SupportedChainId, TokenTransfer, TradeData } from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
-import { BigNumber, constants, ContractTransaction } from "ethers";
+import { BigNumber, constants, ContractTransaction, Signer } from "ethers";
 import { execute } from "./utils/calls/aggregator";
 
 export class LooksRareAggregator {
