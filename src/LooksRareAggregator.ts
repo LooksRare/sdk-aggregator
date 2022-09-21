@@ -1,11 +1,11 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
-import * as Seaport from "./interfaces/Seaport";
 import { SupportedChainId, TokenTransfer, TradeData } from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import { BigNumber, constants, ContractTransaction, Signer } from "ethers";
 import { execute } from "./utils/calls/aggregator";
+import { Order } from "@opensea/seaport-js/lib/types";
 
 export class LooksRareAggregator {
   public readonly signer: Signer;
@@ -37,7 +37,7 @@ export class LooksRareAggregator {
   }
 
   // The argument comes from Seaport listings API response's orders->protocol_data
-  public transformSeaportListings(listings: Seaport.Order[]): TradeData {
+  public transformSeaportListings(listings: Order[]): TradeData {
     return transformSeaportListings(listings, this.addresses.SEAPORT_PROXY);
   }
 

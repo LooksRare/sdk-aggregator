@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import getFixture from "./helpers/getFixture";
 import { BAYC, PARALLEL } from "./fixtures/constants";
-import * as Seaport from "../interfaces/Seaport";
+import { ItemType } from "@opensea/seaport-js/lib/constants";
 
 describe("LooksRareAggregator class", () => {
   describe("transformSeaportListings", () => {
@@ -142,7 +142,7 @@ describe("LooksRareAggregator class", () => {
       const signers = await ethers.getSigners();
       const aggregator = new LooksRareAggregator(signers[0], 1);
       const order = getFixture("Seaport", "bayc4560Order.json").protocol_data;
-      order.parameters.offer[0].itemType = Seaport.ItemType.ERC20;
+      order.parameters.offer[0].itemType = ItemType.ERC20;
       expect(() => {
         aggregator.transformSeaportListings([order]);
       }).to.throw("Seaport item type ERC20 is not supported!");
