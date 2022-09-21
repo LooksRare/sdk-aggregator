@@ -1,0 +1,349 @@
+{
+  "created_date": "2022-09-15T18:58:31.452503",
+  "closing_date": "2022-10-15T18:56:19",
+  "listing_time": 1663268179,
+  "expiration_time": 1665860179,
+  "order_hash": "0xe1f320d0bf8c5336b1ad11221f397e79db882e9a30b5629e011368961f9f6c96",
+  "protocol_data": {
+    "parameters": {
+      "offerer": "0xc31047a053e1a9c1ba548792c9f3b6f619428986",
+      "offer": [
+        {
+          "itemType": 3,
+          "token": "0x76BE3b62873462d2142405439777e971754E8E77",
+          "identifierOrCriteria": "10328",
+          "startAmount": "1",
+          "endAmount": "1"
+        }
+      ],
+      "consideration": [
+        {
+          "itemType": 0,
+          "token": "0x0000000000000000000000000000000000000000",
+          "identifierOrCriteria": "0",
+          "startAmount": "2187500000000000",
+          "endAmount": "2187500000000000",
+          "recipient": "0xc31047A053e1A9c1Ba548792C9f3b6F619428986"
+        },
+        {
+          "itemType": 0,
+          "token": "0x0000000000000000000000000000000000000000",
+          "identifierOrCriteria": "0",
+          "startAmount": "62500000000000",
+          "endAmount": "62500000000000",
+          "recipient": "0x0000a26b00c1F0DF003000390027140000fAa719"
+        },
+        {
+          "itemType": 0,
+          "token": "0x0000000000000000000000000000000000000000",
+          "identifierOrCriteria": "0",
+          "startAmount": "250000000000000",
+          "endAmount": "250000000000000",
+          "recipient": "0x157e23d3E68aC6f99334B8b0fE71F0eb844911Dd"
+        }
+      ],
+      "startTime": "1663268179",
+      "endTime": "1665860179",
+      "orderType": 3,
+      "zone": "0x004C00500000aD104D7DBd00e3ae0A5C00560C00",
+      "zoneHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "salt": "32072353596884512",
+      "conduitKey": "0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000",
+      "totalOriginalConsiderationItems": 3,
+      "counter": 0
+    },
+    "signature": "0x8caa3054215c3dd214300377dde748af63ea1f7a084237920dcdb2b57779a7c325afcf97447229352ecf9448c34d04ea5ebd58e6f46981a165c10f57198b4e061c"
+  },
+  "protocol_address": "0x00000000006c3852cbef3e08e8df289169ede581",
+  "maker": {
+    "user": 1446875,
+    "profile_img_url": "https://storage.googleapis.com/opensea-static/opensea-profile/6.png",
+    "address": "0xc31047a053e1a9c1ba548792c9f3b6f619428986",
+    "config": ""
+  },
+  "taker": null,
+  "current_price": "2500000000000000",
+  "maker_fees": [
+    {
+      "account": {
+        "user": null,
+        "profile_img_url": "https://storage.googleapis.com/opensea-static/opensea-profile/29.png",
+        "address": "0x0000a26b00c1f0df003000390027140000faa719",
+        "config": ""
+      },
+      "basis_points": "250"
+    },
+    {
+      "account": {
+        "user": null,
+        "profile_img_url": "https://storage.googleapis.com/opensea-static/opensea-profile/23.png",
+        "address": "0x157e23d3e68ac6f99334b8b0fe71f0eb844911dd",
+        "config": ""
+      },
+      "basis_points": "1000"
+    }
+  ],
+  "taker_fees": [],
+  "side": "ask",
+  "order_type": "basic",
+  "cancelled": false,
+  "finalized": false,
+  "marked_invalid": false,
+  "client_signature": "0x8caa3054215c3dd214300377dde748af63ea1f7a084237920dcdb2b57779a7c325afcf97447229352ecf9448c34d04ea5ebd58e6f46981a165c10f57198b4e061c",
+  "relay_id": "T3JkZXJWMlR5cGU6NjQ0ODkxMTMyOA",
+  "criteria_proof": null,
+  "maker_asset_bundle": {
+    "assets": [
+      {
+        "id": 75781038,
+        "num_sales": 243,
+        "background_color": null,
+        "image_url": "https://lh3.googleusercontent.com/gzGs-fgSc5hxORn-CFvl2-YCPDafHgk8sd2rbIdYwas1lPuD7tN-oPGCu13VGDeW_319Yw3GzdTZUMvYzXch_58uXmHOEa6pa3X0",
+        "image_preview_url": "https://lh3.googleusercontent.com/gzGs-fgSc5hxORn-CFvl2-YCPDafHgk8sd2rbIdYwas1lPuD7tN-oPGCu13VGDeW_319Yw3GzdTZUMvYzXch_58uXmHOEa6pa3X0=s250",
+        "image_thumbnail_url": "https://lh3.googleusercontent.com/gzGs-fgSc5hxORn-CFvl2-YCPDafHgk8sd2rbIdYwas1lPuD7tN-oPGCu13VGDeW_319Yw3GzdTZUMvYzXch_58uXmHOEa6pa3X0=s128",
+        "image_original_url": "https://nftmedia.parallelnft.com/parallel-alpha/QmfE3gyVmtcAq8MtTQ1A7rxfQpnQJxbZE3EfJZaCYbEarh/image.png",
+        "animation_url": null,
+        "animation_original_url": null,
+        "name": "Claymore Artillery Gun",
+        "description": "The AX-0161 is a cornerstone in the Marcolian Assault Doctrine, rapidly redeploying & crushing fortifications that stand in it’s way.",
+        "external_link": "https://rarible.com/token/0x76be3b62873462d2142405439777e971754e8e77:10328",
+        "asset_contract": {
+          "address": "0x76be3b62873462d2142405439777e971754e8e77",
+          "asset_contract_type": "semi-fungible",
+          "created_date": "2021-02-26T03:34:03.730090",
+          "name": "parallel",
+          "nft_version": null,
+          "opensea_version": null,
+          "owner": 21727865,
+          "schema_name": "ERC1155",
+          "symbol": "LL",
+          "total_supply": null,
+          "description": "Sci-fi collectable card game with NFTs.",
+          "external_link": "http://www.parallel.life",
+          "image_url": "https://i.seadn.io/gae/Nnp8Pdo6EidK7eBduGnAn_JBvFsYGhNGMJ_fHJ_mzGMN_2Khu5snL5zmiUMcSsIqtANh19KqxXDs0iNq_aYbKC5smO3hiCSw9PlL?w=500&auto=format",
+          "default_to_fiat": false,
+          "dev_buyer_fee_basis_points": 0,
+          "dev_seller_fee_basis_points": 1000,
+          "only_proxied_transfers": false,
+          "opensea_buyer_fee_basis_points": 0,
+          "opensea_seller_fee_basis_points": 250,
+          "buyer_fee_basis_points": 0,
+          "seller_fee_basis_points": 1250,
+          "payout_address": "0x157e23d3e68ac6f99334b8b0fe71f0eb844911dd"
+        },
+        "permalink": "https://opensea.io/assets/ethereum/0x76be3b62873462d2142405439777e971754e8e77/10328",
+        "collection": {
+          "banner_image_url": "https://i.seadn.io/gae/YPGHP7VAvzy-MCVU67CV85gSW_Di6LWbp-22LGEb3H6Yz9v4wOdAaAhiswnwwL5trMn8tZiJhgbdGuBN9wvpH10d_oGVjVIGM-zW5A?w=500&auto=format",
+          "chat_url": null,
+          "created_date": "2021-03-23T23:07:36.998798",
+          "default_to_fiat": false,
+          "description": "Sci-fi collectable card game with NFTs.",
+          "dev_buyer_fee_basis_points": "0",
+          "dev_seller_fee_basis_points": "1000",
+          "discord_url": "https://discord.gg/paralleltcg",
+          "display_data": {
+            "card_display_style": "contain"
+          },
+          "external_url": "http://www.parallel.life",
+          "featured": false,
+          "featured_image_url": "https://i.seadn.io/gae/MUPGu0O56o8-QMkKscE3CPifsjgt6ANAQg0hFmBC_2IZHcoRELyOcjAUCx2Mh1TDR99hxg6J36DpZfPFZVVCx2Jv5ySfrdP0Vl19?w=500&auto=format",
+          "hidden": false,
+          "safelist_request_status": "verified",
+          "image_url": "https://i.seadn.io/gae/Nnp8Pdo6EidK7eBduGnAn_JBvFsYGhNGMJ_fHJ_mzGMN_2Khu5snL5zmiUMcSsIqtANh19KqxXDs0iNq_aYbKC5smO3hiCSw9PlL?w=500&auto=format",
+          "is_subject_to_whitelist": false,
+          "large_image_url": "https://i.seadn.io/gae/MUPGu0O56o8-QMkKscE3CPifsjgt6ANAQg0hFmBC_2IZHcoRELyOcjAUCx2Mh1TDR99hxg6J36DpZfPFZVVCx2Jv5ySfrdP0Vl19?w=500&auto=format",
+          "medium_username": null,
+          "name": "Parallel Alpha",
+          "only_proxied_transfers": false,
+          "opensea_buyer_fee_basis_points": "0",
+          "opensea_seller_fee_basis_points": "250",
+          "payout_address": "0x157e23d3e68ac6f99334b8b0fe71f0eb844911dd",
+          "require_email": false,
+          "short_description": null,
+          "slug": "parallelalpha",
+          "telegram_url": null,
+          "twitter_username": "parallelnft",
+          "instagram_username": "parallel_nft",
+          "wiki_url": null,
+          "is_nsfw": false,
+          "fees": {
+            "seller_fees": {
+              "0x157e23d3e68ac6f99334b8b0fe71f0eb844911dd": 1000
+            },
+            "opensea_fees": {
+              "0x0000a26b00c1f0df003000390027140000faa719": 250
+            }
+          }
+        },
+        "decimals": null,
+        "token_metadata": "https://nftdata.parallelnft.com/api/parallel-alpha/ipfs/QmWtJeRA5PBYQuaw2oL4oPqmn8CNwE1jVxy5kTAuoiQRQV",
+        "is_nsfw": false,
+        "owner": {
+          "user": {
+            "username": "NullAddress"
+          },
+          "profile_img_url": "https://storage.googleapis.com/opensea-static/opensea-profile/1.png",
+          "address": "0x0000000000000000000000000000000000000000",
+          "config": ""
+        },
+        "token_id": "10328"
+      }
+    ],
+    "maker": null,
+    "slug": null,
+    "name": null,
+    "description": null,
+    "external_link": null,
+    "asset_contract": {
+      "address": "0x76be3b62873462d2142405439777e971754e8e77",
+      "asset_contract_type": "semi-fungible",
+      "created_date": "2021-02-26T03:34:03.730090",
+      "name": "parallel",
+      "nft_version": null,
+      "opensea_version": null,
+      "owner": 21727865,
+      "schema_name": "ERC1155",
+      "symbol": "LL",
+      "total_supply": null,
+      "description": "Sci-fi collectable card game with NFTs.",
+      "external_link": "http://www.parallel.life",
+      "image_url": "https://i.seadn.io/gae/Nnp8Pdo6EidK7eBduGnAn_JBvFsYGhNGMJ_fHJ_mzGMN_2Khu5snL5zmiUMcSsIqtANh19KqxXDs0iNq_aYbKC5smO3hiCSw9PlL?w=500&auto=format",
+      "default_to_fiat": false,
+      "dev_buyer_fee_basis_points": 0,
+      "dev_seller_fee_basis_points": 1000,
+      "only_proxied_transfers": false,
+      "opensea_buyer_fee_basis_points": 0,
+      "opensea_seller_fee_basis_points": 250,
+      "buyer_fee_basis_points": 0,
+      "seller_fee_basis_points": 1250,
+      "payout_address": "0x157e23d3e68ac6f99334b8b0fe71f0eb844911dd"
+    },
+    "permalink": "https://opensea.io/bundles/None",
+    "seaport_sell_orders": null
+  },
+  "taker_asset_bundle": {
+    "assets": [
+      {
+        "id": 13689077,
+        "num_sales": 0,
+        "background_color": null,
+        "image_url": "https://openseauserdata.com/files/6f8e2979d428180222796ff4a33ab929.svg",
+        "image_preview_url": "https://openseauserdata.com/files/6f8e2979d428180222796ff4a33ab929.svg",
+        "image_thumbnail_url": "https://openseauserdata.com/files/6f8e2979d428180222796ff4a33ab929.svg",
+        "image_original_url": "https://openseauserdata.com/files/6f8e2979d428180222796ff4a33ab929.svg",
+        "animation_url": null,
+        "animation_original_url": null,
+        "name": "Ether",
+        "description": "",
+        "external_link": null,
+        "asset_contract": {
+          "address": "0x0000000000000000000000000000000000000000",
+          "asset_contract_type": "fungible",
+          "created_date": "2019-08-02T23:41:09.503168",
+          "name": "Ether",
+          "nft_version": null,
+          "opensea_version": null,
+          "owner": null,
+          "schema_name": "ERC20",
+          "symbol": "ETH",
+          "total_supply": null,
+          "description": "This is the collection of owners of Ether",
+          "external_link": null,
+          "image_url": null,
+          "default_to_fiat": false,
+          "dev_buyer_fee_basis_points": 0,
+          "dev_seller_fee_basis_points": 0,
+          "only_proxied_transfers": false,
+          "opensea_buyer_fee_basis_points": 0,
+          "opensea_seller_fee_basis_points": 250,
+          "buyer_fee_basis_points": 0,
+          "seller_fee_basis_points": 250,
+          "payout_address": null
+        },
+        "permalink": "https://opensea.io/assets/ethereum/0x0000000000000000000000000000000000000000/0",
+        "collection": {
+          "banner_image_url": null,
+          "chat_url": null,
+          "created_date": "2019-08-02T23:41:09.501266",
+          "default_to_fiat": false,
+          "description": "This is the collection of owners of Ether",
+          "dev_buyer_fee_basis_points": "0",
+          "dev_seller_fee_basis_points": "0",
+          "discord_url": null,
+          "display_data": {},
+          "external_url": null,
+          "featured": false,
+          "featured_image_url": null,
+          "hidden": true,
+          "safelist_request_status": "not_requested",
+          "image_url": null,
+          "is_subject_to_whitelist": false,
+          "large_image_url": null,
+          "medium_username": null,
+          "name": "Ether",
+          "only_proxied_transfers": false,
+          "opensea_buyer_fee_basis_points": "0",
+          "opensea_seller_fee_basis_points": "250",
+          "payout_address": null,
+          "require_email": false,
+          "short_description": null,
+          "slug": "ether",
+          "telegram_url": null,
+          "twitter_username": null,
+          "instagram_username": null,
+          "wiki_url": null,
+          "is_nsfw": false,
+          "fees": {
+            "seller_fees": {},
+            "opensea_fees": {
+              "0x0000a26b00c1f0df003000390027140000faa719": 250
+            }
+          }
+        },
+        "decimals": 18,
+        "token_metadata": null,
+        "is_nsfw": false,
+        "owner": {
+          "user": {
+            "username": "NullAddress"
+          },
+          "profile_img_url": "https://storage.googleapis.com/opensea-static/opensea-profile/1.png",
+          "address": "0x0000000000000000000000000000000000000000",
+          "config": ""
+        },
+        "token_id": "0"
+      }
+    ],
+    "maker": null,
+    "slug": null,
+    "name": "Ether",
+    "description": null,
+    "external_link": null,
+    "asset_contract": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "asset_contract_type": "fungible",
+      "created_date": "2019-08-02T23:41:09.503168",
+      "name": "Ether",
+      "nft_version": null,
+      "opensea_version": null,
+      "owner": null,
+      "schema_name": "ERC20",
+      "symbol": "ETH",
+      "total_supply": null,
+      "description": "This is the collection of owners of Ether",
+      "external_link": null,
+      "image_url": null,
+      "default_to_fiat": false,
+      "dev_buyer_fee_basis_points": 0,
+      "dev_seller_fee_basis_points": 0,
+      "only_proxied_transfers": false,
+      "opensea_buyer_fee_basis_points": 0,
+      "opensea_seller_fee_basis_points": 250,
+      "buyer_fee_basis_points": 0,
+      "seller_fee_basis_points": 250,
+      "payout_address": null
+    },
+    "permalink": "https://opensea.io/bundles/None",
+    "seaport_sell_orders": null
+  }
+}

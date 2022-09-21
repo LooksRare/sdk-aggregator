@@ -1,0 +1,1 @@
+export const PROXY_EXECUTE_SELECTOR = "0x86012f2e";
