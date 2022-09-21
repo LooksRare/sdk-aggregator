@@ -16,7 +16,7 @@ export interface BasicOrder {
   collection: string;
   collectionType: CollectionType;
   tokenIds: BigNumberish[];
-  amounts: number[];
+  amounts: BigNumberish[];
   price: BigNumberish;
   currency: string;
   startTime: BigNumberish;

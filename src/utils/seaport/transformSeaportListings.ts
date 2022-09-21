@@ -1,27 +1,40 @@
 import { BigNumber, constants, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
+import {
+  Consideration,
+  EXTRA_DATA_SCHEMA,
+  FulfillmentComponent,
+  ItemType,
+  Offer,
+  Order,
+  OrderExtraData,
+  ORDER_EXTRA_DATA_SCHEMA,
+  Parameters,
+  Recipient,
+} from "../../interfaces/Seaport";
 import { BasicOrder, CollectionType, TradeData } from "../../types";
 import calculatePriceFromConsideration from "./calculatePriceFromConsideration";
-import * as Seaport from "../../interfaces/seaport";
 
-const getCollectionType = (offer: Seaport.Offer): CollectionType => {
-  if (offer.itemType === Seaport.ItemType.ERC721) {
+const getCollectionType = (offer: Offer): CollectionType => {
+  if (offer.itemType === ItemType.ERC721) {
     return CollectionType.ERC721;
-  } else if (offer.itemType === Seaport.ItemType.ERC1155) {
-    return CollectionType.ERC1155;
-  } else {
-    throw new Error(`Seaport item type ${Seaport.ItemType[offer.itemType]} is not supported!`);
   }
+
+  if (offer.itemType === ItemType.ERC1155) {
+    return CollectionType.ERC1155;
+  }
+
+  throw new Error(`Seaport item type ${ItemType[offer.itemType]} is not supported!`);
 };
 
-const getConsiderationRecipients = (consideration: Seaport.Consideration[]): Array<Seaport.Recipient> => {
-  return consideration.map((considerationItem: Seaport.Consideration) => ({
+const getConsiderationRecipients = (consideration: Consideration[]): Array<Recipient> => {
+  return consideration.map((considerationItem: Consideration) => ({
     amount: considerationItem.endAmount,
     recipient: considerationItem.recipient,
   }));
 };
 
-const calculateEthValue = (orders: BasicOrder[]) => {
+const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
   return orders.reduce((sum: BigNumber, order: BasicOrder) => {
     if (order.currency === constants.AddressZero) {
       return BigNumber.from(order.price).add(sum);
@@ -31,8 +44,8 @@ const calculateEthValue = (orders: BasicOrder[]) => {
   }, constants.Zero);
 };
 
-const validateConsiderationSameCurrency = (consideration: Seaport.Consideration[]): void => {
-  const isValid = consideration.every((considerationItem: Seaport.Consideration) => {
+const validateConsiderationSameCurrency = (consideration: Consideration[]): void => {
+  const isValid = consideration.every((considerationItem: Consideration) => {
     return considerationItem.token === consideration[0].token;
   });
 
@@ -41,22 +54,22 @@ const validateConsiderationSameCurrency = (consideration: Seaport.Consideration[
   }
 };
 
-export default function transformSeaportListings(listings: Seaport.Order[], proxyAddress: string): TradeData {
+export default function transformSeaportListings(listings: Order[], proxyAddress: string): TradeData {
   const orders: BasicOrder[] = [];
-  const ordersExtraData: Seaport.OrderExtraData[] = [];
+  const ordersExtraData: OrderExtraData[] = [];
 
-  const offerFulfillments: Array<Array<Seaport.FulfillmentComponent>> = [];
-  const aggregatedConsideration: { [key: string]: Seaport.FulfillmentComponent[] } = {};
+  const offerFulfillments: Array<Array<FulfillmentComponent>> = [];
+  const aggregatedConsideration: { [key: string]: FulfillmentComponent[] } = {};
 
-  listings.forEach((listing: Seaport.Order, orderIndex: number) => {
-    const parameters: Seaport.Parameters = listing.parameters;
+  listings.forEach((listing: Order, orderIndex: number) => {
+    const parameters: Parameters = listing.parameters;
 
     if (parameters.offer.length !== 1) {
       throw new Error("Only single offer item is supported!");
     }
 
-    const offer: Seaport.Offer = parameters.offer[0];
-    const consideration: Seaport.Consideration[] = parameters.consideration;
+    const offer: Offer = parameters.offer[0];
+    const consideration: Consideration[] = parameters.consideration;
 
     validateConsiderationSameCurrency(consideration);
 
@@ -75,7 +88,7 @@ export default function transformSeaportListings(listings: Seaport.Order[], prox
       signature: listing.signature,
     };
 
-    const orderExtraData: Seaport.OrderExtraData = {
+    const orderExtraData: OrderExtraData = {
       numerator: 1,
       denominator: offer.endAmount,
       orderType: parameters.orderType,
@@ -91,7 +104,7 @@ export default function transformSeaportListings(listings: Seaport.Order[], prox
 
     offerFulfillments.push([{ orderIndex, itemIndex: 0 }]);
 
-    consideration.forEach((considerationItem: Seaport.Consideration, itemIndex: number) => {
+    consideration.forEach((considerationItem: Consideration, itemIndex: number) => {
       const recipient: string = considerationItem.recipient;
       if (!aggregatedConsideration[recipient]) {
         aggregatedConsideration[recipient] = [];
@@ -102,15 +115,15 @@ export default function transformSeaportListings(listings: Seaport.Order[], prox
 
   const abiCoder = utils.defaultAbiCoder;
 
-  const ordersExtraDataBytes: string[] = ordersExtraData.map((orderExtraData: Seaport.OrderExtraData) =>
-    abiCoder.encode([Seaport.ORDER_EXTRA_DATA_SCHEMA], [orderExtraData])
+  const ordersExtraDataBytes: string[] = ordersExtraData.map((orderExtraData: OrderExtraData) =>
+    abiCoder.encode([ORDER_EXTRA_DATA_SCHEMA], [orderExtraData])
   );
 
   const fulfillments = {
     offerFulfillments,
     considerationFulfillments: Object.values(aggregatedConsideration),
   };
-  const extraData: string = abiCoder.encode([Seaport.EXTRA_DATA_SCHEMA], [fulfillments]);
+  const extraData: string = abiCoder.encode([EXTRA_DATA_SCHEMA], [fulfillments]);
 
   return {
     address: proxyAddress,

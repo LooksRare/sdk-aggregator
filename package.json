@@ -22,11 +22,13 @@
     "*.{js,jsx,ts,tsx,json,yaml,yml}": "yarn format:write"
   },
   "peerDependencies": {
+    "@looksrare/sdk": "^0.8.3",
     "ethers": "^5.7.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
+    "@looksrare/sdk": "^0.8.3",
     "@nomiclabs/hardhat-ethers": "^2.0.6",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "@rari-capital/solmate": "^6.4.0",
