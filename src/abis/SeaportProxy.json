@@ -1,5 +1,5 @@
 [
-  "constructor(address,address)",
+  "constructor(address _marketplace, address _aggregator)",
   "error InsufficientAmount()",
   "error InvalidCaller()",
   "error InvalidOrderLength()",
@@ -11,17 +11,17 @@
   "error TransferFail()",
   "error WrongPotentialOwner()",
   "error ZeroAddress()",
-  "event CancelOwnershipTransfer(address)",
-  "event InitiateOwnershipTransfer(address,address)",
-  "event NewOwner(address)",
+  "event CancelOwnershipTransfer(address previousPotentialOwner)",
+  "event InitiateOwnershipTransfer(address previousOwner, address potentialOwner)",
+  "event NewOwner(address newOwner)",
   "function aggregator() view returns (address)",
   "function cancelOwnershipTransfer()",
   "function confirmOwnershipTransfer()",
-  "function execute(tuple(address,address,uint8,uint256[],uint256[],uint256,address,uint256,uint256,bytes)[],bytes[],bytes,address,bool,tuple(uint16,address)) payable returns (bool)",
-  "function initiateOwnershipTransfer(address)",
+  "function execute(tuple(address signer, address collection, uint8 collectionType, uint256[] tokenIds, uint256[] amounts, uint256 price, address currency, uint256 startTime, uint256 endTime, bytes signature)[] orders, bytes[] ordersExtraData, bytes extraData, address recipient, bool isAtomic, tuple(uint16 bp, address recipient) feeData) payable returns (bool)",
+  "function initiateOwnershipTransfer(address newPotentialOwner)",
   "function marketplace() view returns (address)",
   "function owner() view returns (address)",
   "function potentialOwner() view returns (address)",
-  "function rescueERC20(address,address)",
-  "function rescueETH(address)"
+  "function rescueERC20(address currency, address to)",
+  "function rescueETH(address to)"
 ]

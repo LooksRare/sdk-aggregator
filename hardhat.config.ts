@@ -53,7 +53,7 @@ const config: HardhatUserConfig = {
     runOnCompile: true,
     clear: true,
     flat: true,
-    pretty: true,
+    format: "fullName",
     except: ["contracts/tests/*", "@rari-capital"],
   },
   typechain: {

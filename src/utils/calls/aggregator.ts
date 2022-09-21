@@ -1,6 +1,8 @@
-import { PayableOverrides } from "ethers";
+import { Contract, PayableOverrides, Signer } from "ethers";
+import { TokenTransfer, TradeData } from "../../types";
+import abiLooksRareAggregator from "../../abis/LooksRareAggregator.json";
+import { LooksRareAggregator } from "../../../typechain";
 import { ethers } from "hardhat";
-import { TokenTransfer, TradeData, Signer } from "../../types";
 
 export const execute = async (
   signer: Signer,
@@ -11,8 +13,7 @@ export const execute = async (
   isAtomic: boolean,
   overrides?: PayableOverrides
 ) => {
-  const contract = await ethers.getContractAt("LooksRareAggregator", address);
-  return contract.connect(signer).execute(tokenTransfers, tradeData, recipient, isAtomic, {
-    ...overrides,
-  });
+  const contract = new Contract(address, abiLooksRareAggregator, signer) as LooksRareAggregator;
+
+  return contract.execute(tokenTransfers, tradeData, recipient, isAtomic, { ...overrides });
 };

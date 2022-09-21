@@ -1,15 +1,15 @@
 [
-  "event Approval(address indexed,address indexed,uint256 indexed)",
-  "event ApprovalForAll(address indexed,address indexed,bool)",
-  "event Transfer(address indexed,address indexed,uint256 indexed)",
-  "function approve(address,uint256)",
-  "function balanceOf(address) view returns (uint256)",
-  "function getApproved(uint256) view returns (address)",
-  "function isApprovedForAll(address,address) view returns (bool)",
-  "function ownerOf(uint256) view returns (address)",
-  "function safeTransferFrom(address,address,uint256)",
-  "function safeTransferFrom(address,address,uint256,bytes)",
-  "function setApprovalForAll(address,bool)",
-  "function supportsInterface(bytes4) view returns (bool)",
-  "function transferFrom(address,address,uint256)"
+  "event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId)",
+  "event ApprovalForAll(address indexed owner, address indexed operator, bool approved)",
+  "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
+  "function approve(address to, uint256 tokenId)",
+  "function balanceOf(address owner) view returns (uint256 balance)",
+  "function getApproved(uint256 tokenId) view returns (address operator)",
+  "function isApprovedForAll(address owner, address operator) view returns (bool)",
+  "function ownerOf(uint256 tokenId) view returns (address owner)",
+  "function safeTransferFrom(address from, address to, uint256 tokenId)",
+  "function safeTransferFrom(address from, address to, uint256 tokenId, bytes data)",
+  "function setApprovalForAll(address operator, bool _approved)",
+  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+  "function transferFrom(address from, address to, uint256 tokenId)"
 ]
