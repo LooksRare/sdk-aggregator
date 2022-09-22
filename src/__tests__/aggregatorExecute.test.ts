@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners, LOOKSRARE_TRANSFER_MANAGER } from "./helpers/setup";
+import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
@@ -70,7 +70,7 @@ describe("LooksRareAggregator class", () => {
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
 
-    await collection.connect(maker).setApprovalForAll(LOOKSRARE_TRANSFER_MANAGER, true);
+    await collection.connect(maker).setApprovalForAll(addressesByNetwork[chainId].TRANSFER_MANAGER_ERC721, true);
 
     const tx = await aggregator.execute([tradeData], buyer.address, true);
 
