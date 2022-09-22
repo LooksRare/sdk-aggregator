@@ -31,6 +31,7 @@ export interface Mocks {
   collection2: MockERC721;
   collection3: MockERC1155;
   weth: MockERC20;
+  usdc: MockERC20;
 }
 
 export const NB_NFT_PER_USER = 5;
@@ -59,7 +60,7 @@ export const LOOKSRARE_TRANSFER_MANAGER = "0xf42aa99F011A1fA7CDA90E5E98b277E306B
 
 export const setUpContracts = async (): Promise<Mocks> => {
   // Deploy contracts
-  const looksRareAggregator = await deploy("LooksRareAggregator");
+  const looksRareAggregator = (await deploy("LooksRareAggregator")) as LooksRareAggregator;
   const looksRareProxy = (await deploy("LooksRareProxy", LOOKSRARE, looksRareAggregator.address)) as LooksRareProxy;
   const seaportProxy = (await deploy(
     "SeaportProxy",
@@ -68,6 +69,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   )) as SeaportProxy;
 
   await looksRareAggregator.addFunction(looksRareProxy.address, PROXY_EXECUTE_SELECTOR);
+
   await looksRareAggregator.addFunction(seaportProxy.address, PROXY_EXECUTE_SELECTOR);
 
   const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
@@ -75,6 +77,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const collection3 = (await deploy("MockERC1155")) as MockERC1155;
   const collection4 = (await deploy("MockERC721", "Collection4", "COL4")) as MockERC721;
   const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
+  const usdc = (await deploy("MockERC20", "MockUSDC", "USDC", 6)) as MockERC20;
 
   // Setup balances
   const signers = await getSigners();
@@ -88,12 +91,13 @@ export const setUpContracts = async (): Promise<Mocks> => {
   await Promise.all(promises);
 
   return {
-    looksRareAggregator: looksRareAggregator as LooksRareAggregator,
-    looksRareProxy: looksRareProxy as LooksRareProxy,
-    seaportProxy: seaportProxy as SeaportProxy,
-    collection1: collection1 as MockERC721,
-    collection2: collection2 as MockERC721,
-    collection3: collection3 as MockERC1155,
-    weth: weth as MockERC20,
+    looksRareAggregator,
+    looksRareProxy,
+    seaportProxy,
+    collection1,
+    collection2,
+    collection3,
+    weth,
+    usdc,
   };
 };
