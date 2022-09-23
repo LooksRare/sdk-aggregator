@@ -36,7 +36,8 @@ export class LooksRareAggregator {
       tradeData.push(this.transformSeaportListings(listings.seaport));
     }
     if (listings.looksRareV1.length > 0) {
-      tradeData.push(this.transformLooksRareV1Listings(listings.looksRareV1));
+      const looksRareV1Listings = await this.transformLooksRareV1Listings(listings.looksRareV1);
+      tradeData.push(looksRareV1Listings);
     }
 
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
@@ -69,8 +70,8 @@ export class LooksRareAggregator {
     return transformSeaportListings(listings, this.addresses.SEAPORT_PROXY);
   }
 
-  public transformLooksRareV1Listings(listings: MakerOrderFromAPI[]): TradeData {
-    return transformLooksRareV1Listings(listings, this.addresses.LOOKSRARE_V1_PROXY);
+  public async transformLooksRareV1Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
+    return await transformLooksRareV1Listings(this.signer.provider!, listings, this.addresses.LOOKSRARE_V1_PROXY);
   }
 
   private transactionEthValue(tradeData: TradeData[]): BigNumber {

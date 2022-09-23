@@ -10,7 +10,7 @@ describe("LooksRareAggregator class", () => {
     it("transforms LooksRare V1 listings into TradeData for the aggregator (single collection)", async () => {
       const signers = await ethers.getSigners();
       const aggregator = new LooksRareAggregator(signers[0], 1);
-      const tradeData = aggregator.transformLooksRareV1Listings([
+      const tradeData = await aggregator.transformLooksRareV1Listings([
         getFixture("LooksRareV1", "bayc3683Order.json"),
         getFixture("LooksRareV1", "bayc5623Order.json"),
       ]);
