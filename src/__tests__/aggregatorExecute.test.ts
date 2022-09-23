@@ -5,11 +5,12 @@ import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
 import { addressesByNetwork, MakerOrder, generateMakerOrderTypedData } from "@looksrare/sdk";
-import { constants } from "ethers";
+import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -18,12 +19,16 @@ describe("LooksRareAggregator class", () => {
     contracts = await setUpContracts();
   });
 
-  it("can execute LooksRare V1 orders (ERC-721)", async () => {
+  const executeLooksRareV1Order = async (
+    maker: SignerWithAddress,
+    collection: Contract,
+    tokenId: string,
+    amount: string,
+    transferManager: string
+  ): Promise<ContractTransaction> => {
     const chainId = SupportedChainId.MAINNET;
     const signers = await getSigners();
-    const maker = signers.user1;
     const buyer = signers.buyer;
-    const collection = contracts.collection1;
     const addresses: Addresses = {
       AGGREGATOR: contracts.looksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
@@ -40,8 +45,8 @@ describe("LooksRareAggregator class", () => {
       signer: maker.address,
       collection: collection.address,
       price: constants.WeiPerEther, // 1 ETH
-      tokenId: "1",
-      amount: "1",
+      tokenId,
+      amount,
       strategy: addressesByNetwork[chainId].STRATEGY_STANDARD_SALE,
       currency: addressesByNetwork[chainId].WETH,
       nonce: 0,
@@ -70,9 +75,24 @@ describe("LooksRareAggregator class", () => {
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
 
-    await collection.connect(maker).setApprovalForAll(addressesByNetwork[chainId].TRANSFER_MANAGER_ERC721, true);
+    await collection.connect(maker).setApprovalForAll(transferManager, true);
 
-    const tx = await aggregator.execute([tradeData], buyer.address, true);
+    return await aggregator.execute([tradeData], buyer.address, true);
+  };
+
+  it("can execute LooksRare V1 orders (ERC-721)", async () => {
+    const collection = contracts.collection1;
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+    const tx = await executeLooksRareV1Order(
+      signers.user1,
+      contracts.collection1,
+      "1",
+      "1",
+      addressesByNetwork[SupportedChainId.MAINNET].TRANSFER_MANAGER_ERC721
+    );
+
+    const balanceBeforeTx = ethers.utils.parseEther("2");
 
     expect(await collection.ownerOf(1)).to.equal(buyer.address);
     expect(await collection.balanceOf(buyer.address)).to.equal(1);
@@ -83,60 +103,18 @@ describe("LooksRareAggregator class", () => {
   });
 
   it("can execute LooksRare V1 orders (ERC-1155)", async () => {
-    const chainId = SupportedChainId.MAINNET;
-    const signers = await getSigners();
-    const maker = signers.user3;
-    const buyer = signers.buyer;
     const collection = contracts.collection3;
-    const addresses: Addresses = {
-      AGGREGATOR: contracts.looksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
-      SEAPORT_PROXY: contracts.seaportProxy.address,
-    };
-    const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
-
-    const blockNumber = await ethers.provider.getBlockNumber();
-    const block = await ethers.provider.getBlock(blockNumber);
-    const now = block.timestamp;
-
-    const makerOrder: MakerOrder = {
-      isOrderAsk: true,
-      signer: maker.address,
-      collection: collection.address,
-      price: constants.WeiPerEther, // 1 ETH
-      tokenId: "3",
-      amount: "2",
-      strategy: addressesByNetwork[chainId].STRATEGY_STANDARD_SALE,
-      currency: addressesByNetwork[chainId].WETH,
-      nonce: 0,
-      startTime: now,
-      endTime: now + 86400, // 1 day validity
-      minPercentageToAsk: 9550,
-      params: [],
-    };
-    const { domain, value, type } = generateMakerOrderTypedData(maker.address, chainId, makerOrder);
-    const signature = await maker._signTypedData(domain, type, value);
-
-    // Fake an order from the API
-    const makerOrderFromAPI: MakerOrderFromAPI = {
-      currencyAddress: makerOrder.currency,
-      collectionAddress: collection.address,
-      signature,
-      ...makerOrder,
-    };
-
-    const tradeData = await aggregator.transformLooksRareV1Listings([makerOrderFromAPI]);
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+    const tx = await executeLooksRareV1Order(
+      signers.user3,
+      collection,
+      "3",
+      "2",
+      addressesByNetwork[SupportedChainId.MAINNET].TRANSFER_MANAGER_ERC1155
+    );
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
-
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
-
-    await collection.connect(maker).setApprovalForAll(addressesByNetwork[chainId].TRANSFER_MANAGER_ERC1155, true);
-
-    const tx = await aggregator.execute([tradeData], buyer.address, true);
 
     expect(await collection.balanceOf(buyer.address, 3)).to.equal(2);
 
