@@ -4,8 +4,8 @@
   "error InvalidOrderLength()",
   "error TradeExecutionFailed()",
   "error ZeroAddress()",
-  "event FeeUpdated(address,uint16,address)",
-  "event FunctionAdded(address indexed,bytes4)",
-  "event FunctionRemoved(address indexed,bytes4)",
-  "event Sweep(address indexed,uint256,uint256)"
+  "event FeeUpdated(address proxy, uint16 bp, address recipient)",
+  "event FunctionAdded(address indexed proxy, bytes4 selector)",
+  "event FunctionRemoved(address indexed proxy, bytes4 selector)",
+  "event Sweep(address indexed sweeper, uint256 tradeCount, uint256 successCount)"
 ]

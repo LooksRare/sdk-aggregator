@@ -9,10 +9,7 @@ const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
   }, constants.Zero);
 };
 
-export default function transformLooksRareV1Listings(
-  listings: Array<MakerOrderFromAPI>,
-  proxyAddress: string
-): TradeData {
+export default function transformLooksRareV1Listings(listings: Array<MakerOrderFromAPI>, proxy: string): TradeData {
   const orders: BasicOrder[] = [];
   const ordersExtraData: OrderExtraData[] = [];
 
@@ -53,7 +50,7 @@ export default function transformLooksRareV1Listings(
   );
 
   return {
-    address: proxyAddress,
+    proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     value: calculateEthValue(orders),
     orders,

@@ -6,14 +6,14 @@
   "error TransferERC20Fail()",
   "error TransferFail()",
   "error WrongPotentialOwner()",
-  "event CancelOwnershipTransfer(address)",
-  "event InitiateOwnershipTransfer(address,address)",
-  "event NewOwner(address)",
+  "event CancelOwnershipTransfer(address previousPotentialOwner)",
+  "event InitiateOwnershipTransfer(address previousOwner, address potentialOwner)",
+  "event NewOwner(address newOwner)",
   "function cancelOwnershipTransfer()",
   "function confirmOwnershipTransfer()",
-  "function initiateOwnershipTransfer(address)",
+  "function initiateOwnershipTransfer(address newPotentialOwner)",
   "function owner() view returns (address)",
   "function potentialOwner() view returns (address)",
-  "function rescueERC20(address,address)",
-  "function rescueETH(address)"
+  "function rescueERC20(address currency, address to)",
+  "function rescueETH(address to)"
 ]
