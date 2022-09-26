@@ -10,6 +10,7 @@ import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC7
 import type { MockERC1155 } from "../../../typechain/src/contracts/tests/MockERC1155";
 import type { MockERC20 } from "../../../typechain/src/contracts/tests/MockERC20";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
+import { CROSS_CHAIN_SEAPORT_ADDRESS } from "@opensea/seaport-js/lib/constants";
 
 chai.use(chaiAsPromised);
 
@@ -55,13 +56,16 @@ const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
 
 const LOOKSRARE = "0x59728544B08AB483533076417FbBB2fD0B17CE3a";
 export const LOOKSRARE_TRANSFER_MANAGER = "0xf42aa99F011A1fA7CDA90E5E98b277E306BcA83e";
-const SEAPORT = "0x00000000006c3852cbef3e08e8df289169ede581";
 
 export const setUpContracts = async (): Promise<Mocks> => {
   // Deploy contracts
   const looksRareAggregator = await deploy("LooksRareAggregator");
   const looksRareProxy = (await deploy("LooksRareProxy", LOOKSRARE, looksRareAggregator.address)) as LooksRareProxy;
-  const seaportProxy = (await deploy("SeaportProxy", SEAPORT, looksRareAggregator.address)) as SeaportProxy;
+  const seaportProxy = (await deploy(
+    "SeaportProxy",
+    CROSS_CHAIN_SEAPORT_ADDRESS,
+    looksRareAggregator.address
+  )) as SeaportProxy;
 
   await looksRareAggregator.addFunction(looksRareProxy.address, PROXY_EXECUTE_SELECTOR);
   await looksRareAggregator.addFunction(seaportProxy.address, PROXY_EXECUTE_SELECTOR);
