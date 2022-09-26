@@ -1,56 +1,5 @@
-import { BigNumberish, BytesLike } from "ethers";
-
-export enum ItemType {
-  NATIVE = 0,
-  ERC20 = 1,
-  ERC721 = 2,
-  ERC1155 = 3,
-  ERC721_WITH_CRITERIA = 4,
-  ERC1155_WITH_CRITERIA = 5,
-}
-
-export enum OrderType {
-  FULL_OPEN = 0,
-  PARTIAL_OPEN = 1,
-  FULL_RESTRICTED = 2,
-  PARTIAL_RESTRICTED = 3,
-}
-
-export interface Offer {
-  itemType: ItemType;
-  token: string;
-  identifierOrCriteria: string;
-  startAmount: number;
-  endAmount: number;
-}
-
-export interface Consideration {
-  itemType: ItemType;
-  token: string;
-  identifierOrCriteria: string;
-  startAmount: number;
-  endAmount: number;
-  recipient: string;
-}
-
-export interface Parameters {
-  offerer: string;
-  zone: string;
-  zoneHash: string;
-  startTime: BigNumberish;
-  endTime: BigNumberish;
-  orderType: number;
-  salt: string;
-  conduitKey: string;
-  nonce: string;
-  offer: Offer[];
-  consideration: Consideration[];
-}
-
-export interface Order {
-  parameters: Parameters;
-  signature: BytesLike;
-}
+import { OrderType } from "@opensea/seaport-js/lib/constants";
+import { BigNumberish } from "ethers";
 
 export interface Recipient {
   amount: BigNumberish;
@@ -66,11 +15,6 @@ export interface OrderExtraData {
   salt: string;
   conduitKey: string;
   recipients: Array<Recipient>;
-}
-
-export interface FulfillmentComponent {
-  orderIndex: number;
-  itemIndex: number;
 }
 
 export const ORDER_EXTRA_DATA_SCHEMA = `

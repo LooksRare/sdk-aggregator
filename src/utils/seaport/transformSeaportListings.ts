@@ -1,21 +1,18 @@
+import { ItemType } from "@opensea/seaport-js/lib/constants";
+import {
+  ConsiderationItem,
+  FulfillmentComponent,
+  OfferItem,
+  Order,
+  OrderParameters,
+} from "@opensea/seaport-js/lib/types";
 import { BigNumber, constants, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
-import {
-  Consideration,
-  EXTRA_DATA_SCHEMA,
-  FulfillmentComponent,
-  ItemType,
-  Offer,
-  Order,
-  OrderExtraData,
-  ORDER_EXTRA_DATA_SCHEMA,
-  Parameters,
-  Recipient,
-} from "../../interfaces/Seaport";
+import { EXTRA_DATA_SCHEMA, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA, Recipient } from "../../interfaces/Seaport";
 import { BasicOrder, CollectionType, TradeData } from "../../types";
 import calculatePriceFromConsideration from "./calculatePriceFromConsideration";
 
-const getCollectionType = (offer: Offer): CollectionType => {
+const getCollectionType = (offer: OfferItem): CollectionType => {
   if (offer.itemType === ItemType.ERC721) {
     return CollectionType.ERC721;
   }
@@ -27,8 +24,8 @@ const getCollectionType = (offer: Offer): CollectionType => {
   throw new Error(`Seaport item type ${ItemType[offer.itemType]} is not supported!`);
 };
 
-const getConsiderationRecipients = (consideration: Consideration[]): Array<Recipient> => {
-  return consideration.map((considerationItem: Consideration) => ({
+const getConsiderationRecipients = (consideration: ConsiderationItem[]): Array<Recipient> => {
+  return consideration.map((considerationItem: ConsiderationItem) => ({
     amount: considerationItem.endAmount,
     recipient: considerationItem.recipient,
   }));
@@ -44,8 +41,8 @@ const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
   }, constants.Zero);
 };
 
-const validateConsiderationSameCurrency = (consideration: Consideration[]): void => {
-  const isValid = consideration.every((considerationItem: Consideration) => {
+const validateConsiderationSameCurrency = (consideration: ConsiderationItem[]): void => {
+  const isValid = consideration.every((considerationItem: ConsiderationItem) => {
     return considerationItem.token === consideration[0].token;
   });
 
@@ -58,18 +55,18 @@ export default function transformSeaportListings(listings: Order[], proxy: strin
   const orders: BasicOrder[] = [];
   const ordersExtraData: OrderExtraData[] = [];
 
-  const offerFulfillments: Array<Array<FulfillmentComponent>> = [];
-  const aggregatedConsideration: { [key: string]: FulfillmentComponent[] } = {};
+  const offerFulfillments: Array<FulfillmentComponent> = [];
+  const aggregatedConsideration: { [key: string]: FulfillmentComponent } = {};
 
   listings.forEach((listing: Order, orderIndex: number) => {
-    const parameters: Parameters = listing.parameters;
+    const parameters: OrderParameters = listing.parameters;
 
     if (parameters.offer.length !== 1) {
       throw new Error("Only single offer item is supported!");
     }
 
-    const offer: Offer = parameters.offer[0];
-    const consideration: Consideration[] = parameters.consideration;
+    const offer: OfferItem = parameters.offer[0];
+    const consideration: ConsiderationItem[] = parameters.consideration;
 
     validateConsiderationSameCurrency(consideration);
 
@@ -90,7 +87,7 @@ export default function transformSeaportListings(listings: Order[], proxy: strin
 
     const orderExtraData: OrderExtraData = {
       numerator: 1,
-      denominator: offer.endAmount,
+      denominator: Number(offer.endAmount),
       orderType: parameters.orderType,
       zone: parameters.zone,
       zoneHash: parameters.zoneHash,
@@ -104,7 +101,7 @@ export default function transformSeaportListings(listings: Order[], proxy: strin
 
     offerFulfillments.push([{ orderIndex, itemIndex: 0 }]);
 
-    consideration.forEach((considerationItem: Consideration, itemIndex: number) => {
+    consideration.forEach((considerationItem: ConsiderationItem, itemIndex: number) => {
       const recipient: string = considerationItem.recipient;
       if (!aggregatedConsideration[recipient]) {
         aggregatedConsideration[recipient] = [];

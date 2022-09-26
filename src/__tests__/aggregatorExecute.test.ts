@@ -8,7 +8,6 @@ import { addressesByNetwork, MakerOrder, generateMakerOrderTypedData } from "@lo
 import { constants } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import calculateTxFee from "./helpers/calculateTxFee";
-import * as SeaportInterface from "../interfaces/Seaport";
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 
@@ -123,7 +122,7 @@ describe("LooksRareAggregator class", () => {
       },
       maker.address
     );
-    const order = (await executeAllActions()) as SeaportInterface.Order;
+    const order = await executeAllActions();
     const tradeData = aggregator.transformSeaportListings([order]);
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
