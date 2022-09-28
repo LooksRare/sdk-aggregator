@@ -1,4 +1,6 @@
-import { BigNumber, BigNumberish, BytesLike } from "ethers";
+import { Order } from "@opensea/seaport-js/lib/types";
+import { BigNumber, BigNumberish, BytesLike, ContractTransaction } from "ethers";
+import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
 
 export enum SupportedChainId {
   MAINNET = 1,
@@ -36,4 +38,14 @@ export interface TradeData {
 export interface TokenTransfer {
   amount: BigNumber;
   currency: string;
+}
+
+export interface Listings {
+  seaport: Order[];
+  looksRareV1: MakerOrderFromAPI[];
+}
+
+export interface TransformListingsOutput {
+  tradeData: TradeData[];
+  actions: Array<() => Promise<ContractTransaction>>;
 }

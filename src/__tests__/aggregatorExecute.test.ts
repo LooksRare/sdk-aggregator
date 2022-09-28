@@ -141,5 +141,4 @@ describe("LooksRareAggregator class", () => {
     const balanceAfterTx = await ethers.provider.getBalance(buyer.address);
     expect(balanceBeforeTx.sub(balanceAfterTx).sub(txFee)).to.equal(constants.WeiPerEther);
   });
-
 });

@@ -1,12 +1,13 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
-import { BasicOrder, SupportedChainId, TokenTransfer, TradeData } from "./types";
+import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, TransformListingsOutput } from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import { BigNumber, constants, ContractTransaction, Signer } from "ethers";
 import { execute } from "./utils/calls/aggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
 import { ethers } from "hardhat";
+import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
 
 export class LooksRareAggregator {
   public readonly signer: Signer;
@@ -27,6 +28,40 @@ export class LooksRareAggregator {
     });
     await tx.wait();
     return tx;
+  }
+
+  public async transformListings(listings: Listings): Promise<TransformListingsOutput> {
+    const tradeData = [];
+    if (listings.seaport.length > 0) {
+      tradeData.push(this.transformSeaportListings(listings.seaport));
+    }
+    if (listings.looksRareV1.length > 0) {
+      tradeData.push(this.transformLooksRareV1Listings(listings.looksRareV1));
+    }
+
+    const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
+
+    const buyer = await this.signer.getAddress();
+    const areAllowancesSufficient = await Promise.all(
+      tokenTransfers.map((tokenTransfer) =>
+        isAllowanceSufficient(
+          ethers.provider,
+          tokenTransfer.currency,
+          buyer,
+          this.addresses.AGGREGATOR,
+          tokenTransfer.amount
+        )
+      )
+    );
+
+    const actions: Array<() => Promise<ContractTransaction>> = [];
+    areAllowancesSufficient.forEach((sufficient, i) => {
+      if (!sufficient) {
+        actions.push(() => approve(this.signer, tokenTransfers[i].currency, this.addresses.AGGREGATOR));
+      }
+    });
+
+    return { tradeData, actions } as TransformListingsOutput;
   }
 
   // The argument comes from Seaport listings API response's orders->protocol_data

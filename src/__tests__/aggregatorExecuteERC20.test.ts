@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { SupportedChainId } from "../types";
+import { SupportedChainId, TransformListingsOutput } from "../types";
 import { Addresses } from "../constants/addresses";
 import { Seaport } from "@opensea/seaport-js";
 import { CROSS_CHAIN_SEAPORT_ADDRESS, ItemType } from "@opensea/seaport-js/lib/constants";
@@ -39,11 +39,11 @@ describe("LooksRareAggregator class", () => {
     await contracts.looksRareAggregator.approve(CROSS_CHAIN_SEAPORT_ADDRESS, weth.address);
     await contracts.looksRareAggregator.approve(CROSS_CHAIN_SEAPORT_ADDRESS, usdc.address);
 
-    await weth.mint(buyer.address, ethers.utils.parseEther("2"));
-    await usdc.mint(buyer.address, ethers.utils.parseUnits("500", 6));
+    const originalWETHBalance = ethers.utils.parseEther("2");
+    const originalUSDCBalance = ethers.utils.parseUnits("500", 6);
 
-    await weth.connect(buyer).approve(addresses.AGGREGATOR, ethers.utils.parseEther("1.5"));
-    await usdc.connect(buyer).approve(addresses.AGGREGATOR, ethers.utils.parseUnits("125", 6));
+    await weth.mint(buyer.address, originalWETHBalance);
+    await usdc.mint(buyer.address, originalUSDCBalance);
 
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
@@ -51,85 +51,59 @@ describe("LooksRareAggregator class", () => {
     const block = await ethers.provider.getBlock(blockNumber);
     const now = block.timestamp;
 
+    const order1Price = ethers.constants.WeiPerEther;
     const { executeAllActions: executeAllActions1 } = await seaport1.createOrder(
       {
         startTime: now.toString(),
         endTime: (now + 86400).toString(),
         salt: "69420",
-        offer: [
-          {
-            itemType: ItemType.ERC721,
-            token: collection1.address,
-            identifier: "1",
-          },
-        ],
+        offer: [{ itemType: ItemType.ERC721, token: collection1.address, identifier: "1" }],
         consideration: [
-          {
-            amount: ethers.constants.WeiPerEther.toString(),
-            token: weth.address,
-            identifier: "0",
-            recipient: maker1.address,
-          },
+          { amount: order1Price.toString(), token: weth.address, identifier: "0", recipient: maker1.address },
         ],
       },
       maker1.address
     );
     const order1 = await executeAllActions1();
 
+    const order2Price = ethers.utils.parseEther("0.5");
     const { executeAllActions: executeAllActions2 } = await seaport2.createOrder(
       {
         startTime: now.toString(),
         endTime: (now + 86400).toString(),
         salt: "111",
-        offer: [
-          {
-            itemType: ItemType.ERC721,
-            token: collection2.address,
-            identifier: "2",
-          },
-        ],
+        offer: [{ itemType: ItemType.ERC721, token: collection2.address, identifier: "2" }],
         consideration: [
-          {
-            amount: ethers.utils.parseEther("0.5").toString(),
-            token: weth.address,
-            identifier: "0",
-            recipient: maker2.address,
-          },
+          { amount: order2Price.toString(), token: weth.address, identifier: "0", recipient: maker2.address },
         ],
       },
       maker2.address
     );
     const order2 = await executeAllActions2();
 
+    const order3Price = ethers.utils.parseUnits("125", 6);
     const { executeAllActions: executeAllActions3 } = await seaport3.createOrder(
       {
         startTime: now.toString(),
         endTime: (now + 86400).toString(),
         salt: "85",
-        offer: [
-          {
-            itemType: ItemType.ERC1155,
-            token: collection3.address,
-            identifier: "3",
-            amount: "1",
-          },
-        ],
+        offer: [{ itemType: ItemType.ERC1155, token: collection3.address, identifier: "3", amount: "1" }],
         consideration: [
-          {
-            amount: ethers.utils.parseUnits("125", 6).toString(),
-            token: usdc.address,
-            identifier: "0",
-            recipient: maker3.address,
-          },
+          { amount: order3Price.toString(), token: usdc.address, identifier: "0", recipient: maker3.address },
         ],
       },
       maker3.address
     );
     const order3 = await executeAllActions3();
 
-    const tradeData = aggregator.transformSeaportListings([order1, order2, order3]);
+    const { tradeData, actions }: TransformListingsOutput = await aggregator.transformListings({
+      seaport: [order1, order2, order3],
+      looksRareV1: [],
+    });
 
-    await aggregator.execute([tradeData], buyer.address, true);
+    await Promise.all(actions.map((action) => action()));
+
+    await aggregator.execute(tradeData, buyer.address, true);
 
     expect(await collection1.ownerOf(1)).to.equal(buyer.address);
     expect(await collection1.balanceOf(buyer.address)).to.equal(1);
@@ -139,11 +113,11 @@ describe("LooksRareAggregator class", () => {
 
     expect(await collection3.balanceOf(buyer.address, 3)).to.equal(1);
 
-    expect(await weth.balanceOf(buyer.address)).to.equal(ethers.utils.parseEther("0.5"));
-    expect(await usdc.balanceOf(buyer.address)).to.equal(ethers.utils.parseUnits("375", 6));
+    expect(await weth.balanceOf(buyer.address)).to.equal(originalWETHBalance.sub(order1Price).sub(order2Price));
+    expect(await usdc.balanceOf(buyer.address)).to.equal(originalUSDCBalance.sub(order3Price));
 
-    expect(await weth.balanceOf(maker1.address)).to.equal(ethers.constants.WeiPerEther);
-    expect(await weth.balanceOf(maker2.address)).to.equal(ethers.utils.parseEther("0.5"));
-    expect(await usdc.balanceOf(maker3.address)).to.equal(ethers.utils.parseUnits("125", 6));
+    expect(await weth.balanceOf(maker1.address)).to.equal(order1Price);
+    expect(await weth.balanceOf(maker2.address)).to.equal(order2Price);
+    expect(await usdc.balanceOf(maker3.address)).to.equal(order3Price);
   });
 });
