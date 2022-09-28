@@ -5,11 +5,12 @@ import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
 import { addressesByNetwork, MakerOrder, generateMakerOrderTypedData } from "@looksrare/sdk";
-import { constants } from "ethers";
+import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -18,12 +19,16 @@ describe("LooksRareAggregator class", () => {
     contracts = await setUpContracts();
   });
 
-  it("can execute LooksRare V1 orders", async () => {
+  const executeLooksRareV1Order = async (
+    maker: SignerWithAddress,
+    collection: Contract,
+    tokenId: string,
+    amount: string,
+    transferManager: string
+  ): Promise<ContractTransaction> => {
     const chainId = SupportedChainId.MAINNET;
     const signers = await getSigners();
-    const maker = signers.user1;
     const buyer = signers.buyer;
-    const collection = contracts.collection1;
     const addresses: Addresses = {
       AGGREGATOR: contracts.looksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
@@ -40,8 +45,8 @@ describe("LooksRareAggregator class", () => {
       signer: maker.address,
       collection: collection.address,
       price: constants.WeiPerEther, // 1 ETH
-      tokenId: "1",
-      amount: "1",
+      tokenId,
+      amount,
       strategy: addressesByNetwork[chainId].STRATEGY_STANDARD_SALE,
       currency: addressesByNetwork[chainId].WETH,
       nonce: 0,
@@ -61,7 +66,7 @@ describe("LooksRareAggregator class", () => {
       ...makerOrder,
     };
 
-    const tradeData = aggregator.transformLooksRareV1Listings([makerOrderFromAPI]);
+    const tradeData = await aggregator.transformLooksRareV1Listings([makerOrderFromAPI]);
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
@@ -70,12 +75,48 @@ describe("LooksRareAggregator class", () => {
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
 
-    await collection.connect(maker).setApprovalForAll(addressesByNetwork[chainId].TRANSFER_MANAGER_ERC721, true);
+    await collection.connect(maker).setApprovalForAll(transferManager, true);
 
-    const tx = await aggregator.execute([tradeData], buyer.address, true);
+    return await aggregator.execute([tradeData], buyer.address, true);
+  };
+
+  it("can execute LooksRare V1 orders (ERC-721)", async () => {
+    const collection = contracts.collection1;
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+    const tx = await executeLooksRareV1Order(
+      signers.user1,
+      contracts.collection1,
+      "1",
+      "1",
+      addressesByNetwork[SupportedChainId.MAINNET].TRANSFER_MANAGER_ERC721
+    );
+
+    const balanceBeforeTx = ethers.utils.parseEther("2");
 
     expect(await collection.ownerOf(1)).to.equal(buyer.address);
     expect(await collection.balanceOf(buyer.address)).to.equal(1);
+
+    const txFee = await calculateTxFee(tx);
+    const balanceAfterTx = await ethers.provider.getBalance(buyer.address);
+    expect(balanceBeforeTx.sub(balanceAfterTx).sub(txFee)).to.equal(constants.WeiPerEther);
+  });
+
+  it("can execute LooksRare V1 orders (ERC-1155)", async () => {
+    const collection = contracts.collection3;
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+    const tx = await executeLooksRareV1Order(
+      signers.user3,
+      collection,
+      "3",
+      "2",
+      addressesByNetwork[SupportedChainId.MAINNET].TRANSFER_MANAGER_ERC1155
+    );
+
+    const balanceBeforeTx = ethers.utils.parseEther("2");
+
+    expect(await collection.balanceOf(buyer.address, 3)).to.equal(2);
 
     const txFee = await calculateTxFee(tx);
     const balanceAfterTx = await ethers.provider.getBalance(buyer.address);
