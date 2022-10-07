@@ -1,6 +1,7 @@
 import { utils, constants } from "ethers";
 import { ethers } from "hardhat";
 import { expect } from "chai";
+import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import getFixture from "./helpers/getFixture";
 import { BAYC, WETH } from "./fixtures/constants";
@@ -11,8 +12,8 @@ describe("LooksRareAggregator class", () => {
       const signers = await ethers.getSigners();
       const aggregator = new LooksRareAggregator(signers[0], 1);
       const tradeData = await aggregator.transformLooksRareV1Listings([
-        getFixture("LooksRareV1", "bayc3683Order.json"),
-        getFixture("LooksRareV1", "bayc5623Order.json"),
+        getFixture("LooksRareV1", "bayc3683Order.json") as MakerOrderFromAPI,
+        getFixture("LooksRareV1", "bayc5623Order.json") as MakerOrderFromAPI,
       ]);
 
       expect(tradeData.proxy).to.equal(""); // TODO: add real address
