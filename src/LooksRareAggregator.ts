@@ -1,7 +1,7 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
 import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, TransformListingsOutput } from "./types";
-import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
+import transformSeaportListings from "./utils/seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import { BigNumber, constants, ContractTransaction, Signer } from "ethers";
 import { execute } from "./utils/calls/aggregator";
