@@ -47,7 +47,7 @@ describe("LooksRareAggregator class", () => {
       expect(orderTwo.startTime).to.equal("1662990995");
       expect(orderTwo.endTime).to.equal("1664300960");
       expect(orderTwo.signature).to.equal(
-        "0xe9879e6d9d69bcf36cbc7e5cfcb9c5a64dcd00f9d79c69a900c3d95ab5d4db7e155f62bcd74f4e48bc9de95425cb34003ed03dc5705d18aeacfb4c523d957beb1b",
+        "0xe9879e6d9d69bcf36cbc7e5cfcb9c5a64dcd00f9d79c69a900c3d95ab5d4db7e155f62bcd74f4e48bc9de95425cb34003ed03dc5705d18aeacfb4c523d957beb1b"
       );
 
       expect(tradeData.ordersExtraData[0]).to.equal(
@@ -102,7 +102,7 @@ describe("LooksRareAggregator class", () => {
       expect(orderTwo.startTime).to.equal("1663268179");
       expect(orderTwo.endTime).to.equal("1665860179");
       expect(orderTwo.signature).to.equal(
-        "0x8caa3054215c3dd214300377dde748af63ea1f7a084237920dcdb2b57779a7c325afcf97447229352ecf9448c34d04ea5ebd58e6f46981a165c10f57198b4e061c",
+        "0x8caa3054215c3dd214300377dde748af63ea1f7a084237920dcdb2b57779a7c325afcf97447229352ecf9448c34d04ea5ebd58e6f46981a165c10f57198b4e061c"
       );
 
       expect(tradeData.ordersExtraData[0]).to.equal(

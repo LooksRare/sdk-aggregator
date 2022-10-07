@@ -1,6 +1,7 @@
 import { utils, constants } from "ethers";
 import { ethers } from "hardhat";
 import { expect } from "chai";
+import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import getFixture from "./helpers/getFixture";
 import { BAYC, WETH } from "./fixtures/constants";
@@ -11,8 +12,8 @@ describe("LooksRareAggregator class", () => {
       const signers = await ethers.getSigners();
       const aggregator = new LooksRareAggregator(signers[0], 1);
       const tradeData = await aggregator.transformLooksRareV1Listings([
-        getFixture("LooksRareV1", "bayc3683Order.json"),
-        getFixture("LooksRareV1", "bayc5623Order.json"),
+        getFixture("LooksRareV1", "bayc3683Order.json") as MakerOrderFromAPI,
+        getFixture("LooksRareV1", "bayc5623Order.json") as MakerOrderFromAPI,
       ]);
 
       expect(tradeData.proxy).to.equal(""); // TODO: add real address
@@ -46,7 +47,7 @@ describe("LooksRareAggregator class", () => {
       expect(orderTwo.startTime).to.equal("1663102540");
       expect(orderTwo.endTime).to.equal("1663442119");
       expect(orderTwo.signature).to.equal(
-        "0x049cd929e1c5257557823d005af629423dcd735995bb8b3cf643e3998b25b07a75d5cb9163878321c3862c51d050285c6382ce5d82a31d27a8cb64fe47a7ad2e00",
+        "0x049cd929e1c5257557823d005af629423dcd735995bb8b3cf643e3998b25b07a75d5cb9163878321c3862c51d050285c6382ce5d82a31d27a8cb64fe47a7ad2e00"
       );
 
       expect(tradeData.ordersExtraData[0]).to.equal(

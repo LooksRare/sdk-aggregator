@@ -1,11 +1,15 @@
 import { HardhatUserConfig } from "hardhat/config";
+import dotenv from "dotenv";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "@typechain/hardhat";
 import "hardhat-abi-exporter";
 
-import * as dotenv from "dotenv";
 dotenv.config();
+
+if (!process.env.ETH_RPC_URL) {
+  throw new Error("Missing env key ETH_RPC_URL");
+}
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
@@ -14,8 +18,7 @@ const config: HardhatUserConfig = {
       allowUnlimitedContractSize: false,
       chainId: process.env.HARDHAT_CHAIN_ID ? Number(process.env.HARDHAT_CHAIN_ID) : 31337,
       forking: {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        url: process.env.ETH_RPC_URL!,
+        url: process.env.ETH_RPC_URL,
         blockNumber: process.env.FORKED_BLOCK_NUMBER ? Number(process.env.FORKED_BLOCK_NUMBER) : undefined,
       },
       hardfork: "berlin", // Berlin is used (temporarily) to avoid issues with coverage

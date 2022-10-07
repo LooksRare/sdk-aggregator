@@ -2,11 +2,7 @@ import { Order } from "@opensea/seaport-js/lib/types";
 import { BigNumber, BigNumberish, BytesLike, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
 
-export enum SupportedChainId {
-  MAINNET = 1,
-  GOERLI = 5,
-  HARDHAT = 31337,
-}
+export { SupportedChainId } from "@looksrare/sdk";
 
 export enum CollectionType {
   ERC721 = 0,
