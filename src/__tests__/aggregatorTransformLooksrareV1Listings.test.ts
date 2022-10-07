@@ -46,7 +46,7 @@ describe("LooksRareAggregator class", () => {
       expect(orderTwo.startTime).to.equal("1663102540");
       expect(orderTwo.endTime).to.equal("1663442119");
       expect(orderTwo.signature).to.equal(
-        "0x049cd929e1c5257557823d005af629423dcd735995bb8b3cf643e3998b25b07a75d5cb9163878321c3862c51d050285c6382ce5d82a31d27a8cb64fe47a7ad2e00",
+        "0x049cd929e1c5257557823d005af629423dcd735995bb8b3cf643e3998b25b07a75d5cb9163878321c3862c51d050285c6382ce5d82a31d27a8cb64fe47a7ad2e00"
       );
 
       expect(tradeData.ordersExtraData[0]).to.equal(
