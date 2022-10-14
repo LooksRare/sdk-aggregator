@@ -1,0 +1,18 @@
+{
+  "entryPoints": [
+    "./src/LooksRareAggregator.ts",
+    "./src/constants/addresses.ts",
+    "./src/interfaces/LooksRareV1.ts",
+    "./src/types.ts",
+  ],
+  "out": "./doc",
+  "cleanOutputDir": false,
+  "githubPages": false,
+  "readme": "none",
+  "gitRemote": "https://github.com/LooksRare/sdk-aggregator",
+  "disableSources": true,
+
+  // typedoc-plugin-markdown
+  "hideBreadcrumbs": true,
+  "hideInPageTOC": true
+}
