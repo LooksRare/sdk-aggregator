@@ -1,5 +1,6 @@
 import { SupportedChainId } from "../types";
 
+/** LooksRare aggregator contract addresses */
 export interface Addresses {
   AGGREGATOR: string;
   LOOKSRARE_V1_PROXY: string;
