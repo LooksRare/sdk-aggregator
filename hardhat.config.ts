@@ -32,8 +32,9 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.14",
+        version: "0.8.17",
         settings: {
+          viaIR: true,
           optimizer: {
             enabled: true,
             runs: 200,
@@ -57,7 +58,7 @@ const config: HardhatUserConfig = {
     clear: true,
     flat: true,
     format: "fullName",
-    except: ["contracts/tests/*", "@rari-capital"],
+    except: ["contracts/tests/*", "@rari-capital", "IERC1155", "IERC721"],
   },
   typechain: {
     outDir: "typechain",
