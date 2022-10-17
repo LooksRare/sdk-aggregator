@@ -14,7 +14,8 @@ export const execute = async (
 ) => {
   const contract = new Contract(address, abiLooksRareAggregator, signer) as LooksRareAggregator;
 
-  const originator = signer.getAddress();
+  // NOTE: Maybe make it 0 address to save gas, since the contract will set it to msg.sender anyway.
+  const originator = await signer.getAddress();
 
   return contract.execute(tokenTransfers, tradeData, originator, recipient, isAtomic, { ...overrides });
 };
