@@ -14,5 +14,7 @@ export const execute = async (
 ) => {
   const contract = new Contract(address, abiLooksRareAggregator, signer) as LooksRareAggregator;
 
-  return contract.execute(tokenTransfers, tradeData, recipient, isAtomic, { ...overrides });
+  const originator = signer.getAddress();
+
+  return contract.execute(tokenTransfers, tradeData, originator, recipient, isAtomic, { ...overrides });
 };
