@@ -2,12 +2,8 @@ import { BasicOrder, CollectionType, TradeData } from "../../types";
 import { BigNumber, constants, Contract, ethers, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV1";
-// import abiIERC165 from "../../abis/IERC165.json";
+import abiIERC165 from "@looksrare/contracts-libs/abis/IERC165.json";
 import { INTERFACE_ID_ERC_1155, INTERFACE_ID_ERC_721 } from "../../constants/interfaceIds";
-
-const abiIERC165 = [
-  "function supportsInterface(bytes4 interfaceId) view returns (bool)"
-];
 
 const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
   return orders.reduce((sum: BigNumber, order: BasicOrder) => {
