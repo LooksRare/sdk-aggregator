@@ -71,7 +71,6 @@ export const setUpContracts = async (): Promise<Mocks> => {
   )) as SeaportProxy;
 
   await looksRareAggregator.addFunction(looksRareProxy.address, PROXY_EXECUTE_SELECTOR);
-
   await looksRareAggregator.addFunction(seaportProxy.address, PROXY_EXECUTE_SELECTOR);
 
   const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
