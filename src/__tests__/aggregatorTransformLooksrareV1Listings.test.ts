@@ -17,7 +17,7 @@ describe("LooksRareAggregator class", () => {
       ]);
 
       expect(tradeData.proxy).to.equal(""); // TODO: add real address
-      expect(tradeData.selector).to.equal("0x86012f2e");
+      expect(tradeData.selector).to.equal("0x135cecf2");
       expect(tradeData.value).to.equal(utils.parseEther("149.34"));
       expect(tradeData.maxFeeBp).to.equal(constants.Zero);
       expect(tradeData.orders.length).to.equal(2);
