@@ -4,7 +4,8 @@ import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, Trans
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import { BigNumber, constants, ContractTransaction, Signer } from "ethers";
-import { execute } from "./utils/calls/aggregator";
+import { executeETHOrders } from "./utils/calls/aggregator";
+import { executeERC20Orders } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
 import { ethers } from "hardhat";
 import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
@@ -44,11 +45,28 @@ export class LooksRareAggregator {
   public async execute(tradeData: TradeData[], recipient: string, isAtomic: boolean): Promise<ContractTransaction> {
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
     const value = this.transactionEthValue(tradeData);
-    const tx = await execute(this.signer, this.addresses.AGGREGATOR, tokenTransfers, tradeData, recipient, isAtomic, {
-      value,
-    });
-    await tx.wait();
-    return tx;
+
+    if (tokenTransfers.length > 0) {
+      const tx = await executeERC20Orders(
+        this.signer,
+        this.addresses.ERC20_ENABLED_AGGREGATOR,
+        tokenTransfers,
+        tradeData,
+        recipient,
+        isAtomic,
+        {
+          value,
+        }
+      );
+      await tx.wait();
+      return tx;
+    } else {
+      const tx = await executeETHOrders(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
+        value,
+      });
+      await tx.wait();
+      return tx;
+    }
   }
 
   /**
@@ -77,7 +95,7 @@ export class LooksRareAggregator {
           ethers.provider,
           tokenTransfer.currency,
           buyer,
-          this.addresses.AGGREGATOR,
+          this.addresses.ERC20_ENABLED_AGGREGATOR,
           tokenTransfer.amount
         )
       )
@@ -86,7 +104,7 @@ export class LooksRareAggregator {
     const actions: Array<() => Promise<ContractTransaction>> = [];
     areAllowancesSufficient.forEach((sufficient, i) => {
       if (!sufficient) {
-        actions.push(() => approve(this.signer, tokenTransfers[i].currency, this.addresses.AGGREGATOR));
+        actions.push(() => approve(this.signer, tokenTransfers[i].currency, this.addresses.ERC20_ENABLED_AGGREGATOR));
       }
     });
 

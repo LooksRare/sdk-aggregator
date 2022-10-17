@@ -76,6 +76,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
     looksRareAggregator.address
   )) as SeaportProxy;
 
+  await looksRareAggregator.setERC20EnabledLooksRareAggregator(erc20EnabledLooksRareAggregator.address);
   await looksRareAggregator.addFunction(looksRareProxy.address, PROXY_EXECUTE_SELECTOR);
   await looksRareAggregator.addFunction(seaportProxy.address, PROXY_EXECUTE_SELECTOR);
 
