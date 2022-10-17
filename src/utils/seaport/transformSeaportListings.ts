@@ -126,6 +126,8 @@ export default function transformSeaportListings(listings: Order[], proxy: strin
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     value: calculateEthValue(orders),
+    // TODO: fetch max fee bp from the aggregator
+    maxFeeBp: constants.Zero,
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData,

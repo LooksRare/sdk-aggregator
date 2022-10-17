@@ -79,6 +79,8 @@ export default async function transformLooksRareV1Listings(
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     value: calculateEthValue(orders),
+    // TODO: fetch max fee bp from the aggregator
+    maxFeeBp: constants.Zero,
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData: constants.HashZero,
