@@ -32,6 +32,7 @@ describe("LooksRareAggregator class", () => {
 
     const addresses: Addresses = {
       AGGREGATOR: contracts.looksRareAggregator.address,
+      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
       SEAPORT_PROXY: contracts.seaportProxy.address,
     };

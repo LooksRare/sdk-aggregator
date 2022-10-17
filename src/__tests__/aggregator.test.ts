@@ -18,8 +18,9 @@ describe("LooksRareAggregator class", () => {
     expect(new LooksRareAggregator(signer, SupportedChainId.HARDHAT).chainId).to.equal(SupportedChainId.HARDHAT);
     const addresses: Addresses = {
       AGGREGATOR: contracts.looksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: "",
-      SEAPORT_PROXY: "",
+      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
+      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
+      SEAPORT_PROXY: contracts.seaportProxy.address,
     };
     expect(new LooksRareAggregator(signer, SupportedChainId.HARDHAT, addresses).addresses).to.be.eql(addresses);
   });
