@@ -46,8 +46,9 @@ export class LooksRareAggregator {
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
     const value = this.transactionEthValue(tradeData);
 
+    let tx;
     if (tokenTransfers.length > 0) {
-      const tx = await executeERC20Orders(
+      tx = await executeERC20Orders(
         this.signer,
         this.addresses.ERC20_ENABLED_AGGREGATOR,
         tokenTransfers,
@@ -58,15 +59,14 @@ export class LooksRareAggregator {
           value,
         }
       );
-      await tx.wait();
-      return tx;
     } else {
-      const tx = await executeETHOrders(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
+      tx = await executeETHOrders(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
         value,
       });
-      await tx.wait();
-      return tx;
     }
+
+    await tx.wait();
+    return tx;
   }
 
   /**
