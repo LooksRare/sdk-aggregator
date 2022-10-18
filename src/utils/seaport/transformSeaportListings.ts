@@ -7,9 +7,10 @@ import {
   OrderParameters,
 } from "@opensea/seaport-js/lib/types";
 import { BigNumber, constants, utils } from "ethers";
+import { feesByNetwork } from "../../constants/fees";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { EXTRA_DATA_SCHEMA, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA, Recipient } from "../../interfaces/seaport";
-import { BasicOrder, CollectionType, TradeData } from "../../types";
+import { BasicOrder, CollectionType, SupportedChainId, TradeData } from "../../types";
 import calculatePriceFromConsideration from "./calculatePriceFromConsideration";
 
 const getCollectionType = (offer: OfferItem): CollectionType => {
@@ -51,7 +52,11 @@ const validateConsiderationSameCurrency = (consideration: ConsiderationItem[]): 
   }
 };
 
-export default function transformSeaportListings(listings: Order[], proxy: string): TradeData {
+export default function transformSeaportListings(
+  chainId: SupportedChainId,
+  listings: Order[],
+  proxy: string
+): TradeData {
   const orders: BasicOrder[] = [];
   const ordersExtraData: OrderExtraData[] = [];
 
@@ -126,8 +131,7 @@ export default function transformSeaportListings(listings: Order[], proxy: strin
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     value: calculateEthValue(orders),
-    // TODO: fetch max fee bp from the aggregator
-    maxFeeBp: constants.Zero,
+    maxFeeBp: feesByNetwork[chainId].SEAPORT_PROXY,
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData,
