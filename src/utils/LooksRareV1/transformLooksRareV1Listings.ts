@@ -1,9 +1,10 @@
-import { BasicOrder, CollectionType, TradeData } from "../../types";
+import { BasicOrder, CollectionType, SupportedChainId, TradeData } from "../../types";
 import { BigNumber, constants, Contract, ethers, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV1";
 import abiIERC165 from "@looksrare/contracts-libs/abis/IERC165.json";
 import { INTERFACE_ID_ERC_1155, INTERFACE_ID_ERC_721 } from "../../constants/interfaceIds";
+import { feesByNetwork } from "../../constants/fees";
 
 const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
   return orders.reduce((sum: BigNumber, order: BasicOrder) => {
@@ -12,6 +13,7 @@ const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
 };
 
 export default async function transformLooksRareV1Listings(
+  chainId: SupportedChainId,
   provider: ethers.providers.Provider,
   listings: Array<MakerOrderFromAPI>,
   proxy: string
@@ -79,8 +81,7 @@ export default async function transformLooksRareV1Listings(
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     value: calculateEthValue(orders),
-    // TODO: fetch max fee bp from the aggregator
-    maxFeeBp: constants.Zero,
+    maxFeeBp: feesByNetwork[chainId].LOOKSRARE_V1_PROXY,
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData: constants.HashZero,
