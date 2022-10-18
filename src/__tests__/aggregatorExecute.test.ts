@@ -31,6 +31,7 @@ describe("LooksRareAggregator class", () => {
     const buyer = signers.buyer;
     const addresses: Addresses = {
       AGGREGATOR: contracts.looksRareAggregator.address,
+      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
       SEAPORT_PROXY: contracts.seaportProxy.address,
     };
@@ -131,6 +132,7 @@ describe("LooksRareAggregator class", () => {
     const collection = contracts.collection1;
     const addresses: Addresses = {
       AGGREGATOR: contracts.looksRareAggregator.address,
+      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
       SEAPORT_PROXY: contracts.seaportProxy.address,
     };

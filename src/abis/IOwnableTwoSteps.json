@@ -1,0 +1,13 @@
+[
+  "error NoOngoingTransferInProgress()",
+  "error NotOwner()",
+  "error RenouncementNotInProgress()",
+  "error RenouncementTooEarly()",
+  "error TransferAlreadyInProgress()",
+  "error TransferNotInProgress()",
+  "error WrongPotentialOwner()",
+  "event CancelOwnershipTransfer()",
+  "event InitiateOwnershipRenouncement(uint256 earliestOwnershipRenouncementTime)",
+  "event InitiateOwnershipTransfer(address previousOwner, address potentialOwner)",
+  "event NewOwner(address newOwner)"
+]

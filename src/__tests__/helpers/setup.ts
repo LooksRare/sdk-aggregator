@@ -4,6 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import { ethers } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import type { LooksRareAggregator } from "../../../typechain/@looksrare/contracts-aggregator/contracts/LooksRareAggregator";
+import type { ERC20EnabledLooksRareAggregator } from "../../../typechain/@looksrare/contracts-aggregator/contracts/ERC20EnabledLooksRareAggregator";
 import type { LooksRareProxy } from "../../../typechain/@looksrare/contracts-aggregator/contracts/proxies/LooksRareProxy";
 import type { SeaportProxy } from "../../../typechain/@looksrare/contracts-aggregator/contracts/proxies/SeaportProxy";
 import type { MockERC721 } from "../../../typechain/src/contracts/tests/MockERC721";
@@ -26,6 +27,7 @@ export interface Signers {
 
 export interface Mocks {
   looksRareAggregator: LooksRareAggregator;
+  erc20EnabledLooksRareAggregator: ERC20EnabledLooksRareAggregator;
   looksRareProxy: LooksRareProxy;
   seaportProxy: SeaportProxy;
   collection1: MockERC721;
@@ -59,6 +61,10 @@ const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
 export const setUpContracts = async (): Promise<Mocks> => {
   // Deploy contracts
   const looksRareAggregator = (await deploy("LooksRareAggregator")) as LooksRareAggregator;
+  const erc20EnabledLooksRareAggregator = (await deploy(
+    "ERC20EnabledLooksRareAggregator",
+    looksRareAggregator.address
+  )) as ERC20EnabledLooksRareAggregator;
   const looksRareProxy = (await deploy(
     "LooksRareProxy",
     addressesByNetwork[SupportedChainId.MAINNET].EXCHANGE,
@@ -70,8 +76,8 @@ export const setUpContracts = async (): Promise<Mocks> => {
     looksRareAggregator.address
   )) as SeaportProxy;
 
+  await looksRareAggregator.setERC20EnabledLooksRareAggregator(erc20EnabledLooksRareAggregator.address);
   await looksRareAggregator.addFunction(looksRareProxy.address, PROXY_EXECUTE_SELECTOR);
-
   await looksRareAggregator.addFunction(seaportProxy.address, PROXY_EXECUTE_SELECTOR);
 
   const collection1 = (await deploy("MockERC721", "Collection1", "COL1")) as MockERC721;
@@ -94,6 +100,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
 
   return {
     looksRareAggregator,
+    erc20EnabledLooksRareAggregator,
     looksRareProxy,
     seaportProxy,
     collection1,

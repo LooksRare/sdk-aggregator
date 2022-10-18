@@ -1,12 +1,11 @@
 import { Contract, PayableOverrides, Signer } from "ethers";
-import { TokenTransfer, TradeData } from "../../types";
+import { TradeData } from "../../types";
 import abiLooksRareAggregator from "../../abis/LooksRareAggregator.json";
 import { LooksRareAggregator } from "../../../typechain";
 
-export const execute = async (
+export const executeETHOrders = async (
   signer: Signer,
   address: string,
-  tokenTransfers: Array<TokenTransfer>,
   tradeData: Array<TradeData>,
   recipient: string,
   isAtomic: boolean,
@@ -14,5 +13,8 @@ export const execute = async (
 ) => {
   const contract = new Contract(address, abiLooksRareAggregator, signer) as LooksRareAggregator;
 
-  return contract.execute(tokenTransfers, tradeData, recipient, isAtomic, { ...overrides });
+  // NOTE: Maybe make it 0 address to save gas, since the contract will set it to msg.sender anyway.
+  const originator = await signer.getAddress();
+
+  return contract.execute([], tradeData, originator, recipient, isAtomic, { ...overrides });
 };
