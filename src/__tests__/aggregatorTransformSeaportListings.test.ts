@@ -67,7 +67,7 @@ describe("LooksRareAggregator class", () => {
     it("transforms Seaport listings into TradeData for the aggregator (multiple collections)", async () => {
       const signers = await ethers.getSigners();
       const aggregator = new LooksRareAggregator(signers[0], 1);
-      const tradeData = aggregator.transformSeaportListings([
+      const tradeData = aggregator["transformSeaportListings"]([
         getFixture("Seaport", "bayc4560Order.json").protocol_data,
         getFixture("Seaport", "parallel10328Order.json").protocol_data,
       ]);
@@ -126,7 +126,7 @@ describe("LooksRareAggregator class", () => {
       const order = getFixture("Seaport", "bayc4560Order.json").protocol_data;
       order.parameters.consideration[1].token = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
       expect(() => {
-        aggregator.transformSeaportListings([order]);
+        aggregator["transformSeaportListings"]([order]);
       }).to.throw("All consideration items must have the same currency!");
     });
 
@@ -136,7 +136,7 @@ describe("LooksRareAggregator class", () => {
       const order = getFixture("Seaport", "bayc4560Order.json").protocol_data;
       order.parameters.offer.push(order.parameters.offer[0]);
       expect(() => {
-        aggregator.transformSeaportListings([order]);
+        aggregator["transformSeaportListings"]([order]);
       }).to.throw("Only single offer item is supported!");
     });
 
@@ -146,7 +146,7 @@ describe("LooksRareAggregator class", () => {
       const order = getFixture("Seaport", "bayc4560Order.json").protocol_data;
       order.parameters.offer[0].itemType = ItemType.ERC20;
       expect(() => {
-        aggregator.transformSeaportListings([order]);
+        aggregator["transformSeaportListings"]([order]);
       }).to.throw("Seaport item type ERC20 is not supported!");
     });
   });

@@ -114,11 +114,11 @@ export class LooksRareAggregator {
   /**
    * @notice The argument comes from Seaport listings API response's orders->protocol_data
    */
-  public transformSeaportListings(listings: Order[]): TradeData {
+  private transformSeaportListings(listings: Order[]): TradeData {
     return transformSeaportListings(this.chainId, listings, this.addresses.SEAPORT_PROXY);
   }
 
-  public async transformLooksRareV1Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
+  private async transformLooksRareV1Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
     return await transformLooksRareV1Listings(
       this.chainId,
       this.signer.provider!,
