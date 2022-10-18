@@ -121,7 +121,7 @@ export class LooksRareAggregator {
   public async transformLooksRareV1Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
     return await transformLooksRareV1Listings(
       this.chainId,
-      this.signer.provider!,
+      this.signer,
       listings,
       this.addresses.LOOKSRARE_V1_PROXY
     );

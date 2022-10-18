@@ -14,7 +14,7 @@ const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
 
 export default async function transformLooksRareV1Listings(
   chainId: SupportedChainId,
-  provider: ethers.providers.Provider,
+  signer: ethers.Signer,
   listings: Array<MakerOrderFromAPI>,
   proxy: string
 ): Promise<TradeData> {
@@ -25,7 +25,7 @@ export default async function transformLooksRareV1Listings(
     listings.map(async (listing: MakerOrderFromAPI): Promise<void> => {
       const collection = listing.collectionAddress;
 
-      const token = new Contract(collection, abiIERC165, provider);
+      const token = new Contract(collection, abiIERC165, signer);
       let collectionType;
       // eslint-disable-next-line no-await-in-loop
       const supportsERC1155 = await token.supportsInterface(INTERFACE_ID_ERC_1155);
