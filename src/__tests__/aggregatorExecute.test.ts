@@ -67,7 +67,7 @@ describe("LooksRareAggregator class", () => {
       ...makerOrder,
     };
 
-    const tradeData = await aggregator.transformLooksRareV1Listings([makerOrderFromAPI]);
+    const { tradeData } = await aggregator.transformListings({ seaport: [], looksRareV1: [makerOrderFromAPI] });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
@@ -78,7 +78,7 @@ describe("LooksRareAggregator class", () => {
 
     await collection.connect(maker).setApprovalForAll(transferManager, true);
 
-    return await aggregator.execute([tradeData], buyer.address, true);
+    return await aggregator.execute(tradeData, buyer.address, true);
   };
 
   it("can execute LooksRare V1 orders (ERC-721)", async () => {
@@ -166,7 +166,7 @@ describe("LooksRareAggregator class", () => {
       maker.address
     );
     const order = await executeAllActions();
-    const tradeData = aggregator.transformSeaportListings([order]);
+    const { tradeData } = await aggregator.transformListings({ seaport: [order], looksRareV1: [] });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
@@ -175,7 +175,7 @@ describe("LooksRareAggregator class", () => {
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
 
-    const tx = await aggregator.execute([tradeData], buyer.address, true);
+    const tx = await aggregator.execute(tradeData, buyer.address, true);
 
     expect(await collection.ownerOf(1)).to.equal(buyer.address);
     expect(await collection.balanceOf(buyer.address)).to.equal(1);
