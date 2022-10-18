@@ -1,10 +1,14 @@
 import { utils, constants } from "ethers";
 import { ethers } from "hardhat";
+import chai from "chai";
 import { expect } from "chai";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import getFixture from "./helpers/getFixture";
 import { BAYC, WETH } from "./fixtures/constants";
+
+import chaiAsPromised from "chai-as-promised";
+chai.use(chaiAsPromised);
 
 describe("LooksRareAggregator class", () => {
   describe("transformLooksRareV1Listings", () => {
@@ -60,6 +64,18 @@ describe("LooksRareAggregator class", () => {
       );
 
       expect(tradeData.extraData).to.equal(constants.HashZero);
+    });
+
+    it("throws an error if the collection is neither ERC721 nor ERC1155", async () => {
+      const signers = await ethers.getSigners();
+      const aggregator = new LooksRareAggregator(signers[0], 1);
+      const order = getFixture("LooksRareV1", "bayc3683Order.json") as MakerOrderFromAPI;
+      order.collectionAddress = "0x06012c8cf97bead5deae237070f9587f8e7a266d"; // CryptoKitties
+
+      await expect(aggregator.transformLooksRareV1Listings([order])).to.eventually.be.rejectedWith(
+        Error,
+        "Collection is neither ERC-1155 nor ERC-721!"
+      );
     });
   });
 });
