@@ -14,7 +14,7 @@ describe("LooksRareAggregator class", () => {
     contracts = await setUpContracts();
   });
 
-  it("can execute ERC-20 orders", async () => {
+  it("can execute ERC20 orders", async () => {
     const chainId = SupportedChainId.MAINNET;
     const signers = await getSigners();
 
