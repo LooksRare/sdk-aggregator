@@ -3,11 +3,10 @@ import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
 import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, TransformListingsOutput } from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
-import { BigNumber, constants, ContractTransaction, Signer } from "ethers";
+import { BigNumber, constants, ContractTransaction, ethers, Signer } from "ethers";
 import { executeETHOrders } from "./utils/calls/aggregator";
 import { executeERC20Orders } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
-import { ethers } from "hardhat";
 import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
 import { calculateEthValue } from "./utils/calculateEthValue";
 
@@ -93,7 +92,7 @@ export class LooksRareAggregator {
     const areAllowancesSufficient = await Promise.all(
       tokenTransfers.map((tokenTransfer) =>
         isAllowanceSufficient(
-          ethers.provider,
+          this.signer,
           tokenTransfer.currency,
           buyer,
           this.addresses.ERC20_ENABLED_AGGREGATOR,
