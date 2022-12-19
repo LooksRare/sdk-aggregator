@@ -11,7 +11,7 @@ describe("LooksRareAggregator class", () => {
     it("transforms Seaport listings into TradeData for the aggregator (single collection)", async () => {
       const signers = await ethers.getSigners();
       const aggregator = new LooksRareAggregator(signers[0], 1);
-      const tradeData = aggregator.transformSeaportListings([
+      const tradeData = aggregator["transformSeaportListings"]([
         getFixture("Seaport", "bayc4560Order.json").protocol_data,
         getFixture("Seaport", "bayc6206Order.json").protocol_data,
       ]);

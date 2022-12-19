@@ -70,7 +70,7 @@ describe("LooksRareAggregator class", () => {
       const order = getFixture("LooksRareV1", "bayc3683Order.json") as MakerOrderFromAPI;
       order.collectionAddress = "0x06012c8cf97bead5deae237070f9587f8e7a266d"; // CryptoKitties
 
-      await expect(aggregator.transformLooksRareV1Listings([order])).to.eventually.be.rejectedWith(
+      await expect(aggregator["transformLooksRareV1Listings"]([order])).to.eventually.be.rejectedWith(
         Error,
         "Collection is neither ERC-1155 nor ERC-721!"
       );
