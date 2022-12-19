@@ -31,16 +31,6 @@ const getConsiderationRecipients = (consideration: ConsiderationItem[]): Array<R
   }));
 };
 
-const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
-  return orders.reduce((sum: BigNumber, order: BasicOrder) => {
-    if (order.currency === constants.AddressZero) {
-      return BigNumber.from(order.price).add(sum);
-    } else {
-      return sum;
-    }
-  }, constants.Zero);
-};
-
 const validateConsiderationSameCurrency = (consideration: ConsiderationItem[]): void => {
   const isValid = consideration.every((considerationItem: ConsiderationItem) => {
     return considerationItem.token === consideration[0].token;
@@ -129,7 +119,6 @@ export default function transformSeaportListings(
   return {
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
-    value: calculateEthValue(orders),
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData,

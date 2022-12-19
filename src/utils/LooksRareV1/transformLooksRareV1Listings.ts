@@ -5,12 +5,6 @@ import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../.
 import abiIERC165 from "@looksrare/contracts-libs/abis/IERC165.json";
 import { INTERFACE_ID_ERC_1155, INTERFACE_ID_ERC_721 } from "../../constants/interfaceIds";
 
-const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
-  return orders.reduce((sum: BigNumber, order: BasicOrder) => {
-    return BigNumber.from(order.price).add(sum);
-  }, constants.Zero);
-};
-
 export default async function transformLooksRareV1Listings(
   chainId: SupportedChainId,
   signer: ethers.Signer,
@@ -79,7 +73,6 @@ export default async function transformLooksRareV1Listings(
   return {
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
-    value: calculateEthValue(orders),
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData: constants.HashZero,

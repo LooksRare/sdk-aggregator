@@ -9,6 +9,7 @@ import { executeERC20Orders } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
 import { ethers } from "hardhat";
 import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
+import { calculateEthValue } from "./utils/calculateEthValue";
 
 export class LooksRareAggregator {
   /**
@@ -119,17 +120,12 @@ export class LooksRareAggregator {
   }
 
   private async transformLooksRareV1Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
-    return await transformLooksRareV1Listings(
-      this.chainId,
-      this.signer,
-      listings,
-      this.addresses.LOOKSRARE_V1_PROXY
-    );
+    return await transformLooksRareV1Listings(this.chainId, this.signer, listings, this.addresses.LOOKSRARE_V1_PROXY);
   }
 
   private transactionEthValue(tradeData: TradeData[]): BigNumber {
     return tradeData.reduce(
-      (sum: BigNumber, singleTradeData: TradeData) => singleTradeData.value.add(sum),
+      (sum: BigNumber, singleTradeData: TradeData) => calculateEthValue(singleTradeData, this.addresses).add(sum),
       constants.Zero
     );
   }
