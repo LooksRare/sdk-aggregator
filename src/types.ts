@@ -43,8 +43,6 @@ export interface TradeData {
   selector: string;
   /** The amount of ETH to send to the marketplace */
   value: BigNumber;
-  /** The max fee basis point the buyer can accept */
-  maxFeeBp: BigNumber;
   /** The orders to be executed by the proxy */
   orders: BasicOrder[];
   /** Extra data for each order to be executed by the proxy */

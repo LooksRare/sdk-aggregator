@@ -7,7 +7,6 @@ import {
   OrderParameters,
 } from "@opensea/seaport-js/lib/types";
 import { BigNumber, constants, utils } from "ethers";
-import { feesByNetwork } from "../../constants/fees";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { EXTRA_DATA_SCHEMA, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA, Recipient } from "../../interfaces/seaport";
 import { BasicOrder, CollectionType, SupportedChainId, TradeData } from "../../types";
@@ -131,7 +130,6 @@ export default function transformSeaportListings(
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     value: calculateEthValue(orders),
-    maxFeeBp: feesByNetwork[chainId].SEAPORT_PROXY,
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData,
