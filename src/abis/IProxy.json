@@ -1,6 +1,4 @@
 [
   "error InvalidCaller()",
-  "error InvalidOrderLength()",
-  "error ZeroAddress()",
-  "function execute(tuple(address signer, address collection, uint8 collectionType, uint256[] tokenIds, uint256[] amounts, uint256 price, address currency, uint256 startTime, uint256 endTime, bytes signature)[] orders, bytes[] ordersExtraData, bytes extraData, address recipient, bool isAtomic, uint256 feeBp, address feeRecipient) payable"
+  "function execute(tuple(address signer, address collection, uint8 collectionType, uint256[] tokenIds, uint256[] amounts, uint256 price, address currency, uint256 startTime, uint256 endTime, bytes signature)[] orders, bytes[] ordersExtraData, bytes extraData, address recipient, bool isAtomic) payable"
 ]

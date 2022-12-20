@@ -1,4 +1,4 @@
 [
   "error UseLooksRareAggregatorDirectly()",
-  "function execute(tuple(uint256 amount, address currency)[] tokenTransfers, tuple(address proxy, bytes4 selector, uint256 value, uint256 maxFeeBp, tuple(address signer, address collection, uint8 collectionType, uint256[] tokenIds, uint256[] amounts, uint256 price, address currency, uint256 startTime, uint256 endTime, bytes signature)[] orders, bytes[] ordersExtraData, bytes extraData)[] tradeData, address recipient, bool isAtomic) payable"
+  "function execute(tuple(uint256 amount, address currency)[] tokenTransfers, tuple(address proxy, bytes4 selector, tuple(address signer, address collection, uint8 collectionType, uint256[] tokenIds, uint256[] amounts, uint256 price, address currency, uint256 startTime, uint256 endTime, bytes signature)[] orders, bytes[] ordersExtraData, bytes extraData)[] tradeData, address recipient, bool isAtomic) payable"
 ]

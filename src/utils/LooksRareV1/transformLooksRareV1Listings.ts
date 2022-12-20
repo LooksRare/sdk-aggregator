@@ -4,13 +4,6 @@ import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV1";
 import abiIERC165 from "@looksrare/contracts-libs/abis/IERC165.json";
 import { INTERFACE_ID_ERC_1155, INTERFACE_ID_ERC_721 } from "../../constants/interfaceIds";
-import { feesByNetwork } from "../../constants/fees";
-
-const calculateEthValue = (orders: BasicOrder[]): BigNumber => {
-  return orders.reduce((sum: BigNumber, order: BasicOrder) => {
-    return BigNumber.from(order.price).add(sum);
-  }, constants.Zero);
-};
 
 export default async function transformLooksRareV1Listings(
   chainId: SupportedChainId,
@@ -80,8 +73,6 @@ export default async function transformLooksRareV1Listings(
   return {
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
-    value: calculateEthValue(orders),
-    maxFeeBp: feesByNetwork[chainId].LOOKSRARE_V1_PROXY,
     orders,
     ordersExtraData: ordersExtraDataBytes,
     extraData: constants.HashZero,
