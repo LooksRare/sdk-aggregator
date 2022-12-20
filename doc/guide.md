@@ -22,11 +22,17 @@ options = {
 
 res = await fetch(`https://api.opensea.io/v2/orders/ethereum/seaport/listings?asset_contract_address=${collection}&token_ids=${seaportTokenId}&order_by=created_date&order_direction=desc`, options);
 responseJson = await res.json();
-const seaportOrder = responseJson.orders[0];
+const seaportOrder = responseJson.orders[0].protocol_data;
 
-// 3. Transform listings into LooksRare aggregator format
+// 3. Transform listings into LooksRare aggregator format (From the browser)
 const provider = new ethers.providers.Web3Provider(web3.currentProvider);
 const buyer = provider.getSigner();
+
+// 3. Transform listings into LooksRare aggregator format (From ethers.js directly)
+const privateKey = '0x......';
+const rpcUrl = 'https://rpc.ankr.com/eth';
+const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+const buyer = new ethers.Wallet(privateKey, provider);
 
 const chainId = 1;
 const aggregator = new LooksRareAggregator(signer, chainId);
