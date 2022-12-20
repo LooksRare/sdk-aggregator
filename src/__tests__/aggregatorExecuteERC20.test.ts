@@ -37,8 +37,8 @@ describe("LooksRareAggregator class", () => {
       SEAPORT_PROXY: contracts.seaportProxy.address,
     };
 
-    await contracts.looksRareAggregator.approve(CROSS_CHAIN_SEAPORT_ADDRESS, weth.address, ethers.constants.MaxUint256);
-    await contracts.looksRareAggregator.approve(CROSS_CHAIN_SEAPORT_ADDRESS, usdc.address, ethers.constants.MaxUint256);
+    await contracts.looksRareAggregator.approve(weth.address, CROSS_CHAIN_SEAPORT_ADDRESS, ethers.constants.MaxUint256);
+    await contracts.looksRareAggregator.approve(usdc.address, CROSS_CHAIN_SEAPORT_ADDRESS, ethers.constants.MaxUint256);
 
     const originalWETHBalance = ethers.utils.parseEther("2");
     const originalUSDCBalance = ethers.utils.parseUnits("500", 6);
