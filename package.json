@@ -17,7 +17,8 @@
     "test": "nyc hardhat test",
     "lint": "eslint --max-warnings 0 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
-    "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'"
+    "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
+    "release": "release-it --only-version --set-upstream"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,yaml,yml}": "yarn format:write"
@@ -62,6 +63,7 @@
     "nyc": "^15.1.0",
     "prettier": "^2.6.2",
     "prettier-plugin-solidity": "^1.0.0-beta.24",
+    "release-it": "^15.6.0",
     "rollup": "^2.79.0",
     "rollup-plugin-bundle-size": "^1.0.3",
     "rollup-plugin-copy": "^3.4.0",
