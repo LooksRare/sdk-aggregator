@@ -8,6 +8,10 @@
     "dist"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "doc": "typedoc --plugin typedoc-plugin-markdown",
     "prebuild": "rm -rf ./dist && rm -rf artifacts && rm -rf typechain",
@@ -18,6 +22,7 @@
     "lint": "eslint --max-warnings 0 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
+    "prepublishOnly": "yarn compile",
     "release": "release-it --only-version --set-upstream"
   },
   "lint-staged": {
@@ -76,6 +81,6 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@looksrare/contracts-aggregator": "LooksRare/aggregator"
+    "@looksrare/contracts-aggregator": "0.0.2"
   }
 }

@@ -1,5 +1,5 @@
 import { BasicOrder, CollectionType, SupportedChainId, TradeData } from "../../types";
-import { BigNumber, constants, Contract, ethers, utils } from "ethers";
+import { constants, Contract, ethers, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV1";
 import abiIERC165 from "@looksrare/contracts-libs/abis/IERC165.json";
