@@ -76,6 +76,6 @@
     "typescript": "^4.7.3"
   },
   "dependencies": {
-    "@looksrare/contracts-aggregator": "LooksRare/aggregator"
+    "@looksrare/contracts-aggregator": "0.0.2"
   }
 }
