@@ -6,7 +6,7 @@ import {
   Order,
   OrderParameters,
 } from "@opensea/seaport-js/lib/types";
-import { constants, utils } from "ethers";
+import { utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { EXTRA_DATA_SCHEMA, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA, Recipient } from "../../interfaces/seaport";
 import { BasicOrder, CollectionType, SupportedChainId, TradeData } from "../../types";
