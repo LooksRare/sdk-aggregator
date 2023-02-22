@@ -1,6 +1,5 @@
 [
   "constructor(address _aggregator)",
-  "error ERC20TransferFail()",
   "error ERC20TransferFromFail()",
   "error NotAContract()",
   "error UseLooksRareAggregatorDirectly()",
