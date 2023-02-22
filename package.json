@@ -18,6 +18,7 @@
     "lint": "eslint --max-warnings 0 'src/**/*.{js,jsx,ts,tsx}'",
     "format:check": "prettier --check 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx,json,yaml,yml,md}'",
+    "prepublishOnly": "yarn build",
     "release": "release-it --only-version --set-upstream"
   },
   "lint-staged": {
