@@ -59,8 +59,10 @@ const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
 };
 
 export const setUpContracts = async (): Promise<Mocks> => {
+  const signers = await getSigners();
+
   // Deploy contracts
-  const looksRareAggregator = (await deploy("LooksRareAggregator")) as LooksRareAggregator;
+  const looksRareAggregator = (await deploy("LooksRareAggregator", signers.owner.address)) as LooksRareAggregator;
   const erc20EnabledLooksRareAggregator = (await deploy(
     "ERC20EnabledLooksRareAggregator",
     looksRareAggregator.address
@@ -88,7 +90,6 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const usdc = (await deploy("MockERC20", "MockUSDC", "USDC", 6)) as MockERC20;
 
   // Setup balances
-  const signers = await getSigners();
   const promises = [];
   for (let i = 0; i < NB_NFT_PER_USER; i++) {
     promises.push(collection1.mint(signers.user1.address, i));
