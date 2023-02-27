@@ -1,7 +1,13 @@
 import { BasicOrder, SupportedChainId, TradeData } from "../../types";
 import { constants, ethers, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
-import { MakerOrderFromAPI, MerkleTree, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA, QuoteType } from "../../interfaces/LooksRareV2";
+import {
+  MakerOrderFromAPI,
+  MerkleTree,
+  OrderExtraData,
+  ORDER_EXTRA_DATA_SCHEMA,
+  QuoteType,
+} from "../../interfaces/LooksRareV2";
 
 export default async function transformLooksRareV2Listings(
   chainId: SupportedChainId,

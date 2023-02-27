@@ -100,6 +100,7 @@ describe("LooksRareAggregator class", () => {
     const { tradeData, actions }: TransformListingsOutput = await aggregator.transformListings({
       seaport: [order1, order2, order3],
       looksRareV1: [],
+      looksRareV2: [],
     });
 
     await Promise.all(actions.map((action) => action()));

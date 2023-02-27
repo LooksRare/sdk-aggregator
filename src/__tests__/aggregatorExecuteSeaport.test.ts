@@ -58,7 +58,11 @@ describe("LooksRareAggregator class", () => {
       maker.address
     );
     const order = await executeAllActions();
-    const { tradeData } = await aggregator.transformListings({ seaport: [order], looksRareV1: [] });
+    const { tradeData } = await aggregator.transformListings({
+      seaport: [order],
+      looksRareV1: [],
+      looksRareV2: [],
+    });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
@@ -123,7 +127,11 @@ describe("LooksRareAggregator class", () => {
       maker.address
     );
     const order = await executeAllActions();
-    const { tradeData } = await aggregator.transformListings({ seaport: [order], looksRareV1: [] });
+    const { tradeData } = await aggregator.transformListings({
+      seaport: [order],
+      looksRareV1: [],
+      looksRareV2: [],
+    });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 

@@ -39,6 +39,7 @@ const aggregator = new LooksRareAggregator(signer, chainId);
 const { tradeData, actions }: TransformListingsOutput = await aggregator.transformListings({
   seaport: [seaportOrder],
   looksRareV1: [looksRareOrder],
+  looksRareV2: [],
 });
 
 // Actions are required when the orders are paid in ERC-20 tokens and the buyer has not granted
