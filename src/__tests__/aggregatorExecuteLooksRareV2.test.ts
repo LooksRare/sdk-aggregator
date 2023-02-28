@@ -49,6 +49,7 @@ describe("LooksRareAggregator class", () => {
       globalNonce: 0,
       subsetNonce: 0,
       orderNonce: 0,
+      strategy: 0,
       strategyId: 0,
       collectionType,
       collection: collection.address,
@@ -59,7 +60,7 @@ describe("LooksRareAggregator class", () => {
       price: constants.WeiPerEther, // 1 ETH
       itemIds,
       amounts,
-      additionalParameters: [],
+      additionalParameters: constants.HashZero,
     };
     // const { domain, value, type } = generateMakerOrderTypedData(maker.address, chainId, makerOrder);
     // TODO: Use SDK V2's

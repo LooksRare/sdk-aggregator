@@ -57,7 +57,12 @@ export interface OrderExtraData {
 }
 
 export const ORDER_EXTRA_DATA_SCHEMA = [
-  "MerkleTree",
+  `
+    tuple(
+      bytes32 root,
+      tuple(bytes32 value, uint8 position)[] proof
+    ) merkleTree
+  `,
   "uint256",
   "uint256",
   "uint256",
