@@ -61,16 +61,7 @@ export default async function transformLooksRareV2Listings(
   const abiCoder = utils.defaultAbiCoder;
 
   const ordersExtraDataBytes: string[] = ordersExtraData.map((orderExtraData: OrderExtraData) =>
-    abiCoder.encode(ORDER_EXTRA_DATA_SCHEMA, [
-      orderExtraData.merkleTree,
-      orderExtraData.globalNonce,
-      orderExtraData.subsetNonce,
-      orderExtraData.orderNonce,
-      orderExtraData.strategyId,
-      orderExtraData.price,
-      orderExtraData.takerBidAdditionalParameters,
-      orderExtraData.makerAskAdditionalParameters,
-    ])
+    abiCoder.encode(ORDER_EXTRA_DATA_SCHEMA, [orderExtraData])
   );
 
   return {

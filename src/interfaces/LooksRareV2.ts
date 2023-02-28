@@ -59,15 +59,17 @@ export interface OrderExtraData {
 export const ORDER_EXTRA_DATA_SCHEMA = [
   `
     tuple(
-      bytes32 root,
-      tuple(bytes32 value, uint8 position)[] proof
-    ) merkleTree
+      tuple(
+        bytes32 root,
+        tuple(bytes32 value, uint8 position)[] proof
+      ) merkleTree,
+      uint256 globalNonce,
+      uint256 subsetNonce,
+      uint256 orderNonce,
+      uint256 strategyId,
+      uint256 price,
+      bytes takerBidAdditionalParameters,
+      bytes makerAskAdditionalParameters
+    ) orderExtraData
   `,
-  "uint256",
-  "uint256",
-  "uint256",
-  "uint256",
-  "uint256",
-  "bytes",
-  "bytes",
 ];
