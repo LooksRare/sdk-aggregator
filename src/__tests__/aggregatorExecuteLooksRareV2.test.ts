@@ -60,8 +60,7 @@ describe("LooksRareAggregator class", () => {
       amounts,
       additionalParameters: constants.HashZero,
     };
-    // const { domain, value, type } = generateMakerOrderTypedData(maker.address, chainId, makerOrder);
-    // TODO: Use SDK V2's
+
     const domain = {
       name: "LooksRareProtocol",
       version: "2",
@@ -89,7 +88,6 @@ describe("LooksRareAggregator class", () => {
       ],
     };
 
-    // TODO end
     const signature = await maker._signTypedData(domain, type, makerOrder);
 
     // Fake an order from the API
@@ -123,16 +121,7 @@ describe("LooksRareAggregator class", () => {
     const collection = contracts.collection1;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const tx = await executeLooksRareV2Order(
-      signers.user1,
-      contracts.collection1,
-      CollectionType.ERC721,
-      ["1"],
-      ["1"]
-      // "0xC20E0CeAD98abBBEb626B77efb8Dc1E5D781f90c",
-      // TODO: When V2 SDK is ready
-      // addressesByNetwork[SupportedChainId.GOERLI].TRANSFER_MANAGER_V2
-    );
+    const tx = await executeLooksRareV2Order(signers.user1, contracts.collection1, CollectionType.ERC721, ["1"], ["1"]);
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
@@ -148,16 +137,7 @@ describe("LooksRareAggregator class", () => {
     const collection = contracts.collection3;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const tx = await executeLooksRareV2Order(
-      signers.user3,
-      collection,
-      CollectionType.ERC1155,
-      ["3"],
-      ["2"]
-      // "0xC20E0CeAD98abBBEb626B77efb8Dc1E5D781f90c",
-      // TODO: When V2 SDK is ready
-      // addressesByNetwork[SupportedChainId.GOERLI].TRANSFER_MANAGER_ERC1155
-    );
+    const tx = await executeLooksRareV2Order(signers.user3, collection, CollectionType.ERC1155, ["3"], ["2"]);
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 

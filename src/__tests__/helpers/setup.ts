@@ -69,10 +69,6 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
   const usdc = (await deploy("MockERC20", "MockUSDC", "USDC", 6)) as MockERC20;
 
-  // transferManager = new TransferManager(_owner);
-  // royaltyFeeRegistry = new MockRoyaltyFeeRegistry(_owner, 9500);
-  // creatorFeeManager = new CreatorFeeManagerWithRebates(address(royaltyFeeRegistry));
-
   // // Operations
   const transferManager = (await deploy("TransferManager", signers.owner.address)) as TransferManager;
   const looksRareProtocol = (await deploy(
@@ -85,7 +81,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   await transferManager.connect(signers.owner).allowOperator(looksRareProtocol.address);
   await looksRareProtocol.connect(signers.owner).updateCurrencyStatus(ethers.constants.AddressZero, true);
   await looksRareProtocol.connect(signers.owner).updateCurrencyStatus(weth.address, true);
-  // await looksRareProtocol.updateCreatorFeeManager(address(creatorFeeManager));
+  // TODO: do we need to update creator fee manager?
 
   // Deploy contracts
   const looksRareAggregator = (await deploy("LooksRareAggregator", signers.owner.address)) as LooksRareAggregator;
