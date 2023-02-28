@@ -36,6 +36,7 @@ describe("LooksRareAggregator class", () => {
       LOOKSRARE_V2_PROXY: contracts.looksRareV2Proxy.address,
       SEAPORT_PROXY: contracts.seaportProxy.address,
     };
+
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
     const blockNumber = await ethers.provider.getBlockNumber();
@@ -48,17 +49,17 @@ describe("LooksRareAggregator class", () => {
       globalNonce: 0,
       subsetNonce: 0,
       orderNonce: 0,
-      signer: maker.address,
-      collection: collection.address,
+      strategyId: 0,
       collectionType,
-      itemIds,
-      amounts,
-      price: constants.WeiPerEther, // 1 ETH
+      collection: collection.address,
       currency: constants.AddressZero, // TODO: Check WETH
-      strategy: 0,
+      signer: maker.address,
       startTime: now,
       endTime: now + 86400, // 1 day validity
-      additionalParameters: constants.HashZero,
+      price: constants.WeiPerEther, // 1 ETH
+      itemIds,
+      amounts,
+      additionalParameters: [],
     };
     // const { domain, value, type } = generateMakerOrderTypedData(maker.address, chainId, makerOrder);
     // TODO: Use SDK V2's
