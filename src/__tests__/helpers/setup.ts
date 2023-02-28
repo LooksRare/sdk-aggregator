@@ -81,7 +81,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   )) as SeaportProxy;
   const looksRareV2Proxy = (await deploy(
     "LooksRareV2Proxy",
-    addressesByNetwork[SupportedChainId.MAINNET].EXCHANGE,
+    "0x35C2215F2FFe8917B06454eEEaba189877F200cf",
     looksRareAggregator.address
   )) as LooksRareV2Proxy;
 
