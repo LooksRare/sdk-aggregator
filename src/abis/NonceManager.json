@@ -1,0 +1,13 @@
+[
+  "error LengthsInvalid()",
+  "event NewBidAskNonces(address user, uint256 bidNonce, uint256 askNonce)",
+  "event OrderNoncesCancelled(address user, uint256[] orderNonces)",
+  "event SubsetNoncesCancelled(address user, uint256[] subsetNonces)",
+  "function MAGIC_VALUE_ORDER_NONCE_EXECUTED() view returns (bytes32)",
+  "function cancelOrderNonces(uint256[] orderNonces)",
+  "function cancelSubsetNonces(uint256[] subsetNonces)",
+  "function incrementBidAskNonces(bool bid, bool ask)",
+  "function userBidAskNonces(address) view returns (uint256 bidNonce, uint256 askNonce)",
+  "function userOrderNonce(address, uint256) view returns (bytes32)",
+  "function userSubsetNonce(address, uint256) view returns (bool)"
+]

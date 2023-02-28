@@ -1,0 +1,5 @@
+[
+  "error BundleEIP2981NotAllowed(address collection)",
+  "function royaltyFeeRegistry() view returns (address royaltyFeeRegistry)",
+  "function viewCreatorFeeInfo(address collection, uint256 price, uint256[] itemIds) view returns (address creator, uint256 creatorFeeAmount)"
+]

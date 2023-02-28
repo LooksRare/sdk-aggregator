@@ -1,0 +1,11 @@
+[
+  "error OperatorAlreadyAllowed()",
+  "error OperatorAlreadyApprovedByUser()",
+  "error OperatorNotAllowed()",
+  "error OperatorNotApprovedByUser()",
+  "error TransferCallerInvalid()",
+  "event ApprovalsGranted(address user, address[] operators)",
+  "event ApprovalsRemoved(address user, address[] operators)",
+  "event OperatorAllowed(address operator)",
+  "event OperatorRemoved(address operator)"
+]

@@ -1,7 +1,7 @@
 [
   "constructor(address _owner)",
   "error AlreadySet()",
-  "error ERC1155SafeBatchTransferFrom()",
+  "error ERC1155SafeBatchTransferFromFail()",
   "error ERC20ApprovalFail()",
   "error ERC20TransferFail()",
   "error ERC721TransferFromFail()",

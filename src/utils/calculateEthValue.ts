@@ -7,7 +7,7 @@ export const calculateEthValue = (tradeData: TradeData, addresses: Addresses): B
     return tradeData.orders.reduce((sum: BigNumber, order: BasicOrder) => {
       return BigNumber.from(order.price).add(sum);
     }, constants.Zero);
-  } else if (tradeData.proxy === addresses.SEAPORT_PROXY) {
+  } else if (tradeData.proxy === addresses.SEAPORT_PROXY || tradeData.proxy === addresses.LOOKSRARE_V2_PROXY) {
     return tradeData.orders.reduce((sum: BigNumber, order: BasicOrder) => {
       if (order.currency === constants.AddressZero) {
         return BigNumber.from(order.price).add(sum);

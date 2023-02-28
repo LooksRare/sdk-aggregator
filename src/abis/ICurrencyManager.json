@@ -1,0 +1,3 @@
+[
+  "event CurrencyStatusUpdated(address currency, bool isAllowed)"
+]

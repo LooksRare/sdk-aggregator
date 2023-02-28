@@ -1,0 +1,14 @@
+[
+  "error ChainIdInvalid()",
+  "error NewGasLimitETHTransferTooLow()",
+  "error NoncesInvalid()",
+  "error SameDomainSeparator()",
+  "event AffiliatePayment(address affiliate, address currency, uint256 affiliateFee)",
+  "event NewDomainSeparator()",
+  "event NewGasLimitETHTransfer(uint256 gasLimitETHTransfer)",
+  "event TakerAsk(tuple(bytes32 orderHash, uint256 orderNonce, bool isNonceInvalidated) nonceInvalidationParameters, address askUser, address bidUser, uint256 strategyId, address currency, address collection, uint256[] itemIds, uint256[] amounts, address[2] feeRecipients, uint256[3] feeAmounts)",
+  "event TakerBid(tuple(bytes32 orderHash, uint256 orderNonce, bool isNonceInvalidated) nonceInvalidationParameters, address bidUser, address bidRecipient, uint256 strategyId, address currency, address collection, uint256[] itemIds, uint256[] amounts, address[2] feeRecipients, uint256[3] feeAmounts)",
+  "function executeMultipleTakerBids(tuple(address recipient, bytes additionalParameters)[] takerBids, tuple(uint8 quoteType, uint256 globalNonce, uint256 subsetNonce, uint256 orderNonce, uint256 strategyId, uint8 collectionType, address collection, address currency, address signer, uint256 startTime, uint256 endTime, uint256 price, uint256[] itemIds, uint256[] amounts, bytes additionalParameters)[] makerAsks, bytes[] makerSignatures, tuple(bytes32 root, tuple(bytes32 value, uint8 position)[] proof)[] merkleTrees, address affiliate, bool isAtomic) payable",
+  "function executeTakerAsk(tuple(address recipient, bytes additionalParameters) takerAsk, tuple(uint8 quoteType, uint256 globalNonce, uint256 subsetNonce, uint256 orderNonce, uint256 strategyId, uint8 collectionType, address collection, address currency, address signer, uint256 startTime, uint256 endTime, uint256 price, uint256[] itemIds, uint256[] amounts, bytes additionalParameters) makerBid, bytes makerSignature, tuple(bytes32 root, tuple(bytes32 value, uint8 position)[] proof) merkleTree, address affiliate)",
+  "function executeTakerBid(tuple(address recipient, bytes additionalParameters) takerBid, tuple(uint8 quoteType, uint256 globalNonce, uint256 subsetNonce, uint256 orderNonce, uint256 strategyId, uint8 collectionType, address collection, address currency, address signer, uint256 startTime, uint256 endTime, uint256 price, uint256[] itemIds, uint256[] amounts, bytes additionalParameters) makerAsk, bytes makerSignature, tuple(bytes32 root, tuple(bytes32 value, uint8 position)[] proof) merkleTree, address affiliate) payable"
+]

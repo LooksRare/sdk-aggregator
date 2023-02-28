@@ -23,8 +23,7 @@ describe("LooksRareAggregator class", () => {
     collection: Contract,
     collectionType: CollectionType,
     itemIds: [string],
-    amounts: [string],
-    transferManager: string
+    amounts: [string]
   ): Promise<ContractTransaction> => {
     const chainId = SupportedChainId.GOERLI;
     const signers = await getSigners();
@@ -49,7 +48,6 @@ describe("LooksRareAggregator class", () => {
       globalNonce: 0,
       subsetNonce: 0,
       orderNonce: 0,
-      strategy: 0,
       strategyId: 0,
       collectionType,
       collection: collection.address,
@@ -67,8 +65,8 @@ describe("LooksRareAggregator class", () => {
     const domain = {
       name: "LooksRareProtocol",
       version: "2",
-      chainId,
-      verifyingContract: "0x35C2215F2FFe8917B06454eEEaba189877F200cf",
+      chainId: 1,
+      verifyingContract: contracts.looksRareProtocol.address,
     };
 
     const type: EIP712TypedData = {
@@ -98,6 +96,7 @@ describe("LooksRareAggregator class", () => {
     const makerOrderFromAPI: MakerOrderFromAPI = {
       status: "VALID",
       signature,
+      strategy: makerOrder.strategyId,
       ...makerOrder,
     };
 
@@ -114,7 +113,8 @@ describe("LooksRareAggregator class", () => {
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
 
-    await collection.connect(maker).setApprovalForAll(transferManager, true);
+    await contracts.transferManager.connect(maker).grantApprovals([contracts.looksRareProtocol.address]);
+    await collection.connect(maker).setApprovalForAll(contracts.transferManager.address, true);
 
     return await aggregator.execute(tradeData, buyer.address, true);
   };
@@ -128,8 +128,8 @@ describe("LooksRareAggregator class", () => {
       contracts.collection1,
       CollectionType.ERC721,
       ["1"],
-      ["1"],
-      "0xC20E0CeAD98abBBEb626B77efb8Dc1E5D781f90c",
+      ["1"]
+      // "0xC20E0CeAD98abBBEb626B77efb8Dc1E5D781f90c",
       // TODO: When V2 SDK is ready
       // addressesByNetwork[SupportedChainId.GOERLI].TRANSFER_MANAGER_V2
     );
@@ -153,8 +153,8 @@ describe("LooksRareAggregator class", () => {
       collection,
       CollectionType.ERC1155,
       ["3"],
-      ["2"],
-      "0xC20E0CeAD98abBBEb626B77efb8Dc1E5D781f90c",
+      ["2"]
+      // "0xC20E0CeAD98abBBEb626B77efb8Dc1E5D781f90c",
       // TODO: When V2 SDK is ready
       // addressesByNetwork[SupportedChainId.GOERLI].TRANSFER_MANAGER_ERC1155
     );

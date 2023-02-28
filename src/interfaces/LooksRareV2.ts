@@ -1,4 +1,3 @@
-import { MakerOrderWithSignature } from "@looksrare/sdk";
 import { BigNumberish } from "ethers";
 import { CollectionType } from "../types";
 

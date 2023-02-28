@@ -1,0 +1,8 @@
+[
+  "error NotV2Strategy()",
+  "error StrategyHasNoSelector()",
+  "error StrategyNotUsed()",
+  "error StrategyProtocolFeeTooHigh()",
+  "event NewStrategy(uint256 strategyId, uint16 standardProtocolFeeBp, uint16 minTotalFeeBp, uint16 maxProtocolFeeBp, bytes4 selector, bool isMakerBid, address implementation)",
+  "event StrategyUpdated(uint256 strategyId, bool isActive, uint16 standardProtocolFeeBp, uint16 minTotalFeeBp)"
+]

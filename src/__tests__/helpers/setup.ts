@@ -14,6 +14,8 @@ import type { MockERC20 } from "../../../typechain/src/contracts/tests/MockERC20
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { CROSS_CHAIN_SEAPORT_ADDRESS } from "@opensea/seaport-js/lib/constants";
 import { addressesByNetwork, SupportedChainId } from "@looksrare/sdk";
+import { TransferManager } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
+import { LooksRareProtocol } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 
 chai.use(chaiAsPromised);
 
@@ -27,6 +29,8 @@ export interface Signers {
 }
 
 export interface Mocks {
+  looksRareProtocol: LooksRareProtocol;
+  transferManager: TransferManager;
   looksRareAggregator: LooksRareAggregator;
   erc20EnabledLooksRareAggregator: ERC20EnabledLooksRareAggregator;
   looksRareProxy: LooksRareProxy;
@@ -62,6 +66,26 @@ const deploy = async (name: string, ...args: any[]): Promise<Contract> => {
 
 export const setUpContracts = async (): Promise<Mocks> => {
   const signers = await getSigners();
+  const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
+  const usdc = (await deploy("MockERC20", "MockUSDC", "USDC", 6)) as MockERC20;
+
+  // transferManager = new TransferManager(_owner);
+  // royaltyFeeRegistry = new MockRoyaltyFeeRegistry(_owner, 9500);
+  // creatorFeeManager = new CreatorFeeManagerWithRebates(address(royaltyFeeRegistry));
+
+  // // Operations
+  const transferManager = (await deploy("TransferManager", signers.owner.address)) as TransferManager;
+  const looksRareProtocol = (await deploy(
+    "LooksRareProtocol",
+    signers.owner.address,
+    signers.owner.address,
+    transferManager.address,
+    weth.address
+  )) as LooksRareProtocol;
+  await transferManager.connect(signers.owner).allowOperator(looksRareProtocol.address);
+  await looksRareProtocol.connect(signers.owner).updateCurrencyStatus(ethers.constants.AddressZero, true);
+  await looksRareProtocol.connect(signers.owner).updateCurrencyStatus(weth.address, true);
+  // await looksRareProtocol.updateCreatorFeeManager(address(creatorFeeManager));
 
   // Deploy contracts
   const looksRareAggregator = (await deploy("LooksRareAggregator", signers.owner.address)) as LooksRareAggregator;
@@ -81,7 +105,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   )) as SeaportProxy;
   const looksRareV2Proxy = (await deploy(
     "LooksRareV2Proxy",
-    "0x35C2215F2FFe8917B06454eEEaba189877F200cf",
+    looksRareProtocol.address,
     looksRareAggregator.address
   )) as LooksRareV2Proxy;
 
@@ -94,8 +118,6 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const collection2 = (await deploy("MockERC721", "Collection2", "COL2")) as MockERC721;
   const collection3 = (await deploy("MockERC1155")) as MockERC1155;
   const collection4 = (await deploy("MockERC721", "Collection4", "COL4")) as MockERC721;
-  const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
-  const usdc = (await deploy("MockERC20", "MockUSDC", "USDC", 6)) as MockERC20;
 
   // Setup balances
   const promises = [];
@@ -108,6 +130,8 @@ export const setUpContracts = async (): Promise<Mocks> => {
   await Promise.all(promises);
 
   return {
+    looksRareProtocol,
+    transferManager,
     looksRareAggregator,
     erc20EnabledLooksRareAggregator,
     looksRareProxy,
