@@ -1,0 +1,8 @@
+[
+  "constructor(address _marketplace, address _aggregator)",
+  "error InvalidCaller()",
+  "error InvalidOrderLength()",
+  "function aggregator() view returns (address)",
+  "function execute(tuple(address signer, address collection, uint8 collectionType, uint256[] tokenIds, uint256[] amounts, uint256 price, address currency, uint256 startTime, uint256 endTime, bytes signature)[] orders, bytes[] ordersExtraData, bytes extraData, address recipient, bool isAtomic) payable",
+  "function marketplace() view returns (address)"
+]
