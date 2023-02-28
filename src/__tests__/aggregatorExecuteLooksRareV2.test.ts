@@ -5,9 +5,11 @@ import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { CollectionType, SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
-import { constants, Contract, ContractTransaction } from "ethers";
+import { constants, Contract, ContractTransaction, TypedDataField } from "ethers";
 import { MakerOrderFromAPI, QuoteType } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+
+type EIP712TypedData = Record<string, Array<TypedDataField>>;
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -58,8 +60,37 @@ describe("LooksRareAggregator class", () => {
       endTime: now + 86400, // 1 day validity
       additionalParameters: constants.HashZero,
     };
-    const { domain, value, type } = generateMakerOrderTypedData(maker.address, chainId, makerOrder);
-    const signature = await maker._signTypedData(domain, type, value);
+    // const { domain, value, type } = generateMakerOrderTypedData(maker.address, chainId, makerOrder);
+    // TODO: Use SDK V2's
+    const domain = {
+      name: "LooksRareProtocol",
+      version: "2",
+      chainId,
+      verifyingContract: "0x35C2215F2FFe8917B06454eEEaba189877F200cf",
+    };
+
+    const type: EIP712TypedData = {
+      Maker: [
+        { name: "quoteType", type: "uint8" },
+        { name: "globalNonce", type: "uint256" },
+        { name: "subsetNonce", type: "uint256" },
+        { name: "orderNonce", type: "uint256" },
+        { name: "strategyId", type: "uint256" },
+        { name: "collectionType", type: "uint8" },
+        { name: "collection", type: "address" },
+        { name: "currency", type: "address" },
+        { name: "signer", type: "address" },
+        { name: "startTime", type: "uint256" },
+        { name: "endTime", type: "uint256" },
+        { name: "price", type: "uint256" },
+        { name: "itemIds", type: "uint256[]" },
+        { name: "amounts", type: "uint256[]" },
+        { name: "additionalParameters", type: "bytes" },
+      ],
+    };
+
+    // TODO end
+    const signature = await maker._signTypedData(domain, type, makerOrder);
 
     // Fake an order from the API
     const makerOrderFromAPI: MakerOrderFromAPI = {
