@@ -5,10 +5,10 @@ import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { CollectionType, SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
-import { constants, Contract, ContractTransaction, TypedDataField } from "ethers";
+import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI, QuoteType } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { LooksRare, utils } from "@looksrare/sdk-v2";
+import { LooksRare, utils, Maker } from "@looksrare/sdk-v2";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -41,8 +41,7 @@ describe("LooksRareAggregator class", () => {
     const block = await ethers.provider.getBlock(blockNumber);
     const now = block.timestamp;
 
-    const makerOrder = {
-    // const makerOrder: MakerOrder = {
+    const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
       globalNonce: 0,
       subsetNonce: 0,
