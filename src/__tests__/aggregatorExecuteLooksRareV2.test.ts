@@ -21,6 +21,7 @@ describe("LooksRareAggregator class", () => {
     maker: SignerWithAddress,
     collection: Contract,
     collectionType: CollectionType,
+    currency: string,
     itemIds: [string],
     amounts: [string]
   ): Promise<ContractTransaction> => {
@@ -49,7 +50,7 @@ describe("LooksRareAggregator class", () => {
       strategyId: 0,
       collectionType,
       collection: collection.address,
-      currency: constants.AddressZero, // TODO: Check WETH
+      currency: currency,
       signer: maker.address,
       startTime: now,
       endTime: now + 86400, // 1 day validity
@@ -92,11 +93,18 @@ describe("LooksRareAggregator class", () => {
     return await aggregator.execute(tradeData, buyer.address, true);
   };
 
-  it("can execute LooksRare V2 orders (ERC721)", async () => {
+  it("can execute LooksRare V2 orders (Buy ERC721 with ETH)", async () => {
     const collection = contracts.collection1;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const tx = await executeLooksRareV2Order(signers.user1, contracts.collection1, CollectionType.ERC721, ["1"], ["1"]);
+    const tx = await executeLooksRareV2Order(
+      signers.user1,
+      contracts.collection1,
+      CollectionType.ERC721,
+      constants.AddressZero,
+      ["1"],
+      ["1"]
+    );
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
@@ -108,11 +116,18 @@ describe("LooksRareAggregator class", () => {
     expect(balanceBeforeTx.sub(balanceAfterTx).sub(txFee)).to.equal(constants.WeiPerEther);
   });
 
-  it("can execute LooksRare V2 orders (ERC1155)", async () => {
+  it("can execute LooksRare V2 orders (Buy ERC1155 with ETH)", async () => {
     const collection = contracts.collection3;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const tx = await executeLooksRareV2Order(signers.user3, collection, CollectionType.ERC1155, ["3"], ["2"]);
+    const tx = await executeLooksRareV2Order(
+      signers.user3,
+      collection,
+      CollectionType.ERC1155,
+      constants.AddressZero,
+      ["3"],
+      ["2"]
+    );
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
