@@ -35,6 +35,7 @@ describe("LooksRareAggregator class", () => {
       ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
       SEAPORT_PROXY: contracts.seaportProxy.address,
+      LOOKSRARE_V2_PROXY: contracts.looksRareV2Proxy.address,
     };
 
     await contracts.looksRareAggregator.approve(weth.address, CROSS_CHAIN_SEAPORT_ADDRESS, ethers.constants.MaxUint256);

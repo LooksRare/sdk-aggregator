@@ -27,6 +27,7 @@ describe("LooksRareAggregator class", () => {
       ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
       SEAPORT_PROXY: contracts.seaportProxy.address,
+      LOOKSRARE_V2_PROXY: contracts.looksRareV2Proxy.address,
     };
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
@@ -95,6 +96,7 @@ describe("LooksRareAggregator class", () => {
       ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
       LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
       SEAPORT_PROXY: contracts.seaportProxy.address,
+      LOOKSRARE_V2_PROXY: contracts.looksRareV2Proxy.address,
     };
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
