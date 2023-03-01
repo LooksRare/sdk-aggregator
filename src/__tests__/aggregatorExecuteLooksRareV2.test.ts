@@ -102,7 +102,7 @@ describe("LooksRareAggregator class", () => {
     const buyer = signers.buyer;
     const tx = await executeLooksRareV2Order(
       signers.user1,
-      contracts.collection1,
+      collection,
       CollectionType.ERC721,
       constants.AddressZero,
       ["1"],
@@ -157,7 +157,7 @@ describe("LooksRareAggregator class", () => {
 
     await executeLooksRareV2Order(
       signers.user1,
-      contracts.collection1,
+      collection,
       CollectionType.ERC721,
       contracts.weth.address,
       ["1"],
@@ -166,6 +166,35 @@ describe("LooksRareAggregator class", () => {
 
     expect(await collection.ownerOf(1)).to.equal(buyer.address);
     expect(await collection.balanceOf(buyer.address)).to.equal(1);
+
+    const balanceAfterTx = await contracts.weth.balanceOf(buyer.address);
+    expect(balanceBeforeTx.sub(balanceAfterTx)).to.equal(constants.WeiPerEther);
+  });
+
+  it("can execute LooksRare V2 orders (Buy ERC1155 with WETH)", async () => {
+    const collection = contracts.collection3;
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+
+    const balanceBeforeTx = ethers.utils.parseEther("2");
+    await contracts.weth.mint(buyer.address, balanceBeforeTx);
+
+    await contracts.looksRareAggregator.approve(
+      contracts.weth.address,
+      contracts.looksRareProtocol.address,
+      ethers.constants.MaxUint256
+    );
+
+    await executeLooksRareV2Order(
+      signers.user3,
+      collection,
+      CollectionType.ERC1155,
+      contracts.weth.address,
+      ["3"],
+      ["2"]
+    );
+
+    expect(await collection.balanceOf(buyer.address, 3)).to.equal(2);
 
     const balanceAfterTx = await contracts.weth.balanceOf(buyer.address);
     expect(balanceBeforeTx.sub(balanceAfterTx)).to.equal(constants.WeiPerEther);
