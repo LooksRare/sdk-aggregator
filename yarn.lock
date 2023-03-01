@@ -1023,7 +1023,7 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@looksrare/contracts-aggregator@0.0.8":
+"@looksrare/contracts-aggregator@^0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@looksrare/contracts-aggregator/-/contracts-aggregator-0.0.8.tgz#1596f31c6cbd9b07c02912d8646f5f7f777f63b4"
   integrity sha512-2T3NcxMcnr+QWFeUsbDh7QFysfUV9Q4bwDSGNwcOcqU75iHR7oZO6EQPeYTKv/p5IksdXBlRRSem6vE7NuI9Sw==
