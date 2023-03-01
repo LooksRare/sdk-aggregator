@@ -1,4 +1,4 @@
-import { BigNumberish } from "ethers";
+import { BigNumberish, BytesLike } from "ethers";
 import { CollectionType } from "../types";
 
 export enum QuoteType {
@@ -21,11 +21,11 @@ export interface MakerOrderFromAPI {
   startTime: BigNumberish;
   endTime: BigNumberish;
   price: BigNumberish;
-  additionalParameters: string;
+  additionalParameters: BytesLike;
   signature: string;
   status: OrderStatus;
-  itemIds: [BigNumberish];
-  amounts: [BigNumberish];
+  itemIds: BigNumberish[];
+  amounts: BigNumberish[];
 }
 
 enum MerkleTreeNodePosition {
@@ -51,8 +51,8 @@ export interface OrderExtraData {
   orderNonce: BigNumberish;
   strategyId: BigNumberish;
   price: BigNumberish;
-  takerBidAdditionalParameters: string;
-  makerAskAdditionalParameters: string;
+  takerBidAdditionalParameters: BytesLike;
+  makerAskAdditionalParameters: BytesLike;
 }
 
 export const ORDER_EXTRA_DATA_SCHEMA = [
