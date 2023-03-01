@@ -74,7 +74,7 @@ describe("LooksRareAggregator class", () => {
       ...makerOrder,
     };
 
-    const { tradeData } = await aggregator.transformListings({
+    const { tradeData, actions } = await aggregator.transformListings({
       seaport: [],
       looksRareV1: [],
       looksRareV2: [makerOrderFromAPI],
@@ -86,6 +86,9 @@ describe("LooksRareAggregator class", () => {
       buyer.address,
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
+
+    // Approve ERC-20 to be spent by ERC20EnabledLooksRareAggregator if required
+    await Promise.all(actions.map((action) => action()));
 
     await contracts.transferManager.connect(maker).grantApprovals([contracts.looksRareProtocol.address]);
     await collection.connect(maker).setApprovalForAll(contracts.transferManager.address, true);
@@ -136,5 +139,35 @@ describe("LooksRareAggregator class", () => {
     const txFee = await calculateTxFee(tx);
     const balanceAfterTx = await ethers.provider.getBalance(buyer.address);
     expect(balanceBeforeTx.sub(balanceAfterTx).sub(txFee)).to.equal(constants.WeiPerEther);
+  });
+
+  it("can execute LooksRare V2 orders (Buy ERC721 with WETH)", async () => {
+    const collection = contracts.collection1;
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+
+    const balanceBeforeTx = ethers.utils.parseEther("2");
+    await contracts.weth.mint(buyer.address, balanceBeforeTx);
+
+    await contracts.looksRareAggregator.approve(
+      contracts.weth.address,
+      contracts.looksRareProtocol.address,
+      ethers.constants.MaxUint256
+    );
+
+    await executeLooksRareV2Order(
+      signers.user1,
+      contracts.collection1,
+      CollectionType.ERC721,
+      contracts.weth.address,
+      ["1"],
+      ["1"]
+    );
+
+    expect(await collection.ownerOf(1)).to.equal(buyer.address);
+    expect(await collection.balanceOf(buyer.address)).to.equal(1);
+
+    const balanceAfterTx = await contracts.weth.balanceOf(buyer.address);
+    expect(balanceBeforeTx.sub(balanceAfterTx)).to.equal(constants.WeiPerEther);
   });
 });
