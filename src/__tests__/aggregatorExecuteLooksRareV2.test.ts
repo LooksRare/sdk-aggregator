@@ -57,7 +57,7 @@ describe("LooksRareAggregator class", () => {
       price: constants.WeiPerEther, // 1 ETH
       itemIds,
       amounts,
-      additionalParameters: "",
+      additionalParameters: constants.HashZero,
     };
 
     const v2 = new LooksRare(chainId, ethers.provider, buyer);
