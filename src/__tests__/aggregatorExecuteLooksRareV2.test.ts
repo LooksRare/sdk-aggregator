@@ -8,8 +8,7 @@ import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction, TypedDataField } from "ethers";
 import { MakerOrderFromAPI, QuoteType } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-
-type EIP712TypedData = Record<string, Array<TypedDataField>>;
+import { LooksRare, utils } from "@looksrare/sdk-v2";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -25,7 +24,7 @@ describe("LooksRareAggregator class", () => {
     itemIds: [string],
     amounts: [string]
   ): Promise<ContractTransaction> => {
-    const chainId = SupportedChainId.GOERLI;
+    const chainId = SupportedChainId.MAINNET;
     const signers = await getSigners();
     const buyer = signers.buyer;
     const addresses: Addresses = {
@@ -61,34 +60,11 @@ describe("LooksRareAggregator class", () => {
       additionalParameters: constants.HashZero,
     };
 
-    const domain = {
-      name: "LooksRareProtocol",
-      version: "2",
-      chainId: 1,
-      verifyingContract: contracts.looksRareProtocol.address,
-    };
+    const v2 = new LooksRare(chainId, ethers.provider, buyer);
+    let domain = v2.getTypedDataDomain();
+    domain = { ...domain, chainId, verifyingContract: contracts.looksRareProtocol.address };
 
-    const type: EIP712TypedData = {
-      Maker: [
-        { name: "quoteType", type: "uint8" },
-        { name: "globalNonce", type: "uint256" },
-        { name: "subsetNonce", type: "uint256" },
-        { name: "orderNonce", type: "uint256" },
-        { name: "strategyId", type: "uint256" },
-        { name: "collectionType", type: "uint8" },
-        { name: "collection", type: "address" },
-        { name: "currency", type: "address" },
-        { name: "signer", type: "address" },
-        { name: "startTime", type: "uint256" },
-        { name: "endTime", type: "uint256" },
-        { name: "price", type: "uint256" },
-        { name: "itemIds", type: "uint256[]" },
-        { name: "amounts", type: "uint256[]" },
-        { name: "additionalParameters", type: "bytes" },
-      ],
-    };
-
-    const signature = await maker._signTypedData(domain, type, makerOrder);
+    const signature = await maker._signTypedData(domain, utils.eip712.makerTypes, makerOrder);
 
     // Fake an order from the API
     const makerOrderFromAPI: MakerOrderFromAPI = {
