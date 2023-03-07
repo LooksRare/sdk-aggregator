@@ -69,7 +69,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   const weth = (await deploy("MockERC20", "MockWETH", "WETH", 18)) as MockERC20;
   const usdc = (await deploy("MockERC20", "MockUSDC", "USDC", 6)) as MockERC20;
 
-  // // Operations
+  // Operations
   const transferManager = (await deploy("TransferManager", signers.owner.address)) as TransferManager;
   const looksRareProtocol = (await deploy(
     "LooksRareProtocol",
