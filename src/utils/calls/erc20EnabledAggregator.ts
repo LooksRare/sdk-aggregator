@@ -1,4 +1,4 @@
-import { Contract, PayableOverrides, Signer } from "ethers";
+import { BigNumber, Contract, PayableOverrides, Signer } from "ethers";
 import { TokenTransfer, TradeData } from "../../types";
 import abiERC20EnabledLooksRareAggregator from "../../abis/ERC20EnabledLooksRareAggregator.json";
 import { ERC20EnabledLooksRareAggregator } from "../../../typechain";
@@ -14,4 +14,17 @@ export const executeERC20Orders = async (
 ) => {
   const contract = new Contract(address, abiERC20EnabledLooksRareAggregator, signer) as ERC20EnabledLooksRareAggregator;
   return contract.execute(tokenTransfers, tradeData, recipient, isAtomic, { ...overrides });
+};
+
+export const executeERC20OrdersGasEstimate = async (
+  signer: Signer,
+  address: string,
+  tokenTransfers: Array<TokenTransfer>,
+  tradeData: Array<TradeData>,
+  recipient: string,
+  isAtomic: boolean,
+  overrides?: PayableOverrides
+): Promise<BigNumber> => {
+  const contract = new Contract(address, abiERC20EnabledLooksRareAggregator, signer) as ERC20EnabledLooksRareAggregator;
+  return await contract.estimateGas.execute(tokenTransfers, tradeData, recipient, isAtomic, { ...overrides });
 };
