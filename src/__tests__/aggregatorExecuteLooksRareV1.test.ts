@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
+import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
@@ -27,13 +27,7 @@ describe("LooksRareAggregator class", () => {
     const chainId = SupportedChainId.MAINNET;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const addresses: Addresses = {
-      AGGREGATOR: contracts.looksRareAggregator.address,
-      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
-      SEAPORT_PROXY: contracts.seaportProxy.address,
-      LOOKSRARE_V2_PROXY: contracts.looksRareV2Proxy.address,
-    };
+    const addresses: Addresses = getAddressOverrides(contracts);
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
     const blockNumber = await ethers.provider.getBlockNumber();

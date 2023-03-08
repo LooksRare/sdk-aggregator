@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
+import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId, TransformListingsOutput } from "../types";
 import { Addresses } from "../constants/addresses";
@@ -30,13 +30,7 @@ describe("LooksRareAggregator class", () => {
     const weth = contracts.weth;
     const usdc = contracts.usdc;
 
-    const addresses: Addresses = {
-      AGGREGATOR: contracts.looksRareAggregator.address,
-      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
-      SEAPORT_PROXY: contracts.seaportProxy.address,
-      LOOKSRARE_V2_PROXY: contracts.looksRareV2Proxy.address,
-    };
+    const addresses: Addresses = getAddressOverrides(contracts);
 
     await contracts.looksRareAggregator.approve(weth.address, CROSS_CHAIN_SEAPORT_ADDRESS, ethers.constants.MaxUint256);
     await contracts.looksRareAggregator.approve(usdc.address, CROSS_CHAIN_SEAPORT_ADDRESS, ethers.constants.MaxUint256);

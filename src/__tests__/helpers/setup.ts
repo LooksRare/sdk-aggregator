@@ -16,6 +16,7 @@ import { CROSS_CHAIN_SEAPORT_ADDRESS } from "@opensea/seaport-js/lib/constants";
 import { addressesByNetwork, SupportedChainId } from "@looksrare/sdk";
 import { TransferManager } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
 import { LooksRareProtocol } from "../../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
+import { Addresses } from "../../constants/addresses";
 
 chai.use(chaiAsPromised);
 
@@ -138,5 +139,15 @@ export const setUpContracts = async (): Promise<Mocks> => {
     collection3,
     weth,
     usdc,
+  };
+};
+
+export const getAddressOverrides = (contracts: Mocks): Addresses => {
+  return {
+    AGGREGATOR: contracts.looksRareAggregator.address,
+    ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
+    LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
+    LOOKSRARE_V2_PROXY: contracts.looksRareV2Proxy.address,
+    SEAPORT_PROXY: contracts.seaportProxy.address,
   };
 };
