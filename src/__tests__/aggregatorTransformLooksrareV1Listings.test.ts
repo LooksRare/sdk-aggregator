@@ -20,7 +20,7 @@ describe("LooksRareAggregator class", () => {
         getFixture("LooksRareV1", "bayc5623Order.json") as MakerOrderFromAPI,
       ]);
 
-      expect(tradeData.proxy).to.equal(""); // TODO: add real address
+      expect(tradeData.proxy).to.equal("0x0000000000DA151039Ed034d1C5BACb47C284Ed1");
       expect(tradeData.selector).to.equal("0xa809ce35");
       expect(tradeData.orders.length).to.equal(2);
       expect(tradeData.ordersExtraData.length).to.equal(2);
