@@ -67,6 +67,9 @@ describe("LooksRareAggregator class", () => {
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
 
+    const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
+    expect(gasEstimate.toNumber()).to.be.closeTo(197_950, 10);
+
     const tx = await aggregator.execute(tradeData, buyer.address, true);
 
     expect(await collection.ownerOf(1)).to.equal(buyer.address);
@@ -128,6 +131,9 @@ describe("LooksRareAggregator class", () => {
       buyer.address,
       balanceBeforeTx.toHexString().replace("0x0", "0x"),
     ]);
+
+    const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
+    expect(gasEstimate.toNumber()).to.be.closeTo(184_960, 10);
 
     const tx = await aggregator.execute(tradeData, buyer.address, true);
 

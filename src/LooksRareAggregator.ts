@@ -4,8 +4,8 @@ import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, Trans
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import { BigNumber, constants, ContractTransaction, ethers, Signer } from "ethers";
-import { executeETHOrders } from "./utils/calls/aggregator";
-import { executeERC20Orders } from "./utils/calls/erc20EnabledAggregator";
+import { executeETHOrders, executeETHOrdersGasEstimate } from "./utils/calls/aggregator";
+import { executeERC20Orders, executeERC20OrdersGasEstimate } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
 import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
 import { calculateEthValue } from "./utils/calculateEthValue";
@@ -60,6 +60,36 @@ export class LooksRareAggregator {
       );
     } else {
       return executeETHOrders(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
+        value,
+      });
+    }
+  }
+
+  /**
+   * @param tradeData An array of TradeData for the aggregator to process.
+   *                  Each TradeData represents a batched order for a marketplace
+   * @param recipient The recipient of the purchased NFTs
+   * @param isAtomic Whether the transaction should revert if one of the trades fails
+   * @returns The estimated units of gas that would be required
+   */
+  public async estimateGas(tradeData: TradeData[], recipient: string, isAtomic: boolean): Promise<BigNumber> {
+    const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
+    const value = this.transactionEthValue(tradeData);
+
+    if (tokenTransfers.length > 0) {
+      return await executeERC20OrdersGasEstimate(
+        this.signer,
+        this.addresses.ERC20_ENABLED_AGGREGATOR,
+        tokenTransfers,
+        tradeData,
+        recipient,
+        isAtomic,
+        {
+          value,
+        }
+      );
+    } else {
+      return await executeETHOrdersGasEstimate(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
         value,
       });
     }
