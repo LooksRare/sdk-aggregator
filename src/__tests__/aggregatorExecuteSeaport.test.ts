@@ -8,6 +8,7 @@ import { constants } from "ethers";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -61,10 +62,7 @@ describe("LooksRareAggregator class", () => {
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
+    await setBalance(buyer.address, balanceBeforeTx);
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
     expect(gasEstimate.toNumber()).to.be.closeTo(257_335, 10_000);
@@ -125,10 +123,7 @@ describe("LooksRareAggregator class", () => {
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
+    await setBalance(buyer.address, balanceBeforeTx);
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
     expect(gasEstimate.toNumber()).to.be.closeTo(240_448, 500);

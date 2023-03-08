@@ -9,6 +9,7 @@ import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -68,10 +69,7 @@ describe("LooksRareAggregator class", () => {
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
+    await setBalance(buyer.address, balanceBeforeTx);
 
     await collection.connect(maker).setApprovalForAll(transferManager, true);
 

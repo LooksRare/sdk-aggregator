@@ -9,6 +9,7 @@ import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI, QuoteType } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { LooksRare, utils, Maker } from "@looksrare/sdk-v2";
+import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -76,10 +77,7 @@ describe("LooksRareAggregator class", () => {
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
+    await setBalance(buyer.address, balanceBeforeTx);
 
     // Approve ERC-20 to be spent by ERC20EnabledLooksRareAggregator if required
     await Promise.all(actions.map((action) => action()));
