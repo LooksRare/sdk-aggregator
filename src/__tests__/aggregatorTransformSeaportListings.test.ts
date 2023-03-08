@@ -16,7 +16,7 @@ describe("LooksRareAggregator class", () => {
         getFixture("Seaport", "bayc6206Order.json").protocol_data,
       ]);
 
-      expect(tradeData.proxy).to.equal(""); // TODO: add real address
+      expect(tradeData.proxy).to.equal("0x0000000000aD2C5a35209EeAb701B2CD49BA3A0D");
       expect(tradeData.selector).to.equal("0xa809ce35");
       expect(tradeData.orders.length).to.equal(2);
       expect(tradeData.ordersExtraData.length).to.equal(2);
@@ -70,7 +70,7 @@ describe("LooksRareAggregator class", () => {
         getFixture("Seaport", "parallel10328Order.json").protocol_data,
       ]);
 
-      expect(tradeData.proxy).to.equal(""); // TODO: add real address
+      expect(tradeData.proxy).to.equal("0x0000000000aD2C5a35209EeAb701B2CD49BA3A0D");
       expect(tradeData.selector).to.equal("0xa809ce35");
       expect(tradeData.orders.length).to.equal(2);
       expect(tradeData.ordersExtraData.length).to.equal(2);
