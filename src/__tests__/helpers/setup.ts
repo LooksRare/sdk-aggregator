@@ -82,7 +82,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   await transferManager.connect(signers.owner).allowOperator(looksRareProtocol.address);
   await looksRareProtocol.connect(signers.owner).updateCurrencyStatus(ethers.constants.AddressZero, true);
   await looksRareProtocol.connect(signers.owner).updateCurrencyStatus(weth.address, true);
-  // TODO: do we need to update creator fee manager?
+  // We don't need to update creator fee manager unless we need OrderValidatorV2A
 
   // Deploy contracts
   const looksRareAggregator = (await deploy("LooksRareAggregator", signers.owner.address)) as LooksRareAggregator;
