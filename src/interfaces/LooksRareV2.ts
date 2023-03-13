@@ -1,3 +1,4 @@
+import { MerkleTree } from "@looksrare/sdk-v2";
 import { BigNumberish, BytesLike } from "ethers";
 import { CollectionType } from "../types";
 
@@ -26,21 +27,8 @@ export interface MakerOrderFromAPI {
   status: OrderStatus;
   itemIds: BigNumberish[];
   amounts: BigNumberish[];
-}
-
-enum MerkleTreeNodePosition {
-  Left = 0,
-  Right = 1,
-}
-
-interface MerkleTreeNode {
-  value: string;
-  position: MerkleTreeNodePosition;
-}
-
-export interface MerkleTree {
-  root: string;
-  proof: MerkleTreeNode[];
+  merkleTree: MerkleTree;
+  hash: string;
 }
 
 /** LooksRare order extra data object inside TradeData */

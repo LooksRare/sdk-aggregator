@@ -1,13 +1,7 @@
 import { BasicOrder, SupportedChainId, TradeData } from "../../types";
 import { constants, ethers, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
-import {
-  MakerOrderFromAPI,
-  MerkleTree,
-  OrderExtraData,
-  ORDER_EXTRA_DATA_SCHEMA,
-  QuoteType,
-} from "../../interfaces/LooksRareV2";
+import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA, QuoteType } from "../../interfaces/LooksRareV2";
 
 export default async function transformLooksRareV2Listings(
   chainId: SupportedChainId,
@@ -17,11 +11,6 @@ export default async function transformLooksRareV2Listings(
 ): Promise<TradeData> {
   const orders: BasicOrder[] = [];
   const ordersExtraData: OrderExtraData[] = [];
-  // TODO: How do we retrieve the actual merkle tree?
-  const merkleTree: MerkleTree = {
-    root: constants.HashZero,
-    proof: [],
-  };
 
   await Promise.all(
     listings.map(async (listing: MakerOrderFromAPI): Promise<void> => {
@@ -43,7 +32,7 @@ export default async function transformLooksRareV2Listings(
       };
 
       const orderExtraData: OrderExtraData = {
-        merkleTree,
+        merkleTree: listing.merkleTree,
         globalNonce: listing.globalNonce,
         subsetNonce: listing.subsetNonce,
         orderNonce: listing.orderNonce,

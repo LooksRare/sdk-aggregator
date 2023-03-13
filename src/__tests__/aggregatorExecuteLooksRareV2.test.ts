@@ -8,7 +8,7 @@ import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI, QuoteType } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { LooksRare, utils, Maker } from "@looksrare/sdk-v2";
+import { LooksRare, utils, Maker, MerkleTree } from "@looksrare/sdk-v2";
 import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
@@ -37,7 +37,13 @@ describe("LooksRareAggregator class", () => {
     const block = await ethers.provider.getBlock(blockNumber);
     const now = block.timestamp;
 
+    const merkleTree: MerkleTree = {
+      root: constants.HashZero,
+      proof: [],
+    };
+
     const makerOrder: Maker = {
+      merkleTree,
       quoteType: QuoteType.Ask,
       globalNonce: 0,
       subsetNonce: 0,
