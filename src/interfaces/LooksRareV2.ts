@@ -1,6 +1,5 @@
-import { MerkleTree, QuoteType } from "@looksrare/sdk-v2";
+import { CollectionType, MerkleTree, QuoteType } from "@looksrare/sdk-v2";
 import { BigNumberish, BytesLike } from "ethers";
-import { CollectionType } from "../types";
 
 type OrderStatus = "CANCELLED" | "EXECUTED" | "EXPIRED" | "VALID";
 

@@ -3,12 +3,12 @@ import { ethers } from "hardhat";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { CollectionType, SupportedChainId } from "../types";
+import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { LooksRare, utils, Maker, MerkleTree, QuoteType } from "@looksrare/sdk-v2";
+import { LooksRare, utils, Maker, MerkleTree, QuoteType, CollectionType } from "@looksrare/sdk-v2";
 import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
