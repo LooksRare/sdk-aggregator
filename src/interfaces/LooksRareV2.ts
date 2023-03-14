@@ -1,11 +1,6 @@
-import { MerkleTree } from "@looksrare/sdk-v2";
+import { MerkleTree, QuoteType } from "@looksrare/sdk-v2";
 import { BigNumberish, BytesLike } from "ethers";
 import { CollectionType } from "../types";
-
-export enum QuoteType {
-  Bid = 0,
-  Ask = 1,
-}
 
 type OrderStatus = "CANCELLED" | "EXECUTED" | "EXPIRED" | "VALID";
 
