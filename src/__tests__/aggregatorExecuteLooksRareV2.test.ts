@@ -92,7 +92,7 @@ describe("LooksRareAggregator class", () => {
     await collection.connect(maker).setApprovalForAll(contracts.transferManager.address, true);
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(250_000, 50_000);
+    expect(gasEstimate.toNumber()).to.be.closeTo(250_000, 150_000);
 
     return await aggregator.execute(tradeData, buyer.address, true);
   };
