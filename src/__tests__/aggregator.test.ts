@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
+import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
@@ -16,12 +16,7 @@ describe("LooksRareAggregator class", () => {
     const signer = signers.user1;
     expect(new LooksRareAggregator(signer, 1).chainId).to.equal(1);
     expect(new LooksRareAggregator(signer, SupportedChainId.HARDHAT).chainId).to.equal(SupportedChainId.HARDHAT);
-    const addresses: Addresses = {
-      AGGREGATOR: contracts.looksRareAggregator.address,
-      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
-      SEAPORT_PROXY: contracts.seaportProxy.address,
-    };
+    const addresses: Addresses = getAddressOverrides(contracts);
     expect(new LooksRareAggregator(signer, SupportedChainId.HARDHAT, addresses).addresses).to.be.eql(addresses);
   });
 });

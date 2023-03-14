@@ -1,0 +1,5 @@
+[
+  "event NewBidAskNonces(address user, uint256 bidNonce, uint256 askNonce)",
+  "event OrderNoncesCancelled(address user, uint256[] orderNonces)",
+  "event SubsetNoncesCancelled(address user, uint256[] subsetNonces)"
+]

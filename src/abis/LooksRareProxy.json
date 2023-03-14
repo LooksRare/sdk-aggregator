@@ -1,10 +1,10 @@
 [
   "constructor(address _marketplace, address _aggregator)",
-  "error BadSignatureS()",
-  "error BadSignatureV(uint8 v)",
   "error InvalidCaller()",
   "error InvalidOrderLength()",
-  "error WrongSignatureLength(uint256 length)",
+  "error SignatureLengthInvalid(uint256 length)",
+  "error SignatureParameterSInvalid()",
+  "error SignatureParameterVInvalid(uint8 v)",
   "function aggregator() view returns (address)",
   "function execute(tuple(address signer, address collection, uint8 collectionType, uint256[] tokenIds, uint256[] amounts, uint256 price, address currency, uint256 startTime, uint256 endTime, bytes signature)[] orders, bytes[] ordersExtraData, bytes, address recipient, bool isAtomic) payable",
   "function marketplace() view returns (address)"

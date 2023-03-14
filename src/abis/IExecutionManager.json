@@ -1,0 +1,10 @@
+[
+  "error CreatorFeeBpTooHigh()",
+  "error NewProtocolFeeRecipientCannotBeNullAddress()",
+  "error NoSelectorForStrategy()",
+  "error OutsideOfTimeRange()",
+  "error StrategyNotAvailable(uint256 strategyId)",
+  "event NewCreatorFeeManager(address creatorFeeManager)",
+  "event NewMaxCreatorFeeBp(uint256 maxCreatorFeeBp)",
+  "event NewProtocolFeeRecipient(address protocolFeeRecipient)"
+]

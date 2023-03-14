@@ -1,0 +1,4 @@
+[
+  "function isLooksRareV2Strategy() pure returns (bool isStrategy)",
+  "function isMakerOrderValid(tuple(uint8 quoteType, uint256 globalNonce, uint256 subsetNonce, uint256 orderNonce, uint256 strategyId, uint8 collectionType, address collection, address currency, address signer, uint256 startTime, uint256 endTime, uint256 price, uint256[] itemIds, uint256[] amounts, bytes additionalParameters) makerOrder, bytes4 functionSelector) view returns (bool isValid, bytes4 errorSelector)"
+]

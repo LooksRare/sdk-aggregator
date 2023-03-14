@@ -1,0 +1,4 @@
+[
+  "error MerkleProofTooLarge(uint256 length)",
+  "function hashBatchOrder(bytes32 root, uint256 proofLength) pure returns (bytes32 batchOrderHash)"
+]

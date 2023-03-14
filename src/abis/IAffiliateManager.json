@@ -1,0 +1,7 @@
+[
+  "error NotAffiliateController()",
+  "error PercentageTooHigh()",
+  "event NewAffiliateController(address affiliateController)",
+  "event NewAffiliateProgramStatus(bool isActive)",
+  "event NewAffiliateRate(address affiliate, uint256 rate)"
+]

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
+import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
@@ -9,6 +9,7 @@ import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -27,12 +28,7 @@ describe("LooksRareAggregator class", () => {
     const chainId = SupportedChainId.MAINNET;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const addresses: Addresses = {
-      AGGREGATOR: contracts.looksRareAggregator.address,
-      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
-      SEAPORT_PROXY: contracts.seaportProxy.address,
-    };
+    const addresses: Addresses = getAddressOverrides(contracts);
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
     const blockNumber = await ethers.provider.getBlockNumber();
@@ -65,14 +61,15 @@ describe("LooksRareAggregator class", () => {
       ...makerOrder,
     };
 
-    const { tradeData } = await aggregator.transformListings({ seaport: [], looksRareV1: [makerOrderFromAPI] });
+    const { tradeData } = await aggregator.transformListings({
+      seaport: [],
+      looksRareV1: [makerOrderFromAPI],
+      looksRareV2: [],
+    });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
+    await setBalance(buyer.address, balanceBeforeTx);
 
     await collection.connect(maker).setApprovalForAll(transferManager, true);
 

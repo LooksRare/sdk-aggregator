@@ -1,6 +1,7 @@
 import { Order } from "@opensea/seaport-js/lib/types";
 import { BigNumber, BigNumberish, BytesLike, ContractTransaction } from "ethers";
-import { MakerOrderFromAPI } from "./interfaces/LooksRareV1";
+import { MakerOrderFromAPI as MakerOrderFromAPI_V1 } from "./interfaces/LooksRareV1";
+import { MakerOrderFromAPI as MakerOrderFromAPI_V2 } from "./interfaces/LooksRareV2";
 
 /** List of supported chains */
 export { SupportedChainId } from "@looksrare/sdk";
@@ -62,7 +63,9 @@ export interface Listings {
   /** Seaport listings retrieved from OpenSea's API */
   seaport: Order[];
   /** LooksRare V1's listings retrieved from LooksRare's API */
-  looksRareV1: MakerOrderFromAPI[];
+  looksRareV1: MakerOrderFromAPI_V1[];
+  /** LooksRare V2's listings retrieved from LooksRare's API */
+  looksRareV2: MakerOrderFromAPI_V2[];
 }
 
 /** Processed marketplace trade data together with the actions required before executing a trade */

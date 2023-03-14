@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { setUpContracts, Mocks, getSigners } from "./helpers/setup";
+import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
 import { SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
@@ -8,6 +8,7 @@ import { constants } from "ethers";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { Seaport } from "@opensea/seaport-js";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -22,12 +23,7 @@ describe("LooksRareAggregator class", () => {
     const maker = signers.user1;
     const buyer = signers.buyer;
     const collection = contracts.collection1;
-    const addresses: Addresses = {
-      AGGREGATOR: contracts.looksRareAggregator.address,
-      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
-      SEAPORT_PROXY: contracts.seaportProxy.address,
-    };
+    const addresses: Addresses = getAddressOverrides(contracts);
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
     const seaport = new Seaport(maker);
@@ -58,14 +54,15 @@ describe("LooksRareAggregator class", () => {
       maker.address
     );
     const order = await executeAllActions();
-    const { tradeData } = await aggregator.transformListings({ seaport: [order], looksRareV1: [] });
+    const { tradeData } = await aggregator.transformListings({
+      seaport: [order],
+      looksRareV1: [],
+      looksRareV2: [],
+    });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
+    await setBalance(buyer.address, balanceBeforeTx);
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
     expect(gasEstimate.toNumber()).to.be.closeTo(257_335, 10_000);
@@ -86,12 +83,7 @@ describe("LooksRareAggregator class", () => {
     const maker = signers.user3;
     const buyer = signers.buyer;
     const collection = contracts.collection3;
-    const addresses: Addresses = {
-      AGGREGATOR: contracts.looksRareAggregator.address,
-      ERC20_ENABLED_AGGREGATOR: contracts.erc20EnabledLooksRareAggregator.address,
-      LOOKSRARE_V1_PROXY: contracts.looksRareProxy.address,
-      SEAPORT_PROXY: contracts.seaportProxy.address,
-    };
+    const addresses: Addresses = getAddressOverrides(contracts);
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
     const seaport = new Seaport(maker);
@@ -123,14 +115,15 @@ describe("LooksRareAggregator class", () => {
       maker.address
     );
     const order = await executeAllActions();
-    const { tradeData } = await aggregator.transformListings({ seaport: [order], looksRareV1: [] });
+    const { tradeData } = await aggregator.transformListings({
+      seaport: [order],
+      looksRareV1: [],
+      looksRareV2: [],
+    });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
 
-    await ethers.provider.send("hardhat_setBalance", [
-      buyer.address,
-      balanceBeforeTx.toHexString().replace("0x0", "0x"),
-    ]);
+    await setBalance(buyer.address, balanceBeforeTx);
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
     expect(gasEstimate.toNumber()).to.be.closeTo(240_448, 500);
