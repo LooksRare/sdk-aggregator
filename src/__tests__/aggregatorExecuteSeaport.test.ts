@@ -65,7 +65,7 @@ describe("LooksRareAggregator class", () => {
     await setBalance(buyer.address, balanceBeforeTx);
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(257_335, 10_000);
+    expect(gasEstimate.toNumber()).to.be.closeTo(197_950, 10_000);
 
     const tx = await aggregator.execute(tradeData, buyer.address, true);
 
@@ -126,7 +126,7 @@ describe("LooksRareAggregator class", () => {
     await setBalance(buyer.address, balanceBeforeTx);
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(240_448, 500);
+    expect(gasEstimate.toNumber()).to.be.closeTo(184_960, 500);
 
     const tx = await aggregator.execute(tradeData, buyer.address, true);
 

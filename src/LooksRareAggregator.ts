@@ -5,7 +5,7 @@ import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, Trans
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import transformLooksRareV2Listings from "./utils/LooksRareV2/transformLooksRareV2Listings";
-import { BigNumber, constants, ContractTransaction, ethers, Signer } from "ethers";
+import { BigNumber, constants, ContractTransaction, ethers, PayableOverrides, Signer } from "ethers";
 import { executeETHOrders, executeETHOrdersGasEstimate } from "./utils/calls/aggregator";
 import { executeERC20Orders, executeERC20OrdersGasEstimate } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
@@ -42,12 +42,17 @@ export class LooksRareAggregator {
    *                  Each TradeData represents a batched order for a marketplace
    * @param recipient The recipient of the purchased NFTs
    * @param isAtomic Whether the transaction should revert if one of the trades fails
+   * @param overrides Optional overrides for gas limit and other properties
    * @returns The executed contract transaction
    */
-  public async execute(tradeData: TradeData[], recipient: string, isAtomic: boolean): Promise<ContractTransaction> {
+  public async execute(
+    tradeData: TradeData[],
+    recipient: string,
+    isAtomic: boolean,
+    overrides?: PayableOverrides
+  ): Promise<ContractTransaction> {
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
     const value = this.transactionEthValue(tradeData);
-    const gasLimit = await this.estimateGas(tradeData, recipient, isAtomic);
 
     if (tokenTransfers.length > 0) {
       return executeERC20Orders(
@@ -58,14 +63,14 @@ export class LooksRareAggregator {
         recipient,
         isAtomic,
         {
+          ...overrides,
           value,
-          gasLimit,
         }
       );
     } else {
       return executeETHOrders(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
+        ...overrides,
         value,
-        gasLimit,
       });
     }
   }
@@ -81,10 +86,8 @@ export class LooksRareAggregator {
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
     const value = this.transactionEthValue(tradeData);
 
-    let gasLimit;
-
     if (tokenTransfers.length > 0) {
-      gasLimit = await executeERC20OrdersGasEstimate(
+      return await executeERC20OrdersGasEstimate(
         this.signer,
         this.addresses.ERC20_ENABLED_AGGREGATOR,
         tokenTransfers,
@@ -96,20 +99,10 @@ export class LooksRareAggregator {
         }
       );
     } else {
-      gasLimit = await executeETHOrdersGasEstimate(
-        this.signer,
-        this.addresses.AGGREGATOR,
-        tradeData,
-        recipient,
-        isAtomic,
-        {
-          value,
-        }
-      );
+      return await executeETHOrdersGasEstimate(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
+        value,
+      });
     }
-
-    // Give 30% buffer to prevent out of gas error
-    return gasLimit.mul(BigNumber.from("130")).div(BigNumber.from("100"));
   }
 
   /**
