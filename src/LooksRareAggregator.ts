@@ -5,7 +5,7 @@ import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, Trans
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import transformLooksRareV2Listings from "./utils/LooksRareV2/transformLooksRareV2Listings";
-import { BigNumber, constants, ContractTransaction, ethers, Overrides, Signer } from "ethers";
+import { BigNumber, constants, ContractTransaction, ethers, PayableOverrides, Signer } from "ethers";
 import { executeETHOrders, executeETHOrdersGasEstimate } from "./utils/calls/aggregator";
 import { executeERC20Orders, executeERC20OrdersGasEstimate } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
@@ -49,7 +49,7 @@ export class LooksRareAggregator {
     tradeData: TradeData[],
     recipient: string,
     isAtomic: boolean,
-    overrides?: Overrides
+    overrides?: PayableOverrides
   ): Promise<ContractTransaction> {
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
     const value = this.transactionEthValue(tradeData);
