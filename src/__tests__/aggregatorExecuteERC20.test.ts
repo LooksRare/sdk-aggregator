@@ -101,7 +101,7 @@ describe("LooksRareAggregator class", () => {
     await Promise.all(actions.map((action) => action()));
 
     const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(761_150, 10_000);
+    expect(gasEstimate.toNumber()).to.be.closeTo(585500, 10_000);
 
     await aggregator.execute(tradeData, buyer.address, true);
 
