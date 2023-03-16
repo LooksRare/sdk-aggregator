@@ -2,5 +2,6 @@
   "extends": "@istanbuljs/nyc-config-typescript",
   "all": true,
   "include": ["src/**"],
+  "exclude": ["src/__tests__/**", "src/constants/**", "src/index.ts", "src/typechain/**"],
   "reporter": ["html", "text"]
 }

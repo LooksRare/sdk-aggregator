@@ -1,7 +1,7 @@
 import { BigNumber, Contract, PayableOverrides, Signer } from "ethers";
 import { TokenTransfer, TradeData } from "../../types";
 import abiERC20EnabledLooksRareAggregator from "../../abis/ERC20EnabledLooksRareAggregator.json";
-import { ERC20EnabledLooksRareAggregator } from "../../../typechain";
+import { ERC20EnabledLooksRareAggregator } from "../../typechain";
 
 export const executeERC20Orders = async (
   signer: Signer,
