@@ -3,7 +3,7 @@
   "version": "0.0.11",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "types": "dist/src/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "doc": "typedoc --plugin typedoc-plugin-markdown",
-    "prebuild": "rm -rf ./dist && rm -rf artifacts && rm -rf typechain",
+    "prebuild": "rm -rf ./dist && rm -rf src/artifacts && rm -rf src/typechain",
     "build:ts": "rollup -c && tsc -d",
     "build:sc": "hardhat compile",
     "build": "yarn build:sc && yarn build:ts",

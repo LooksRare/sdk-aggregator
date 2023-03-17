@@ -1,6 +1,6 @@
 import { BigNumberish, Contract, ethers, Overrides, Signer } from "ethers";
 import abiIERC20 from "../../abis/IERC20.json";
-import { IERC20 } from "../../../typechain";
+import { IERC20 } from "../../typechain";
 
 const allowance = (
   signerOrProvider: ethers.providers.Provider | Signer,

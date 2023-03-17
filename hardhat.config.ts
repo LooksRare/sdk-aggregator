@@ -61,12 +61,12 @@ const config: HardhatUserConfig = {
     except: ["contracts/tests/*", "@rari-capital"],
   },
   typechain: {
-    outDir: "typechain",
+    outDir: "src/typechain",
     target: "ethers-v5",
   },
   paths: {
     tests: "src/__tests__",
-    artifacts: "artifacts",
+    artifacts: "src/artifacts",
     sources: "src/contracts",
   },
 };

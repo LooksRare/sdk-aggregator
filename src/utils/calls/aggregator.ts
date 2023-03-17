@@ -1,7 +1,7 @@
 import { BigNumber, Contract, PayableOverrides, Signer } from "ethers";
 import { TradeData } from "../../types";
 import abiLooksRareAggregator from "../../abis/LooksRareAggregator.json";
-import { LooksRareAggregator } from "../../../typechain";
+import { LooksRareAggregator } from "../../typechain";
 
 export const executeETHOrders = async (
   signer: Signer,
