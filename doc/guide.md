@@ -48,5 +48,5 @@ await Promise.all(actions.map((action) => action()));
 
 const isAtomic = false;
 
-await aggregator.execute(tradeData, buyer.address, isAtomic);
+await aggregator.execute(tradeData, buyer.address, isAtomic).call();
 ```

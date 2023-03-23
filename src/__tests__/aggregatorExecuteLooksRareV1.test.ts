@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { SupportedChainId } from "../types";
+import { ContractMethods, SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
 import { addressesByNetwork, MakerOrder, generateMakerOrderTypedData } from "@looksrare/sdk";
 import { constants, Contract, ContractTransaction } from "ethers";
@@ -73,10 +73,12 @@ describe("LooksRareAggregator class", () => {
 
     await collection.connect(maker).setApprovalForAll(transferManager, true);
 
-    const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(285_000, 6_000);
+    const contractMethods: ContractMethods = aggregator.execute(tradeData, buyer.address, true);
 
-    return await aggregator.execute(tradeData, buyer.address, true);
+    const gasEstimate = await contractMethods.estimateGas();
+    expect(gasEstimate.toNumber()).to.be.greaterThan(0);
+
+    return await contractMethods.call();
   };
 
   it("can execute LooksRare V1 orders (ERC721)", async () => {

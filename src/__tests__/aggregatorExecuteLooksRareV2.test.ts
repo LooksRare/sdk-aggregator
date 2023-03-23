@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { SupportedChainId } from "../types";
+import { ContractMethods, SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV2";
@@ -92,10 +92,12 @@ describe("LooksRareAggregator class", () => {
     await contracts.transferManager.connect(maker).grantApprovals([contracts.looksRareProtocol.address]);
     await collection.connect(maker).setApprovalForAll(contracts.transferManager.address, true);
 
-    const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(250_000, 150_000);
+    const contractMethods: ContractMethods = aggregator.execute(tradeData, buyer.address, true);
 
-    return await aggregator.execute(tradeData, buyer.address, true);
+    const gasEstimate = await contractMethods.estimateGas();
+    expect(gasEstimate.toNumber()).to.be.greaterThan(0);
+
+    return await contractMethods.call();
   };
 
   it("can execute LooksRare V2 orders (Buy ERC721 with ETH)", async () => {

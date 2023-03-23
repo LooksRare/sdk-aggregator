@@ -1,5 +1,5 @@
 import { Order } from "@opensea/seaport-js/lib/types";
-import { BigNumber, BigNumberish, BytesLike, ContractTransaction } from "ethers";
+import { BigNumber, BigNumberish, BytesLike, ContractTransaction, PayableOverrides, UnsignedTransaction } from "ethers";
 import { MakerOrderFromAPI as MakerOrderFromAPI_V1 } from "./interfaces/LooksRareV1";
 import { MakerOrderFromAPI as MakerOrderFromAPI_V2 } from "./interfaces/LooksRareV2";
 
@@ -74,4 +74,12 @@ export interface TransformListingsOutput {
   tradeData: TradeData[];
   /** Contract transactions that must be executed before actually executing the trade */
   actions: Array<() => Promise<ContractTransaction>>;
+}
+
+/** Return type for any on chain call */
+export interface ContractMethods {
+  call: (additionalOverrides?: PayableOverrides) => Promise<ContractTransaction>;
+  callStatic: (additionalOverrides?: PayableOverrides) => Promise<any>;
+  estimateGas: (additionalOverrides?: PayableOverrides) => Promise<BigNumber>;
+  populateTransaction: (additionalOverrides?: PayableOverrides) => Promise<UnsignedTransaction>;
 }

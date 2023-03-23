@@ -1,13 +1,21 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { MakerOrderFromAPI as MakerOrderFromAPI_V1 } from "./interfaces/LooksRareV1";
 import { MakerOrderFromAPI as MakerOrderFromAPI_V2 } from "./interfaces/LooksRareV2";
-import { BasicOrder, Listings, SupportedChainId, TokenTransfer, TradeData, TransformListingsOutput } from "./types";
+import {
+  BasicOrder,
+  ContractMethods,
+  Listings,
+  SupportedChainId,
+  TokenTransfer,
+  TradeData,
+  TransformListingsOutput,
+} from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import transformLooksRareV2Listings from "./utils/LooksRareV2/transformLooksRareV2Listings";
 import { BigNumber, constants, ContractTransaction, ethers, PayableOverrides, Signer } from "ethers";
-import { executeETHOrders, executeETHOrdersGasEstimate } from "./utils/calls/aggregator";
-import { executeERC20Orders, executeERC20OrdersGasEstimate } from "./utils/calls/erc20EnabledAggregator";
+import { executeETHOrders } from "./utils/calls/aggregator";
+import { executeERC20Orders } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
 import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
 import { calculateEthValue } from "./utils/calculateEthValue";
@@ -45,12 +53,12 @@ export class LooksRareAggregator {
    * @param overrides Optional overrides for gas limit and other properties
    * @returns The executed contract transaction
    */
-  public async execute(
+  public execute(
     tradeData: TradeData[],
     recipient: string,
     isAtomic: boolean,
     overrides?: PayableOverrides
-  ): Promise<ContractTransaction> {
+  ): ContractMethods {
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
     const value = this.transactionEthValue(tradeData);
 
@@ -70,36 +78,6 @@ export class LooksRareAggregator {
     } else {
       return executeETHOrders(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
         ...overrides,
-        value,
-      });
-    }
-  }
-
-  /**
-   * @param tradeData An array of TradeData for the aggregator to process.
-   *                  Each TradeData represents a batched order for a marketplace
-   * @param recipient The recipient of the purchased NFTs
-   * @param isAtomic Whether the transaction should revert if one of the trades fails
-   * @returns The estimated units of gas that would be required
-   */
-  public async estimateGas(tradeData: TradeData[], recipient: string, isAtomic: boolean): Promise<BigNumber> {
-    const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
-    const value = this.transactionEthValue(tradeData);
-
-    if (tokenTransfers.length > 0) {
-      return await executeERC20OrdersGasEstimate(
-        this.signer,
-        this.addresses.ERC20_ENABLED_AGGREGATOR,
-        tokenTransfers,
-        tradeData,
-        recipient,
-        isAtomic,
-        {
-          value,
-        }
-      );
-    } else {
-      return await executeETHOrdersGasEstimate(this.signer, this.addresses.AGGREGATOR, tradeData, recipient, isAtomic, {
         value,
       });
     }
