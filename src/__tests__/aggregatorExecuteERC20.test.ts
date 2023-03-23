@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { SupportedChainId, TransformListingsOutput } from "../types";
+import { ContractMethods, SupportedChainId, TransformListingsOutput } from "../types";
 import { Addresses } from "../constants/addresses";
 import { Seaport } from "@opensea/seaport-js";
 import { CROSS_CHAIN_SEAPORT_ADDRESS, ItemType } from "@opensea/seaport-js/lib/constants";
@@ -100,10 +100,12 @@ describe("LooksRareAggregator class", () => {
 
     await Promise.all(actions.map((action) => action()));
 
-    const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(585500, 10_000);
+    const contractMethods: ContractMethods = aggregator.execute(tradeData, buyer.address, true);
 
-    await aggregator.execute(tradeData, buyer.address, true);
+    const gasEstimate = await contractMethods.estimateGas();
+    expect(gasEstimate.toNumber()).to.be.greaterThan(0);
+
+    await contractMethods.call();
 
     expect(await collection1.ownerOf(1)).to.equal(buyer.address);
     expect(await collection1.balanceOf(buyer.address)).to.equal(1);

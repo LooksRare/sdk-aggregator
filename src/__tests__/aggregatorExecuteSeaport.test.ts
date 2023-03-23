@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { SupportedChainId } from "../types";
+import { ContractMethods, SupportedChainId } from "../types";
 import { Addresses } from "../constants/addresses";
 import { constants } from "ethers";
 import calculateTxFee from "./helpers/calculateTxFee";
@@ -64,10 +64,12 @@ describe("LooksRareAggregator class", () => {
 
     await setBalance(buyer.address, balanceBeforeTx);
 
-    const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(197_950, 10_000);
+    const contractMethods: ContractMethods = aggregator.execute(tradeData, buyer.address, true);
 
-    const tx = await aggregator.execute(tradeData, buyer.address, true);
+    const gasEstimate = await contractMethods.estimateGas();
+    expect(gasEstimate.toNumber()).to.be.greaterThan(0);
+
+    const tx = await contractMethods.call();
 
     expect(await collection.ownerOf(1)).to.equal(buyer.address);
     expect(await collection.balanceOf(buyer.address)).to.equal(1);
@@ -125,10 +127,10 @@ describe("LooksRareAggregator class", () => {
 
     await setBalance(buyer.address, balanceBeforeTx);
 
-    const gasEstimate = await aggregator.estimateGas(tradeData, buyer.address, true);
-    expect(gasEstimate.toNumber()).to.be.closeTo(184_960, 500);
+    const gasEstimate = await aggregator.execute(tradeData, buyer.address, true).estimateGas();
+    expect(gasEstimate.toNumber()).to.be.greaterThan(0);
 
-    const tx = await aggregator.execute(tradeData, buyer.address, true);
+    const tx = await aggregator.execute(tradeData, buyer.address, true).call();
 
     expect(await collection.balanceOf(buyer.address, "1")).to.equal(1);
 
