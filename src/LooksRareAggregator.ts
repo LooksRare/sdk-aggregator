@@ -129,6 +129,13 @@ export class LooksRareAggregator {
     return { tradeData, actions } as TransformListingsOutput;
   }
 
+  public transactionEthValue(tradeData: TradeData[]): BigNumber {
+    return tradeData.reduce(
+      (sum: BigNumber, singleTradeData: TradeData) => calculateEthValue(singleTradeData, this.addresses).add(sum),
+      constants.Zero
+    );
+  }
+
   /**
    * @notice The argument comes from Seaport listings API response's orders->protocol_data
    */
@@ -142,13 +149,6 @@ export class LooksRareAggregator {
 
   private async transformLooksRareV2Listings(listings: MakerOrderFromAPI_V2[]): Promise<TradeData> {
     return await transformLooksRareV2Listings(this.chainId, this.signer, listings, this.addresses.LOOKSRARE_V2_PROXY);
-  }
-
-  private transactionEthValue(tradeData: TradeData[]): BigNumber {
-    return tradeData.reduce(
-      (sum: BigNumber, singleTradeData: TradeData) => calculateEthValue(singleTradeData, this.addresses).add(sum),
-      constants.Zero
-    );
   }
 
   private transactionTokenTransfers(tradeData: TradeData[]): Array<TokenTransfer> {
