@@ -69,10 +69,7 @@ describe("LooksRareAggregator class", () => {
     // Fake an order from the API
     const makerOrderFromAPI: MakerOrderFromAPI = {
       merkleTree,
-      hash: constants.HashZero, // Doesn't matter what it is as long as it's present
-      status: "VALID",
       signature,
-      strategy: makerOrder.strategyId,
       ...makerOrder,
     };
 
