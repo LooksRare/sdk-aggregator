@@ -1,28 +1,9 @@
-import { CollectionType, MerkleTree, QuoteType } from "@looksrare/sdk-v2";
+import { MerkleTree, Maker } from "@looksrare/sdk-v2";
 import { BigNumberish, BytesLike } from "ethers";
 
-type OrderStatus = "CANCELLED" | "EXECUTED" | "EXPIRED" | "VALID";
-
-export interface MakerOrderFromAPI {
-  quoteType: QuoteType;
-  globalNonce: BigNumberish;
-  subsetNonce: BigNumberish;
-  orderNonce: BigNumberish;
-  collection: string;
-  collectionType: CollectionType;
-  strategy: BigNumberish;
-  currency: string;
-  signer: string;
-  startTime: BigNumberish;
-  endTime: BigNumberish;
-  price: BigNumberish;
-  additionalParameters: BytesLike;
+export interface MakerOrderFromAPI extends Maker {
   signature: string;
-  status: OrderStatus;
-  itemIds: BigNumberish[];
-  amounts: BigNumberish[];
   merkleTree: MerkleTree;
-  hash: string;
 }
 
 /** LooksRare order extra data object inside TradeData */

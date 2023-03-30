@@ -37,7 +37,7 @@ export default async function transformLooksRareV2Listings(
         globalNonce: listing.globalNonce,
         subsetNonce: listing.subsetNonce,
         orderNonce: listing.orderNonce,
-        strategyId: listing.strategy,
+        strategyId: listing.strategyId,
         price: listing.price,
         takerBidAdditionalParameters: constants.HashZero,
         makerAskAdditionalParameters: listing.additionalParameters,
