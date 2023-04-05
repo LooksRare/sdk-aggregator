@@ -13,10 +13,11 @@ import type { MockERC1155 } from "../../typechain/src/contracts/tests/MockERC115
 import type { MockERC20 } from "../../typechain/src/contracts/tests/MockERC20";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { CROSS_CHAIN_SEAPORT_ADDRESS } from "@opensea/seaport-js/lib/constants";
-import { addressesByNetwork, SupportedChainId } from "@looksrare/sdk";
+import { addressesByNetwork } from "@looksrare/sdk";
 import { TransferManager } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/TransferManager";
 import { LooksRareProtocol } from "../../typechain/@looksrare/contracts-exchange-v2/contracts/LooksRareProtocol";
 import { Addresses } from "../../constants/addresses";
+import { ChainId } from "@looksrare/sdk-v2";
 
 chai.use(chaiAsPromised);
 
@@ -92,7 +93,7 @@ export const setUpContracts = async (): Promise<Mocks> => {
   )) as ERC20EnabledLooksRareAggregator;
   const looksRareProxy = (await deploy(
     "LooksRareProxy",
-    addressesByNetwork[SupportedChainId.MAINNET].EXCHANGE,
+    addressesByNetwork[ChainId.MAINNET].EXCHANGE,
     looksRareAggregator.address
   )) as LooksRareProxy;
   const seaportProxy = (await deploy(

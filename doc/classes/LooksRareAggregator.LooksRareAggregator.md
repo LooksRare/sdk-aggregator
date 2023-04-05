@@ -13,7 +13,7 @@
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `signer` | `Signer` | The signer of transactions (NFT buyer) |
-| `chainId` | [`SupportedChainId`](../enums/types.SupportedChainId.md) | Current app chain ID |
+| `chainId` | [`ChainId`](../enums/types.ChainId.md) | Current app chain ID |
 | `override?` | [`Addresses`](../interfaces/constants_addresses.Addresses.md) | Aggregator and proxy addresses override.                 Only required if the SDK does not have                 the contract addresses for the given chainId |
 
 ## Properties
@@ -28,7 +28,7 @@ ___
 
 ### chainId
 
-• `Readonly` **chainId**: [`SupportedChainId`](../enums/types.SupportedChainId.md)
+• `Readonly` **chainId**: [`ChainId`](../enums/types.ChainId.md)
 
 Current app chain ID
 

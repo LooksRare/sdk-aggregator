@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { ContractMethods, SupportedChainId } from "../types";
+import { ContractMethods } from "../types";
 import { Addresses } from "../constants/addresses";
 import { addressesByNetwork, MakerOrder, generateMakerOrderTypedData } from "@looksrare/sdk";
 import { constants, Contract, ContractTransaction } from "ethers";
@@ -10,6 +10,7 @@ import { MakerOrderFromAPI } from "../interfaces/LooksRareV1";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { setBalance } from "./helpers/setBalance";
+import { ChainId } from "@looksrare/sdk-v2";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -25,7 +26,7 @@ describe("LooksRareAggregator class", () => {
     amount: string,
     transferManager: string
   ): Promise<ContractTransaction> => {
-    const chainId = SupportedChainId.MAINNET;
+    const chainId = ChainId.MAINNET;
     const signers = await getSigners();
     const buyer = signers.buyer;
     const addresses: Addresses = getAddressOverrides(contracts);
@@ -90,7 +91,7 @@ describe("LooksRareAggregator class", () => {
       contracts.collection1,
       "1",
       "1",
-      addressesByNetwork[SupportedChainId.MAINNET].TRANSFER_MANAGER_ERC721
+      addressesByNetwork[ChainId.MAINNET].TRANSFER_MANAGER_ERC721
     );
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
@@ -112,7 +113,7 @@ describe("LooksRareAggregator class", () => {
       collection,
       "3",
       "2",
-      addressesByNetwork[SupportedChainId.MAINNET].TRANSFER_MANAGER_ERC1155
+      addressesByNetwork[ChainId.MAINNET].TRANSFER_MANAGER_ERC1155
     );
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
