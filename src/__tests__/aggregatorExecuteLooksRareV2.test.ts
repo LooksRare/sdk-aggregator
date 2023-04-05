@@ -3,12 +3,12 @@ import { ethers } from "hardhat";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { ContractMethods, SupportedChainId } from "../types";
+import { ContractMethods } from "../types";
 import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { LooksRare, utils, Maker, MerkleTree, QuoteType, CollectionType } from "@looksrare/sdk-v2";
+import { LooksRare, utils, Maker, MerkleTree, QuoteType, CollectionType, ChainId } from "@looksrare/sdk-v2";
 import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
@@ -26,7 +26,7 @@ describe("LooksRareAggregator class", () => {
     itemIds: [string],
     amounts: [string]
   ): Promise<ContractTransaction> => {
-    const chainId = SupportedChainId.MAINNET;
+    const chainId = ChainId.MAINNET;
     const signers = await getSigners();
     const buyer = signers.buyer;
     const addresses: Addresses = getAddressOverrides(contracts);
@@ -64,7 +64,7 @@ describe("LooksRareAggregator class", () => {
     let domain = v2.getTypedDataDomain();
     domain = { ...domain, chainId, verifyingContract: contracts.looksRareProtocol.address };
 
-    const signature = await maker._signTypedData(domain, utils.eip712.makerTypes, makerOrder);
+    const signature = await maker._signTypedData(domain, utils.makerTypes, makerOrder);
 
     // Fake an order from the API
     const makerOrderFromAPI: MakerOrderFromAPI = {

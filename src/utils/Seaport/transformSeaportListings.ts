@@ -9,8 +9,9 @@ import {
 import { utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { EXTRA_DATA_SCHEMA, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA, Recipient } from "../../interfaces/seaport";
-import { BasicOrder, CollectionType, SupportedChainId, TradeData } from "../../types";
+import { BasicOrder, CollectionType, TradeData } from "../../types";
 import calculatePriceFromConsideration from "./calculatePriceFromConsideration";
+import { ChainId } from "@looksrare/sdk-v2";
 
 const getCollectionType = (offer: OfferItem): CollectionType => {
   if (offer.itemType === ItemType.ERC721) {
@@ -41,11 +42,7 @@ const validateConsiderationSameCurrency = (consideration: ConsiderationItem[]): 
   }
 };
 
-export default function transformSeaportListings(
-  chainId: SupportedChainId,
-  listings: Order[],
-  proxy: string
-): TradeData {
+export default function transformSeaportListings(chainId: ChainId, listings: Order[], proxy: string): TradeData {
   const orders: BasicOrder[] = [];
   const ordersExtraData: OrderExtraData[] = [];
 

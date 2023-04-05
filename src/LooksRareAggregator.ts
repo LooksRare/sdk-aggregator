@@ -1,15 +1,7 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
 import { MakerOrderFromAPI as MakerOrderFromAPI_V1 } from "./interfaces/LooksRareV1";
 import { MakerOrderFromAPI as MakerOrderFromAPI_V2 } from "./interfaces/LooksRareV2";
-import {
-  BasicOrder,
-  ContractMethods,
-  Listings,
-  SupportedChainId,
-  TokenTransfer,
-  TradeData,
-  TransformListingsOutput,
-} from "./types";
+import { BasicOrder, ContractMethods, Listings, TokenTransfer, TradeData, TransformListingsOutput } from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import transformLooksRareV2Listings from "./utils/LooksRareV2/transformLooksRareV2Listings";
@@ -19,6 +11,7 @@ import { executeERC20Orders } from "./utils/calls/erc20EnabledAggregator";
 import { Order } from "@opensea/seaport-js/lib/types";
 import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
 import { calculateEthValue } from "./utils/calculateEthValue";
+import { ChainId } from "@looksrare/sdk-v2";
 
 export class LooksRareAggregator {
   /**
@@ -27,7 +20,7 @@ export class LooksRareAggregator {
    */
   public readonly signer: Signer;
   /** Current app chain ID */
-  public readonly chainId: SupportedChainId;
+  public readonly chainId: ChainId;
   /** Mapping of LooksRare aggregator addresses for the current chain */
   public readonly addresses: Addresses;
 
@@ -39,7 +32,7 @@ export class LooksRareAggregator {
    *                 Only required if the SDK does not have
    *                 the contract addresses for the given chainId
    */
-  constructor(signer: Signer, chainId: SupportedChainId, override?: Addresses) {
+  constructor(signer: Signer, chainId: ChainId, override?: Addresses) {
     this.signer = signer;
     this.chainId = chainId;
     this.addresses = override ?? addressesByNetwork[this.chainId];

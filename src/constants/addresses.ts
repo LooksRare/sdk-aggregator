@@ -1,4 +1,4 @@
-import { SupportedChainId } from "../types";
+import { ChainId } from "@looksrare/sdk-v2";
 
 /** LooksRare aggregator contract addresses */
 export interface Addresses {
@@ -25,8 +25,8 @@ const goerliAddresses: Addresses = {
   SEAPORT_PROXY: "0x0000000000aD2C5a35209EeAb701B2CD49BA3A0D",
 };
 
-export const addressesByNetwork: { [chainId in SupportedChainId]: Addresses } = {
-  [SupportedChainId.MAINNET]: mainnetAddresses,
-  [SupportedChainId.GOERLI]: goerliAddresses,
-  [SupportedChainId.HARDHAT]: goerliAddresses,
+export const addressesByNetwork: { [chainId in ChainId]: Addresses } = {
+  [ChainId.MAINNET]: mainnetAddresses,
+  [ChainId.GOERLI]: goerliAddresses,
+  [ChainId.HARDHAT]: goerliAddresses,
 };

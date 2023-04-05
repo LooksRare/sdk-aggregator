@@ -1,11 +1,11 @@
-import { BasicOrder, SupportedChainId, TradeData } from "../../types";
+import { BasicOrder, TradeData } from "../../types";
 import { constants, ethers, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV2";
-import { QuoteType } from "@looksrare/sdk-v2";
+import { ChainId, QuoteType } from "@looksrare/sdk-v2";
 
 export default async function transformLooksRareV2Listings(
-  chainId: SupportedChainId,
+  chainId: ChainId,
   signer: ethers.Signer,
   listings: Array<MakerOrderFromAPI>,
   proxy: string

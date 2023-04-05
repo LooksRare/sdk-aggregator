@@ -8,4 +8,4 @@
 
 ### addressesByNetwork
 
-• `Const` **addressesByNetwork**: { [chainId in SupportedChainId]: Addresses }
+• `Const` **addressesByNetwork**: { [chainId in ChainId]: Addresses }

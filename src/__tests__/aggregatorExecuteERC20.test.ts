@@ -2,10 +2,11 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { ContractMethods, SupportedChainId, TransformListingsOutput } from "../types";
+import { ContractMethods, TransformListingsOutput } from "../types";
 import { Addresses } from "../constants/addresses";
 import { Seaport } from "@opensea/seaport-js";
 import { CROSS_CHAIN_SEAPORT_ADDRESS, ItemType } from "@opensea/seaport-js/lib/constants";
+import { ChainId } from "@looksrare/sdk-v2";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
@@ -15,7 +16,7 @@ describe("LooksRareAggregator class", () => {
   });
 
   it("can execute ERC20 orders", async () => {
-    const chainId = SupportedChainId.MAINNET;
+    const chainId = ChainId.MAINNET;
     const signers = await getSigners();
 
     const buyer = signers.buyer;

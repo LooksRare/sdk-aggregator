@@ -3,9 +3,6 @@ import { BigNumber, BigNumberish, BytesLike, ContractTransaction, PayableOverrid
 import { MakerOrderFromAPI as MakerOrderFromAPI_V1 } from "./interfaces/LooksRareV1";
 import { MakerOrderFromAPI as MakerOrderFromAPI_V2 } from "./interfaces/LooksRareV2";
 
-/** List of supported chains */
-export { SupportedChainId } from "@looksrare/sdk";
-
 /** List of collection types supported by the aggregator */
 export enum CollectionType {
   ERC721 = 0,

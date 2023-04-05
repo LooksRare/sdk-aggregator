@@ -3,7 +3,7 @@
 ## Enumerations
 
 - [CollectionType](../enums/types.CollectionType.md)
-- [SupportedChainId](../enums/types.SupportedChainId.md)
+- [ChainId](../enums/types.ChainId.md)
 
 ## Interfaces
 

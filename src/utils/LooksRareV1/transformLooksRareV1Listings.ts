@@ -1,4 +1,5 @@
-import { BasicOrder, CollectionType, SupportedChainId, TradeData } from "../../types";
+import { ChainId } from "@looksrare/sdk-v2";
+import { BasicOrder, CollectionType, TradeData } from "../../types";
 import { constants, Contract, ethers, utils } from "ethers";
 import { PROXY_EXECUTE_SELECTOR } from "../../constants/selectors";
 import { MakerOrderFromAPI, OrderExtraData, ORDER_EXTRA_DATA_SCHEMA } from "../../interfaces/LooksRareV1";
@@ -6,7 +7,7 @@ import abiIERC165 from "@looksrare/contracts-libs/abis/IERC165.json";
 import { INTERFACE_ID_ERC_1155, INTERFACE_ID_ERC_721 } from "../../constants/interfaceIds";
 
 export default async function transformLooksRareV1Listings(
-  chainId: SupportedChainId,
+  chainId: ChainId,
   signer: ethers.Signer,
   listings: Array<MakerOrderFromAPI>,
   proxy: string
