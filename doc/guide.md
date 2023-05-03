@@ -37,7 +37,8 @@ const buyer = new ethers.Wallet(privateKey, provider);
 const chainId = 1;
 const aggregator = new LooksRareAggregator(signer, chainId);
 const { tradeData, actions }: TransformListingsOutput = await aggregator.transformListings({
-  seaport: [seaportOrder],
+  seaport_V1_4: [],
+  seaport_V1_5: [seaportOrder],
   looksRareV2: [looksRareOrder],
 });
 

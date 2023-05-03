@@ -5,7 +5,7 @@ import { LooksRareAggregator } from "../LooksRareAggregator";
 import { ContractMethods, TransformListingsOutput } from "../types";
 import { Addresses } from "../constants/addresses";
 import { Seaport } from "@opensea/seaport-js";
-import { CROSS_CHAIN_SEAPORT_ADDRESS, ItemType } from "@opensea/seaport-js/lib/constants";
+import { ItemType, CROSS_CHAIN_SEAPORT_V1_5_ADDRESS } from "@opensea/seaport-js/lib/constants";
 import { ChainId } from "@looksrare/sdk-v2";
 
 describe("LooksRareAggregator class", () => {
@@ -24,17 +24,19 @@ describe("LooksRareAggregator class", () => {
     const { user1: maker1, user2: maker2, user3: maker3 } = signers;
     const { collection1, collection2, collection3 } = contracts;
 
-    const seaport1 = new Seaport(maker1);
-    const seaport2 = new Seaport(maker2);
-    const seaport3 = new Seaport(maker3);
+    const seaport1 = new Seaport(maker1, { seaportVersion: "1.5" });
+    const seaport2 = new Seaport(maker2, { seaportVersion: "1.5" });
+    const seaport3 = new Seaport(maker3, { seaportVersion: "1.5" });
 
     const weth = contracts.weth;
     const usdc = contracts.usdc;
 
     const addresses: Addresses = getAddressOverrides(contracts);
 
-    await contracts.looksRareAggregator.approve(weth.address, CROSS_CHAIN_SEAPORT_ADDRESS, ethers.constants.MaxUint256);
-    await contracts.looksRareAggregator.approve(usdc.address, CROSS_CHAIN_SEAPORT_ADDRESS, ethers.constants.MaxUint256);
+    const approveValue = ethers.constants.MaxUint256;
+
+    await contracts.looksRareAggregator.approve(weth.address, CROSS_CHAIN_SEAPORT_V1_5_ADDRESS, approveValue);
+    await contracts.looksRareAggregator.approve(usdc.address, CROSS_CHAIN_SEAPORT_V1_5_ADDRESS, approveValue);
 
     const originalWETHBalance = ethers.utils.parseEther("2");
     const originalUSDCBalance = ethers.utils.parseUnits("500", 6);
@@ -94,7 +96,8 @@ describe("LooksRareAggregator class", () => {
     const order3 = await executeAllActions3();
 
     const { tradeData, actions }: TransformListingsOutput = await aggregator.transformListings({
-      seaport: [order1, order2, order3],
+      seaport_V1_4: [],
+      seaport_V1_5: [order1, order2, order3],
       looksRareV2: [],
     });
 
