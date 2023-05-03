@@ -2,7 +2,6 @@
   "entryPoints": [
     "./src/LooksRareAggregator.ts",
     "./src/constants/addresses.ts",
-    "./src/interfaces/LooksRareV1.ts",
     "./src/interfaces/seaport.ts",
     "./src/types.ts",
   ],

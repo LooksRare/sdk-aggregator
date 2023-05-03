@@ -118,22 +118,6 @@ Transformed listings that are ready to be consumed by the execute function.
 
 ___
 
-### transformLooksRareV1Listings
-
-▸ **transformLooksRareV1Listings**(`listings`): `Promise`<[`TradeData`](../interfaces/types.TradeData.md)\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `listings` | [`MakerOrderFromAPI`](../interfaces/interfaces_LooksRareV1.MakerOrderFromAPI.md)[] |
-
-#### Returns
-
-`Promise`<[`TradeData`](../interfaces/types.TradeData.md)\>
-
-___
-
 ### transformSeaportListings
 
 ▸ **transformSeaportListings**(`listings`): [`TradeData`](../interfaces/types.TradeData.md)

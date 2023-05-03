@@ -75,7 +75,6 @@ describe("LooksRareAggregator class", () => {
 
     const { tradeData, actions } = await aggregator.transformListings({
       seaport: [],
-      looksRareV1: [],
       looksRareV2: [makerOrderFromAPI],
     });
 

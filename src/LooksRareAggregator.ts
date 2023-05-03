@@ -1,9 +1,6 @@
 import { addressesByNetwork, Addresses } from "./constants/addresses";
-import { MakerOrderFromAPI as MakerOrderFromAPI_V1 } from "./interfaces/LooksRareV1";
-import { MakerOrderFromAPI as MakerOrderFromAPI_V2 } from "./interfaces/LooksRareV2";
 import { BasicOrder, ContractMethods, Listings, TokenTransfer, TradeData, TransformListingsOutput } from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
-import transformLooksRareV1Listings from "./utils/LooksRareV1/transformLooksRareV1Listings";
 import transformLooksRareV2Listings from "./utils/LooksRareV2/transformLooksRareV2Listings";
 import { BigNumber, constants, ContractTransaction, ethers, PayableOverrides, Signer } from "ethers";
 import { executeETHOrders } from "./utils/calls/aggregator";
@@ -12,6 +9,7 @@ import { Order } from "@opensea/seaport-js/lib/types";
 import { approve, isAllowanceSufficient } from "./utils/calls/erc20";
 import { calculateEthValue } from "./utils/calculateEthValue";
 import { ChainId } from "@looksrare/sdk-v2";
+import { MakerOrderFromAPI } from "./interfaces/LooksRareV2";
 
 export class LooksRareAggregator {
   /**
@@ -88,10 +86,6 @@ export class LooksRareAggregator {
     if (listings.seaport.length > 0) {
       tradeData.push(this.transformSeaportListings(listings.seaport));
     }
-    if (listings.looksRareV1.length > 0) {
-      const looksRareV1Listings = await this.transformLooksRareV1Listings(listings.looksRareV1);
-      tradeData.push(looksRareV1Listings);
-    }
     if (listings.looksRareV2.length > 0) {
       const looksRareV2Listings = await this.transformLooksRareV2Listings(listings.looksRareV2);
       tradeData.push(looksRareV2Listings);
@@ -136,11 +130,7 @@ export class LooksRareAggregator {
     return transformSeaportListings(this.chainId, listings, this.addresses.SEAPORT_PROXY);
   }
 
-  private async transformLooksRareV1Listings(listings: MakerOrderFromAPI_V1[]): Promise<TradeData> {
-    return await transformLooksRareV1Listings(this.chainId, this.signer, listings, this.addresses.LOOKSRARE_V1_PROXY);
-  }
-
-  private async transformLooksRareV2Listings(listings: MakerOrderFromAPI_V2[]): Promise<TradeData> {
+  private async transformLooksRareV2Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
     return await transformLooksRareV2Listings(this.chainId, this.signer, listings, this.addresses.LOOKSRARE_V2_PROXY);
   }
 
