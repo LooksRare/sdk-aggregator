@@ -10,7 +10,7 @@ const seaportTokenId = 1;
 
 let options = {method: "GET", headers: {accept: "application/json"}};
 
-let res = await fetch(`https://api.looksrare.org/api/v1/orders?collection=${collection}&tokenId=${looksRareTokenId}`, options);
+let res = await fetch(`https://api.looksrare.org/api/v2/orders?collection=${collection}&itemId=${looksRareTokenId}`, options);
 let responseJson = await res.json();
 const looksRareOrder = responseJson.data[0];
 
@@ -38,8 +38,7 @@ const chainId = 1;
 const aggregator = new LooksRareAggregator(signer, chainId);
 const { tradeData, actions }: TransformListingsOutput = await aggregator.transformListings({
   seaport: [seaportOrder],
-  looksRareV1: [looksRareOrder],
-  looksRareV2: [],
+  looksRareV2: [looksRareOrder],
 });
 
 // Actions are required when the orders are paid in ERC-20 tokens and the buyer has not granted

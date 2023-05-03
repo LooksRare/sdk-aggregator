@@ -1,7 +1,6 @@
 import { Order } from "@opensea/seaport-js/lib/types";
 import { BigNumber, BigNumberish, BytesLike, ContractTransaction, PayableOverrides, UnsignedTransaction } from "ethers";
-import { MakerOrderFromAPI as MakerOrderFromAPI_V1 } from "./interfaces/LooksRareV1";
-import { MakerOrderFromAPI as MakerOrderFromAPI_V2 } from "./interfaces/LooksRareV2";
+import { MakerOrderFromAPI } from "./interfaces/LooksRareV2";
 
 /** List of collection types supported by the aggregator */
 export enum CollectionType {
@@ -59,10 +58,8 @@ export interface TokenTransfer {
 export interface Listings {
   /** Seaport listings retrieved from OpenSea's API */
   seaport: Order[];
-  /** LooksRare V1's listings retrieved from LooksRare's API */
-  looksRareV1: MakerOrderFromAPI_V1[];
   /** LooksRare V2's listings retrieved from LooksRare's API */
-  looksRareV2: MakerOrderFromAPI_V2[];
+  looksRareV2: MakerOrderFromAPI[];
 }
 
 /** Processed marketplace trade data together with the actions required before executing a trade */

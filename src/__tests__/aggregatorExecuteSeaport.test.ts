@@ -57,7 +57,6 @@ describe("LooksRareAggregator class", () => {
     const order = await executeAllActions();
     const { tradeData } = await aggregator.transformListings({
       seaport: [order],
-      looksRareV1: [],
       looksRareV2: [],
     });
 
@@ -120,7 +119,6 @@ describe("LooksRareAggregator class", () => {
     const order = await executeAllActions();
     const { tradeData } = await aggregator.transformListings({
       seaport: [order],
-      looksRareV1: [],
       looksRareV2: [],
     });
 
