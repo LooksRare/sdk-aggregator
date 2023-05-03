@@ -56,8 +56,10 @@ export interface TokenTransfer {
 
 /** Pre-processed listings data coming from each marketplace's API */
 export interface Listings {
-  /** Seaport listings retrieved from OpenSea's API */
-  seaport: Order[];
+  /** Seaport V1.4 listings retrieved from OpenSea's API */
+  seaport_V1_4: Order[];
+  /** Seaport V1.5 listings retrieved from OpenSea's API */
+  seaport_V1_5: Order[];
   /** LooksRare V2's listings retrieved from LooksRare's API */
   looksRareV2: MakerOrderFromAPI[];
 }

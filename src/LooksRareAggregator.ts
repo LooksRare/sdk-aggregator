@@ -83,8 +83,11 @@ export class LooksRareAggregator {
    */
   public async transformListings(listings: Listings): Promise<TransformListingsOutput> {
     const tradeData = [];
-    if (listings.seaport.length > 0) {
-      tradeData.push(this.transformSeaportListings(listings.seaport));
+    if (listings.seaport_V1_4.length > 0) {
+      tradeData.push(this.transformSeaportListings(listings.seaport_V1_4, this.addresses.SEAPORT_V1_4_PROXY));
+    }
+    if (listings.seaport_V1_5.length > 0) {
+      tradeData.push(this.transformSeaportListings(listings.seaport_V1_5, this.addresses.SEAPORT_V1_5_PROXY));
     }
     if (listings.looksRareV2.length > 0) {
       const looksRareV2Listings = await this.transformLooksRareV2Listings(listings.looksRareV2);
@@ -118,7 +121,7 @@ export class LooksRareAggregator {
 
   public transactionEthValue(tradeData: TradeData[]): BigNumber {
     return tradeData.reduce(
-      (sum: BigNumber, singleTradeData: TradeData) => calculateEthValue(singleTradeData, this.addresses).add(sum),
+      (sum: BigNumber, singleTradeData: TradeData) => calculateEthValue(singleTradeData).add(sum),
       constants.Zero
     );
   }
@@ -126,8 +129,8 @@ export class LooksRareAggregator {
   /**
    * @notice The argument comes from Seaport listings API response's orders->protocol_data
    */
-  private transformSeaportListings(listings: Order[]): TradeData {
-    return transformSeaportListings(this.chainId, listings, this.addresses.SEAPORT_PROXY);
+  private transformSeaportListings(listings: Order[], proxyAddress: string): TradeData {
+    return transformSeaportListings(this.chainId, listings, proxyAddress);
   }
 
   private async transformLooksRareV2Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
@@ -141,8 +144,7 @@ export class LooksRareAggregator {
     tradeData.forEach((singleTradeData: TradeData) => {
       singleTradeData.orders.forEach((order: BasicOrder) => {
         const currency = order.currency;
-        // NOTE: If LooksRare V1 + currency == WETH, skip. We are going to pay in ETH.
-        if (currency !== constants.AddressZero && singleTradeData.proxy !== this.addresses.LOOKSRARE_V1_PROXY) {
+        if (currency !== constants.AddressZero) {
           tokenTransfersMapping[currency] = tokenTransfersMapping[currency] ?? ethers.constants.Zero;
           tokenTransfersMapping[currency] = tokenTransfersMapping[currency].add(BigNumber.from(order.price));
         }

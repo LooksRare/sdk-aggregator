@@ -27,7 +27,7 @@ describe("LooksRareAggregator class", () => {
     const addresses: Addresses = getAddressOverrides(contracts);
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
-    const seaport = new Seaport(maker);
+    const seaport = new Seaport(maker, { seaportVersion: "1.5" });
 
     const blockNumber = await ethers.provider.getBlockNumber();
     const block = await ethers.provider.getBlock(blockNumber);
@@ -56,7 +56,8 @@ describe("LooksRareAggregator class", () => {
     );
     const order = await executeAllActions();
     const { tradeData } = await aggregator.transformListings({
-      seaport: [order],
+      seaport_V1_4: [],
+      seaport_V1_5: [order],
       looksRareV2: [],
     });
 
@@ -88,7 +89,7 @@ describe("LooksRareAggregator class", () => {
     const addresses: Addresses = getAddressOverrides(contracts);
     const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
-    const seaport = new Seaport(maker);
+    const seaport = new Seaport(maker, { seaportVersion: "1.5" });
 
     const blockNumber = await ethers.provider.getBlockNumber();
     const block = await ethers.provider.getBlock(blockNumber);
@@ -118,7 +119,8 @@ describe("LooksRareAggregator class", () => {
     );
     const order = await executeAllActions();
     const { tradeData } = await aggregator.transformListings({
-      seaport: [order],
+      seaport_V1_4: [],
+      seaport_V1_5: [order],
       looksRareV2: [],
     });
 
