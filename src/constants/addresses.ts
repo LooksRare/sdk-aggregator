@@ -1,13 +1,5 @@
 import { ChainId } from "@looksrare/sdk-v2";
-
-/** LooksRare aggregator contract addresses */
-export interface Addresses {
-  AGGREGATOR: string;
-  ERC20_ENABLED_AGGREGATOR: string;
-  LOOKSRARE_V2_PROXY: string;
-  SEAPORT_V1_4_PROXY: string;
-  SEAPORT_V1_5_PROXY: string;
-}
+import { Addresses } from "../types";
 
 const mainnetAddresses: Addresses = {
   AGGREGATOR: "0x00000000005228B791a99a61f36A130d50600106",

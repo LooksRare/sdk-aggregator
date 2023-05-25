@@ -2,6 +2,15 @@ import { Order } from "@opensea/seaport-js/lib/types";
 import { BigNumber, BigNumberish, BytesLike, ContractTransaction, PayableOverrides, UnsignedTransaction } from "ethers";
 import { MakerOrderFromAPI } from "./interfaces/LooksRareV2";
 
+/** LooksRare aggregator contract addresses */
+export interface Addresses {
+  AGGREGATOR: string;
+  ERC20_ENABLED_AGGREGATOR: string;
+  LOOKSRARE_V2_PROXY: string;
+  SEAPORT_V1_4_PROXY: string;
+  SEAPORT_V1_5_PROXY: string;
+}
+
 /** List of collection types supported by the aggregator */
 export enum CollectionType {
   ERC721 = 0,
