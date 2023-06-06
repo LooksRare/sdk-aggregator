@@ -90,18 +90,7 @@ export class LooksRareAggregator {
       tradeData.push(this.transformSeaportListings(listings.seaport_V1_5, this.addresses.SEAPORT_V1_5_PROXY));
     }
     if (listings.looksRareV2.length > 0) {
-      const groupedOrders = listings.looksRareV2.reduce((result, order: MakerOrderFromAPI) => {
-        const referrerAddress = order.referrer?.address;
-        if (!result[referrerAddress]) {
-          result[referrerAddress] = [];
-        }
-        result[referrerAddress].push(order);
-        return result;
-      }, {} as Record<string, MakerOrderFromAPI[]>);
-
-      tradeData = await Promise.all(
-        Object.values(groupedOrders).map((orders) => this.transformLooksRareV2Listings(orders))
-      );
+      tradeData = await this.transformLooksRareV2Listings(listings.looksRareV2);
     }
 
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
@@ -143,8 +132,22 @@ export class LooksRareAggregator {
     return transformSeaportListings(this.chainId, listings, proxyAddress);
   }
 
-  private async transformLooksRareV2Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
-    return await transformLooksRareV2Listings(this.chainId, this.signer, listings, this.addresses.LOOKSRARE_V2_PROXY);
+  private async transformLooksRareV2Listings(listings: MakerOrderFromAPI[]): Promise<Array<TradeData>> {
+    //Split orders into different TradeData(Proxy call) if orders have different referrer addresses
+    const groupedOrders = listings.reduce((result, order: MakerOrderFromAPI) => {
+      const referrerAddress = order.referrer?.address;
+      if (!result[referrerAddress]) {
+        result[referrerAddress] = [];
+      }
+      result[referrerAddress].push(order);
+      return result;
+    }, {} as Record<string, MakerOrderFromAPI[]>);
+
+    return await Promise.all(
+      Object.values(groupedOrders).map((orders) =>
+        transformLooksRareV2Listings(this.chainId, this.signer, orders, this.addresses.LOOKSRARE_V2_PROXY)
+      )
+    );
   }
 
   private transactionTokenTransfers(tradeData: TradeData[]): Array<TokenTransfer> {
