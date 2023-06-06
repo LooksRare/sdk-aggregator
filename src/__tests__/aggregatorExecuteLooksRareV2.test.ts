@@ -20,6 +20,7 @@ describe("LooksRareAggregator class", () => {
 
   const executeLooksRareV2Order = async (
     maker: SignerWithAddress,
+    referrer: SignerWithAddress,
     collection: Contract,
     collectionType: CollectionType,
     currency: string,
@@ -66,10 +67,15 @@ describe("LooksRareAggregator class", () => {
 
     const signature = await maker._signTypedData(domain, utils.makerTypes, makerOrder);
 
+    const referrerFromAPI = {
+      rate: 0,
+      address: referrer.address,
+    };
     // Fake an order from the API
     const makerOrderFromAPI: MakerOrderFromAPI = {
       merkleTree,
       signature,
+      referrer: referrerFromAPI,
       ...makerOrder,
     };
 
@@ -103,6 +109,7 @@ describe("LooksRareAggregator class", () => {
     const buyer = signers.buyer;
     const tx = await executeLooksRareV2Order(
       signers.user1,
+      signers.user2,
       collection,
       CollectionType.ERC721,
       constants.AddressZero,
@@ -126,6 +133,7 @@ describe("LooksRareAggregator class", () => {
     const buyer = signers.buyer;
     const tx = await executeLooksRareV2Order(
       signers.user3,
+      signers.user2,
       collection,
       CollectionType.ERC1155,
       constants.AddressZero,
@@ -158,6 +166,7 @@ describe("LooksRareAggregator class", () => {
 
     await executeLooksRareV2Order(
       signers.user1,
+      signers.user2,
       collection,
       CollectionType.ERC721,
       contracts.weth.address,
@@ -188,6 +197,7 @@ describe("LooksRareAggregator class", () => {
 
     await executeLooksRareV2Order(
       signers.user3,
+      signers.user2,
       collection,
       CollectionType.ERC1155,
       contracts.weth.address,

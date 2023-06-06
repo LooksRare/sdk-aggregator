@@ -55,11 +55,13 @@ export default async function transformLooksRareV2Listings(
     abiCoder.encode(ORDER_EXTRA_DATA_SCHEMA, [orderExtraData])
   );
 
+  const referrerData = ethers.utils.defaultAbiCoder.encode(["address"], [referrer]);
+
   return {
     proxy,
     selector: PROXY_EXECUTE_SELECTOR,
     orders,
     ordersExtraData: ordersExtraDataBytes,
-    extraData: referrer != undefined ? ethers.utils.arrayify(referrer) : constants.HashZero,
+    extraData: referrer != undefined ? referrerData : constants.HashZero,
   };
 }
