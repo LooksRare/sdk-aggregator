@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import calculateTxFee from "./helpers/calculateTxFee";
 import { setUpContracts, Mocks, getSigners, getAddressOverrides } from "./helpers/setup";
 import { LooksRareAggregator } from "../LooksRareAggregator";
-import { ContractMethods } from "../types";
+import { ContractMethods, TradeData } from "../types";
 import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction } from "ethers";
 import { MakerOrderFromAPI, Referrer } from "../interfaces/LooksRareV2";
@@ -77,7 +77,7 @@ describe("LooksRareAggregator class", () => {
     };
   };
 
-  const executeMultipleLooksRareV2Orders = async (
+  const executeAggregator = async (
     maker: SignerWithAddress,
     collection: Contract,
     makerOrderFromAPIs: Array<MakerOrderFromAPI>
@@ -132,7 +132,7 @@ describe("LooksRareAggregator class", () => {
       amounts
     );
 
-    return await executeMultipleLooksRareV2Orders(maker, collection, [makerOrderFromAPI]);
+    return await executeAggregator(maker, collection, [makerOrderFromAPI]);
   };
 
   it("can execute LooksRare V2 orders (Buy ERC721 with ETH)", async () => {
@@ -243,8 +243,61 @@ describe("LooksRareAggregator class", () => {
     expect(balanceBeforeTx.sub(balanceAfterTx)).to.equal(constants.WeiPerEther);
   });
 
-  // it("groups orders with different referrers into different TradeData", async () => {
-  // });
+  it("groups orders with different referrers into different TradeData", async () => {
+    const collection = contracts.collection1;
+    const signers = await getSigners();
+    const chainId = ChainId.MAINNET;
+    const addresses: Addresses = getAddressOverrides(contracts);
+    const buyer = signers.buyer;
+    const makerOrderUser1 = await createMakerOrderFromAPI(
+      signers.user1,
+      signers.user2,
+      collection,
+      CollectionType.ERC721,
+      constants.AddressZero,
+      ["1"],
+      ["1"]
+    );
+    const makerOrderUser2 = await createMakerOrderFromAPI(
+      signers.user1,
+      signers.user2,
+      collection,
+      CollectionType.ERC721,
+      constants.AddressZero,
+      ["1"],
+      ["1"]
+    );
+    const makerOrderUser3 = await createMakerOrderFromAPI(
+      signers.user1,
+      signers.user3,
+      collection,
+      CollectionType.ERC721,
+      constants.AddressZero,
+      ["1"],
+      ["1"]
+    );
+
+    const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
+    const { tradeData } = await aggregator.transformListings({
+      seaport_V1_4: [],
+      seaport_V1_5: [],
+      looksRareV2: [makerOrderUser1, makerOrderUser2, makerOrderUser3],
+    });
+
+    const user2Bytes = ethers.utils.defaultAbiCoder.encode(["address"], [signers.user2.address]);
+    const user3Bytes = ethers.utils.defaultAbiCoder.encode(["address"], [signers.user3.address]);
+
+    expect(tradeData.length).to.equal(2);
+    tradeData.forEach((td: TradeData) => {
+      if (td.orders.length == 2) {
+        expect(td.extraData).to.equal(user2Bytes);
+      } else if (td.orders.length == 1) {
+        expect(td.extraData).to.equal(user3Bytes);
+      } else {
+        expect.fail("failed order grouping by referrer");
+      }
+    });
+  });
 
   // it("groups orders with no referrer into same TradeData", async () => {
   // });
