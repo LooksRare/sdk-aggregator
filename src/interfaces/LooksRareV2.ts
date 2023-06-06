@@ -1,7 +1,7 @@
 import { MerkleTree, Maker } from "@looksrare/sdk-v2";
 import { BigNumberish, BytesLike } from "ethers";
 
-interface Referrer {
+export interface Referrer {
   address: string;
   rate: BigNumberish;
 }

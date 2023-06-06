@@ -6,7 +6,7 @@ import { LooksRareAggregator } from "../LooksRareAggregator";
 import { ContractMethods } from "../types";
 import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction } from "ethers";
-import { MakerOrderFromAPI } from "../interfaces/LooksRareV2";
+import { MakerOrderFromAPI, Referrer } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { LooksRare, utils, Maker, MerkleTree, QuoteType, CollectionType, ChainId } from "@looksrare/sdk-v2";
 import { setBalance } from "./helpers/setBalance";
@@ -18,7 +18,7 @@ describe("LooksRareAggregator class", () => {
     contracts = await setUpContracts();
   });
 
-  const executeLooksRareV2Order = async (
+  const createMakerOrderFromAPI = async (
     maker: SignerWithAddress,
     referrer: SignerWithAddress,
     collection: Contract,
@@ -26,13 +26,10 @@ describe("LooksRareAggregator class", () => {
     currency: string,
     itemIds: [string],
     amounts: [string]
-  ): Promise<ContractTransaction> => {
+  ): Promise<MakerOrderFromAPI> => {
     const chainId = ChainId.MAINNET;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const addresses: Addresses = getAddressOverrides(contracts);
-
-    const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
     const blockNumber = await ethers.provider.getBlockNumber();
     const block = await ethers.provider.getBlock(blockNumber);
@@ -67,22 +64,35 @@ describe("LooksRareAggregator class", () => {
 
     const signature = await maker._signTypedData(domain, utils.makerTypes, makerOrder);
 
-    const referrerFromAPI = {
+    const referrerFromAPI: Referrer = {
       rate: 0,
       address: referrer.address,
     };
     // Fake an order from the API
-    const makerOrderFromAPI: MakerOrderFromAPI = {
+    return {
       merkleTree,
       signature,
       referrer: referrerFromAPI,
       ...makerOrder,
     };
+  };
+
+  const executeMultipleLooksRareV2Orders = async (
+    maker: SignerWithAddress,
+    collection: Contract,
+    makerOrderFromAPIs: Array<MakerOrderFromAPI>
+  ): Promise<ContractTransaction> => {
+    const chainId = ChainId.MAINNET;
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+    const addresses: Addresses = getAddressOverrides(contracts);
+
+    const aggregator = new LooksRareAggregator(buyer, chainId, addresses);
 
     const { tradeData, actions } = await aggregator.transformListings({
       seaport_V1_4: [],
       seaport_V1_5: [],
-      looksRareV2: [makerOrderFromAPI],
+      looksRareV2: makerOrderFromAPIs,
     });
 
     const balanceBeforeTx = ethers.utils.parseEther("2");
@@ -101,6 +111,28 @@ describe("LooksRareAggregator class", () => {
     expect(gasEstimate.toNumber()).to.be.greaterThan(0);
 
     return await contractMethods.call();
+  };
+
+  const executeLooksRareV2Order = async (
+    maker: SignerWithAddress,
+    referrer: SignerWithAddress,
+    collection: Contract,
+    collectionType: CollectionType,
+    currency: string,
+    itemIds: [string],
+    amounts: [string]
+  ): Promise<ContractTransaction> => {
+    const makerOrderFromAPI = await createMakerOrderFromAPI(
+      maker,
+      referrer,
+      collection,
+      collectionType,
+      currency,
+      itemIds,
+      amounts
+    );
+
+    return await executeMultipleLooksRareV2Orders(maker, collection, [makerOrderFromAPI]);
   };
 
   it("can execute LooksRare V2 orders (Buy ERC721 with ETH)", async () => {
@@ -210,4 +242,10 @@ describe("LooksRareAggregator class", () => {
     const balanceAfterTx = await contracts.weth.balanceOf(buyer.address);
     expect(balanceBeforeTx.sub(balanceAfterTx)).to.equal(constants.WeiPerEther);
   });
+
+  // it("groups orders with different referrers into different TradeData", async () => {
+  // });
+
+  // it("groups orders with no referrer into same TradeData", async () => {
+  // });
 });
