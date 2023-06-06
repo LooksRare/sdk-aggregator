@@ -144,8 +144,8 @@ export class LooksRareAggregator {
     }, {} as Record<string, MakerOrderFromAPI[]>);
 
     return await Promise.all(
-      Object.values(groupedOrders).map((orders) =>
-        transformLooksRareV2Listings(this.chainId, this.signer, orders, this.addresses.LOOKSRARE_V2_PROXY)
+      Object.entries(groupedOrders).map(([referrer, orders]) =>
+        transformLooksRareV2Listings(this.chainId, this.signer, referrer, orders, this.addresses.LOOKSRARE_V2_PROXY)
       )
     );
   }
