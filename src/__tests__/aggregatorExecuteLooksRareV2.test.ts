@@ -13,6 +13,7 @@ import { setBalance } from "./helpers/setBalance";
 
 describe("LooksRareAggregator class", () => {
   let contracts: Mocks;
+  const balanceBeforeTx = ethers.utils.parseEther("4");
 
   beforeEach(async () => {
     contracts = await setUpContracts();
@@ -25,7 +26,8 @@ describe("LooksRareAggregator class", () => {
     currency: string,
     itemIds: [string],
     amounts: [string],
-    referrer?: SignerWithAddress
+    referrer?: SignerWithAddress,
+    nonce?: number
   ): Promise<MakerOrderFromAPI> => {
     const chainId = ChainId.MAINNET;
     const signers = await getSigners();
@@ -43,8 +45,8 @@ describe("LooksRareAggregator class", () => {
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
       globalNonce: 0,
-      subsetNonce: 0,
-      orderNonce: 0,
+      subsetNonce: nonce || 0,
+      orderNonce: nonce || 0,
       strategyId: 0,
       collectionType,
       collection: collection.address,
@@ -95,8 +97,6 @@ describe("LooksRareAggregator class", () => {
       looksRareV2: makerOrderFromAPIs,
     });
 
-    const balanceBeforeTx = ethers.utils.parseEther("2");
-
     await setBalance(buyer.address, balanceBeforeTx);
 
     // Approve ERC-20 to be spent by ERC20EnabledLooksRareAggregator if required
@@ -113,7 +113,7 @@ describe("LooksRareAggregator class", () => {
     return await contractMethods.call();
   };
 
-  const executeLooksRareV2Order = async (
+  const executeSingleLooksRareV2Order = async (
     maker: SignerWithAddress,
     collection: Contract,
     collectionType: CollectionType,
@@ -139,7 +139,7 @@ describe("LooksRareAggregator class", () => {
     const collection = contracts.collection1;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const tx = await executeLooksRareV2Order(
+    const tx = await executeSingleLooksRareV2Order(
       signers.user1,
       collection,
       CollectionType.ERC721,
@@ -148,8 +148,6 @@ describe("LooksRareAggregator class", () => {
       ["1"],
       signers.user2
     );
-
-    const balanceBeforeTx = ethers.utils.parseEther("2");
 
     expect(await collection.ownerOf(1)).to.equal(buyer.address);
     expect(await collection.balanceOf(buyer.address)).to.equal(1);
@@ -163,7 +161,7 @@ describe("LooksRareAggregator class", () => {
     const collection = contracts.collection3;
     const signers = await getSigners();
     const buyer = signers.buyer;
-    const tx = await executeLooksRareV2Order(
+    const tx = await executeSingleLooksRareV2Order(
       signers.user3,
       collection,
       CollectionType.ERC1155,
@@ -172,8 +170,6 @@ describe("LooksRareAggregator class", () => {
       ["2"],
       signers.user2
     );
-
-    const balanceBeforeTx = ethers.utils.parseEther("2");
 
     expect(await collection.balanceOf(buyer.address, 3)).to.equal(2);
 
@@ -187,7 +183,6 @@ describe("LooksRareAggregator class", () => {
     const signers = await getSigners();
     const buyer = signers.buyer;
 
-    const balanceBeforeTx = ethers.utils.parseEther("2");
     await contracts.weth.mint(buyer.address, balanceBeforeTx);
 
     await contracts.looksRareAggregator.approve(
@@ -196,7 +191,7 @@ describe("LooksRareAggregator class", () => {
       ethers.constants.MaxUint256
     );
 
-    await executeLooksRareV2Order(
+    await executeSingleLooksRareV2Order(
       signers.user1,
       collection,
       CollectionType.ERC721,
@@ -218,7 +213,6 @@ describe("LooksRareAggregator class", () => {
     const signers = await getSigners();
     const buyer = signers.buyer;
 
-    const balanceBeforeTx = ethers.utils.parseEther("2");
     await contracts.weth.mint(buyer.address, balanceBeforeTx);
 
     await contracts.looksRareAggregator.approve(
@@ -227,7 +221,7 @@ describe("LooksRareAggregator class", () => {
       ethers.constants.MaxUint256
     );
 
-    await executeLooksRareV2Order(
+    await executeSingleLooksRareV2Order(
       signers.user3,
       collection,
       CollectionType.ERC1155,
@@ -352,7 +346,7 @@ describe("LooksRareAggregator class", () => {
     });
   });
 
-  it("can group orders with same referrers into one TradeData", async () => {
+  it("can group orders with same referrers into single TradeData", async () => {
     const collection = contracts.collection1;
     const signers = await getSigners();
     const chainId = ChainId.MAINNET;
@@ -388,5 +382,50 @@ describe("LooksRareAggregator class", () => {
 
     expect(tradeData.length).to.equal(1);
     expect(tradeData[0].extraData).to.equal(user2Bytes);
+  });
+
+  it("can execute orders with multiple referrers", async () => {
+    const collection = contracts.collection1;
+    const signers = await getSigners();
+    const buyer = signers.buyer;
+    const makerOrderUser1 = await createMakerOrderFromAPI(
+      signers.user1,
+      collection,
+      CollectionType.ERC721,
+      constants.AddressZero,
+      ["1"],
+      ["1"],
+      signers.user2,
+      0
+    );
+    const makerOrderUser2 = await createMakerOrderFromAPI(
+      signers.user1,
+      collection,
+      CollectionType.ERC721,
+      constants.AddressZero,
+      ["2"],
+      ["1"],
+      signers.user2,
+      1
+    );
+    const makerOrderUser3 = await createMakerOrderFromAPI(
+      signers.user1,
+      collection,
+      CollectionType.ERC721,
+      constants.AddressZero,
+      ["3"],
+      ["1"],
+      signers.user3,
+      2
+    );
+
+    const tx = await executeAggregator(signers.user1, collection, [makerOrderUser1, makerOrderUser2, makerOrderUser3]);
+
+    expect(await collection.ownerOf(1)).to.equal(buyer.address);
+    expect(await collection.balanceOf(buyer.address)).to.equal(3);
+
+    const txFee = await calculateTxFee(tx);
+    const balanceAfterTx = await ethers.provider.getBalance(buyer.address);
+    expect(balanceBeforeTx.sub(balanceAfterTx).sub(txFee)).to.equal(constants.WeiPerEther.mul(3));
   });
 });
