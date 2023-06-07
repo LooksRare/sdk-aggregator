@@ -9,7 +9,7 @@ export interface Referrer {
 export interface MakerOrderFromAPI extends Maker {
   signature: string;
   merkleTree: MerkleTree;
-  referrer: Referrer;
+  referrer?: Referrer;
 }
 
 /** LooksRare order extra data object inside TradeData */

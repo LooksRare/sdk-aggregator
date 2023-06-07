@@ -62,6 +62,6 @@ export default async function transformLooksRareV2Listings(
     selector: PROXY_EXECUTE_SELECTOR,
     orders,
     ordersExtraData: ordersExtraDataBytes,
-    extraData: referrer != undefined ? referrerData : constants.HashZero,
+    extraData: referrerData,
   };
 }

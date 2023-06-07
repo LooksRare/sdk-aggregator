@@ -135,7 +135,7 @@ export class LooksRareAggregator {
   private async transformLooksRareV2Listings(listings: MakerOrderFromAPI[]): Promise<Array<TradeData>> {
     //Split orders into different TradeData(Proxy call) if orders have different referrer addresses
     const groupedOrders = listings.reduce((result, order: MakerOrderFromAPI) => {
-      const referrerAddress = order.referrer?.address;
+      const referrerAddress = order.referrer?.address || constants.AddressZero;
       if (!result[referrerAddress]) {
         result[referrerAddress] = [];
       }
