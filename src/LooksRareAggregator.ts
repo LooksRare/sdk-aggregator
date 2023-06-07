@@ -90,8 +90,8 @@ export class LooksRareAggregator {
       tradeData.push(this.transformSeaportListings(listings.seaport_V1_5, this.addresses.SEAPORT_V1_5_PROXY));
     }
     if (listings.looksRareV2.length > 0) {
-      const looksrareTradeData = await this.transformLooksRareV2Listings(listings.looksRareV2);
-      tradeData.push(...looksrareTradeData);
+      const looksRareV2Listings = await this.transformLooksRareV2Listings(listings.looksRareV2);
+      tradeData.push(...looksRareV2Listings);
     }
 
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
