@@ -82,7 +82,7 @@ export class LooksRareAggregator {
    *          (ERC20 approvals) have to be executed first before calling the execute function.
    */
   public async transformListings(listings: Listings): Promise<TransformListingsOutput> {
-    let tradeData = [];
+    const tradeData = [];
     if (listings.seaport_V1_4.length > 0) {
       tradeData.push(this.transformSeaportListings(listings.seaport_V1_4, this.addresses.SEAPORT_V1_4_PROXY));
     }
@@ -90,7 +90,8 @@ export class LooksRareAggregator {
       tradeData.push(this.transformSeaportListings(listings.seaport_V1_5, this.addresses.SEAPORT_V1_5_PROXY));
     }
     if (listings.looksRareV2.length > 0) {
-      tradeData = await this.transformLooksRareV2Listings(listings.looksRareV2);
+      const looksrareTradeData = await this.transformLooksRareV2Listings(listings.looksRareV2);
+      tradeData.push(...looksrareTradeData);
     }
 
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
