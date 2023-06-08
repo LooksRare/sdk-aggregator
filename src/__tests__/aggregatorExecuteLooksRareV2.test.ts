@@ -82,7 +82,7 @@ describe("LooksRareAggregator class", () => {
   const executeAggregator = async (
     maker: SignerWithAddress,
     collection: Contract,
-    makerOrderFromAPIs: Array<MakerOrderFromAPI>
+    makerOrdersFromAPI: Array<MakerOrderFromAPI>
   ): Promise<ContractTransaction> => {
     const chainId = ChainId.MAINNET;
     const signers = await getSigners();
