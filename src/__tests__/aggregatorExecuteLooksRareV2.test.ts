@@ -6,7 +6,7 @@ import { LooksRareAggregator } from "../LooksRareAggregator";
 import { ContractMethods, TradeData } from "../types";
 import { Addresses } from "../constants/addresses";
 import { constants, Contract, ContractTransaction } from "ethers";
-import { MakerOrderFromAPI, Referrer } from "../interfaces/LooksRareV2";
+import { MakerOrderFromAPI } from "../interfaces/LooksRareV2";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { LooksRare, utils, Maker, MerkleTree, QuoteType, CollectionType, ChainId } from "@looksrare/sdk-v2";
 import { setBalance } from "./helpers/setBalance";
@@ -66,15 +66,14 @@ describe("LooksRareAggregator class", () => {
 
     const signature = await maker._signTypedData(domain, utils.makerTypes, makerOrder);
 
-    const referrerFromAPI: Referrer = {
-      rate: 0,
-      address: referrer?.address || constants.HashZero,
-    };
     // Fake an order from the API
     return {
       merkleTree,
       signature,
-      referrer: referrer ? referrerFromAPI : undefined,
+      referrer: referrer && {
+        rate: 0,
+        address: referrer.address,
+      },
       ...makerOrder,
     };
   };
