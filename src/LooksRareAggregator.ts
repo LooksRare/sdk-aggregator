@@ -1,4 +1,5 @@
-import { addressesByNetwork, Addresses } from "./constants/addresses";
+import { Addresses } from "./types";
+import { addressesByNetwork } from "./constants/addresses";
 import { BasicOrder, ContractMethods, Listings, TokenTransfer, TradeData, TransformListingsOutput } from "./types";
 import transformSeaportListings from "./utils/Seaport/transformSeaportListings";
 import transformLooksRareV2Listings from "./utils/LooksRareV2/transformLooksRareV2Listings";
