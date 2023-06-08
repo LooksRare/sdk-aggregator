@@ -7,6 +7,7 @@ import { ChainId, QuoteType } from "@looksrare/sdk-v2";
 export default async function transformLooksRareV2Listings(
   chainId: ChainId,
   signer: ethers.Signer,
+  referrer: string,
   listings: Array<MakerOrderFromAPI>,
   proxy: string
 ): Promise<TradeData> {
@@ -59,6 +60,6 @@ export default async function transformLooksRareV2Listings(
     selector: PROXY_EXECUTE_SELECTOR,
     orders,
     ordersExtraData: ordersExtraDataBytes,
-    extraData: constants.HashZero,
+    extraData: referrer,
   };
 }

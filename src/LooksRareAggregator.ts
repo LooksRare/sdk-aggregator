@@ -91,7 +91,7 @@ export class LooksRareAggregator {
     }
     if (listings.looksRareV2.length > 0) {
       const looksRareV2Listings = await this.transformLooksRareV2Listings(listings.looksRareV2);
-      tradeData.push(looksRareV2Listings);
+      tradeData.push(...looksRareV2Listings);
     }
 
     const tokenTransfers: Array<TokenTransfer> = this.transactionTokenTransfers(tradeData);
@@ -133,8 +133,24 @@ export class LooksRareAggregator {
     return transformSeaportListings(this.chainId, listings, proxyAddress);
   }
 
-  private async transformLooksRareV2Listings(listings: MakerOrderFromAPI[]): Promise<TradeData> {
-    return await transformLooksRareV2Listings(this.chainId, this.signer, listings, this.addresses.LOOKSRARE_V2_PROXY);
+  private async transformLooksRareV2Listings(listings: MakerOrderFromAPI[]): Promise<Array<TradeData>> {
+    // Split orders into different TradeData (Proxy call) if orders have different referrer addresses
+    const groupedOrders = listings.reduce((result, order: MakerOrderFromAPI) => {
+      const referrerBytes = order.referrer?.address
+        ? ethers.utils.defaultAbiCoder.encode(["address"], [order.referrer.address])
+        : constants.HashZero;
+      if (!result[referrerBytes]) {
+        result[referrerBytes] = [];
+      }
+      result[referrerBytes].push(order);
+      return result;
+    }, {} as Record<string, MakerOrderFromAPI[]>);
+
+    return await Promise.all(
+      Object.entries(groupedOrders).map(([referrer, orders]) =>
+        transformLooksRareV2Listings(this.chainId, this.signer, referrer, orders, this.addresses.LOOKSRARE_V2_PROXY)
+      )
+    );
   }
 
   private transactionTokenTransfers(tradeData: TradeData[]): Array<TokenTransfer> {

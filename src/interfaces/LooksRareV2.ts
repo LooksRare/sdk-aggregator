@@ -1,9 +1,15 @@
 import { MerkleTree, Maker } from "@looksrare/sdk-v2";
 import { BigNumberish, BytesLike } from "ethers";
 
+export interface Referrer {
+  address: string;
+  rate: BigNumberish;
+}
+
 export interface MakerOrderFromAPI extends Maker {
   signature: string;
   merkleTree: MerkleTree;
+  referrer?: Referrer;
 }
 
 /** LooksRare order extra data object inside TradeData */
