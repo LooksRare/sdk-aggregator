@@ -27,7 +27,7 @@ describe("LooksRareAggregator class", () => {
     itemIds: [string],
     amounts: [string],
     referrer?: SignerWithAddress,
-    nonce?: number
+    nonce = 0
   ): Promise<MakerOrderFromAPI> => {
     const chainId = ChainId.MAINNET;
     const signers = await getSigners();
@@ -45,8 +45,8 @@ describe("LooksRareAggregator class", () => {
     const makerOrder: Maker = {
       quoteType: QuoteType.Ask,
       globalNonce: 0,
-      subsetNonce: nonce || 0,
-      orderNonce: nonce || 0,
+      subsetNonce: nonce,
+      orderNonce: nonce,
       strategyId: 0,
       collectionType,
       collection: collection.address,
