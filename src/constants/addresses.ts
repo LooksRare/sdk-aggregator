@@ -17,8 +17,17 @@ const goerliAddresses: Addresses = {
   SEAPORT_V1_5_PROXY: "0x000000000055d65008F1dFf7167f24E70DB431F6",
 };
 
+const sepoliaAddresses: Addresses = {
+  AGGREGATOR: "0x00000000005228B791a99a61f36A130d50600106",
+  ERC20_ENABLED_AGGREGATOR: "0x0000000000a35231D7706BD1eE827d43245655aB",
+  LOOKSRARE_V2_PROXY: "0xbe1A28000cfE2009051ac6F5b865BC03a04be875",
+  SEAPORT_V1_4_PROXY: "",
+  SEAPORT_V1_5_PROXY: "0x000000000055d65008F1dFf7167f24E70DB431F6",
+};
+
 export const addressesByNetwork: { [chainId in ChainId]: Addresses } = {
   [ChainId.MAINNET]: mainnetAddresses,
   [ChainId.GOERLI]: goerliAddresses,
+  [ChainId.SEPOLIA]: sepoliaAddresses,
   [ChainId.HARDHAT]: goerliAddresses,
 };
